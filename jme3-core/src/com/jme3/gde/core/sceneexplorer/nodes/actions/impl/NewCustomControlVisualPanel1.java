@@ -120,6 +120,13 @@ public final class NewCustomControlVisualPanel1 extends JPanel {
                                         String superClassName = superClass.toString();
                                         if ("com.jme3.scene.control.AbstractControl".equals(superClassName)) {
                                             list.add(elem.getQualifiedName().toString());
+                                        }else {
+                                            for (String s : list){
+                                                if (s.equals(superClassName)){
+                                                    list.add(elem.getQualifiedName().toString());
+                                                    break;
+                                                }
+                                            }
                                         }
                                     }
                                 }
