@@ -89,7 +89,7 @@ public final class NewCustomControlVisualPanel1 extends JPanel {
             SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.SOURCES_TYPE_JAVA);
             if (groups != null) {
                 for (SourceGroup sourceGroup : groups) {
-                    ClasspathInfo cpInfo = ClasspathInfo.create(ClassPath.getClassPath(sourceGroup.getRootFolder(), ClassPath.BOOT),
+                    final ClasspathInfo cpInfo = ClasspathInfo.create(ClassPath.getClassPath(sourceGroup.getRootFolder(), ClassPath.BOOT),
                             ClassPath.getClassPath(sourceGroup.getRootFolder(), ClassPath.COMPILE),
                             ClassPath.getClassPath(sourceGroup.getRootFolder(), ClassPath.SOURCE));
 
@@ -109,17 +109,32 @@ public final class NewCustomControlVisualPanel1 extends JPanel {
 //                                    util.isCastable(null, null);
                                     TypeElement elem = elementHandle.resolve(control);
                                     if (elem != null) {
+                                        //Check if it implements control interface
                                         List<? extends TypeMirror> interfaces = elem.getInterfaces();
                                         for (TypeMirror typeMirror : interfaces) {
                                             String interfaceName = typeMirror.toString();
                                             if ("com.jme3.scene.control.Control".equals(interfaceName)) {
                                                 list.add(elem.getQualifiedName().toString());
+                                                break;
                                             }
                                         }
+                                        //Check if it extends AbstractControl
                                         TypeMirror superClass = elem.getSuperclass();
                                         String superClassName = superClass.toString();
                                         if ("com.jme3.scene.control.AbstractControl".equals(superClassName)) {
                                             list.add(elem.getQualifiedName().toString());
+                                        }
+                                        //If element is on the list check subclasses
+                                        if (list.contains(elem.getQualifiedName().toString())){
+                                            ElementHandle<TypeElement> elemHandle = ElementHandle.create(elem);
+                                            Set<ClassIndex.SearchKind> searchKind = new HashSet<ClassIndex.SearchKind>();
+                                            searchKind.add(ClassIndex.SearchKind.IMPLEMENTORS);
+                                            Set<ClassIndex.SearchScopeType> scopeType = new HashSet<ClassIndex.SearchScopeType>();
+                                            scopeType.add(ClassIndex.SearchScope.SOURCE);
+                                            Set<ElementHandle<TypeElement>> uses = cpInfo.getClassIndex().getElements(elemHandle, searchKind, scopeType);
+                                            for (ElementHandle<TypeElement> handle : uses){
+                                                list.add(handle.getQualifiedName());
+                                            }
                                         }
                                     }
                                 }
