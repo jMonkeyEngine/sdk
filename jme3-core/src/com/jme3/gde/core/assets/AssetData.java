@@ -218,7 +218,9 @@ public class AssetData {
                         Exceptions.printStackTrace(ex);
                     } finally {
                         try {
-                            in.close();
+                            if (in != null) {
+                                in.close();
+                            }
                         } catch (IOException ex) {
                             Exceptions.printStackTrace(ex);
                         }

@@ -42,115 +42,115 @@ public class IconList {
 
     public static final ImageIcon jmeLogo =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/jme-logo.png", false);
-    public static ImageIcon asset =
+    public static final ImageIcon asset =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/assets.gif", false);
-    public static ImageIcon model =
+    public static final ImageIcon model =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/model.gif", false);
-    public static ImageIcon sound =
+    public static final ImageIcon sound =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/sound.gif", false);
-    public static ImageIcon material =
+    public static final ImageIcon material =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/material.gif", false);
-    public static ImageIcon matDef =
+    public static final ImageIcon matDef =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/jme-logo.png", false);
-    public static ImageIcon font =
+    public static final ImageIcon font =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/font.gif", false);
-    public static ImageIcon filter =
+    public static final ImageIcon filter =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/eye.gif", false);
-    public static ImageIcon texture =
+    public static final ImageIcon texture =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/image.gif", false);
-    public static ImageIcon orthoMode =
+    public static final ImageIcon orthoMode =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/ortho.png", false);
-    public static ImageIcon perspMode =
+    public static final ImageIcon perspMode =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/persp.png", false);
-    public static ImageIcon userMode =
+    public static final ImageIcon userMode =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/user.png", false);
-    public static ImageIcon bottomView =
+    public static final ImageIcon bottomView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/bottom.png", false);
-    public static ImageIcon backView =
+    public static final ImageIcon backView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/back.png", false);
-    public static ImageIcon topView =
+    public static final ImageIcon topView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/top.png", false);
-    public static ImageIcon leftView =
+    public static final ImageIcon leftView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/left.png", false);
-    public static ImageIcon rightView =
+    public static final ImageIcon rightView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/right.png", false);
-    public static ImageIcon frontView =
+    public static final ImageIcon frontView =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/front.png", false);
-    public static ImageIcon audioTrack =
+    public static final ImageIcon audioTrack =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/audioTrack.png", false);
-    public static ImageIcon effectTrack =
+    public static final ImageIcon effectTrack =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/effectTrack.png", false);
-    public static ImageIcon boneTrack =
+    public static final ImageIcon boneTrack =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/boneTrack.png", false);
-    public static ImageIcon track =
+    public static final ImageIcon track =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/track.png", false);
-    public static ImageIcon lightOff =
+    public static final ImageIcon lightOff =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/lightbulb_off.gif", false);
-    public static ImageIcon lightOn =
+    public static final ImageIcon lightOn =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/lightbulb.gif", false);
-    public static ImageIcon eyeOpen =
+    public static final ImageIcon eyeOpen =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/eye.gif", false);
-    public static ImageIcon eyeGreen =
+    public static final ImageIcon eyeGreen =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/eyeGreen.gif", false);
-    public static ImageIcon eyeOff =
+    public static final ImageIcon eyeOff =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/eyeOff.gif", false);
-    public static ImageIcon eyeCrossed =
+    public static final ImageIcon eyeCrossed =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/crossedEye.gif", false);
-    public static ImageIcon colorBox =
+    public static final ImageIcon colorBox =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/box_color.gif", false);
-    public static ImageIcon wireBox =
+    public static final ImageIcon wireBox =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/box_wire.gif", false);
-    public static ImageIcon info =
+    public static final ImageIcon info =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/65.png", false);
-    public static ImageIcon player =
+    public static final ImageIcon player =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/player.gif", false);
-    public static ImageIcon important =
+    public static final ImageIcon important =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/important.gif", false);
-    public static ImageIcon animControl =
+    public static final ImageIcon animControl =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/animationcontrol.gif", false);
-    public static ImageIcon animation =
+    public static final ImageIcon animation =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/anim.png", false);
-    public static ImageIcon animationPlay =
+    public static final ImageIcon animationPlay =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/animPlay.png", false);
-    public static ImageIcon link =
+    public static final ImageIcon link =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/linknode.gif", false);
-    public static ImageIcon bone =
+    public static final ImageIcon bone =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/bone.png", false);
-    public static ImageIcon wheel =
+    public static final ImageIcon wheel =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/physicswheel.gif", false);
-    public static ImageIcon geometry =
+    public static final ImageIcon geometry =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/geometry.gif", false);
-    public static ImageIcon ghostControl =
+    public static final ImageIcon ghostControl =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/ghostcontrol.gif", false);
-    public static ImageIcon light =
+    public static final ImageIcon light =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/light.gif", false);
-    public static ImageIcon mesh =
+    public static final ImageIcon mesh =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/mesh.gif", false);
-    public static ImageIcon motionEvent =
+    public static final ImageIcon motionEvent =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-sad.gif", false); // TODO: Find something better
-    public static ImageIcon node =
+    public static final ImageIcon node =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/node.gif", false);
-    public static ImageIcon emitter =
+    public static final ImageIcon emitter =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/particleemitter.gif", false);
-    public static ImageIcon physicsControl =
+    public static final ImageIcon physicsControl =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/physicscontrol.gif", false);
-    public static ImageIcon skeletonControl =
+    public static final ImageIcon skeletonControl =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/skeletonControl.gif", false);
-    public static ImageIcon terrain =
+    public static final ImageIcon terrain =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/terrain.png", false);
-    public static ImageIcon vehicle =
+    public static final ImageIcon vehicle =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/vehicle.png", false);
-    public static ImageIcon chimpConfused =
+    public static final ImageIcon chimpConfused =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-confused.gif", false);
-    public static ImageIcon chimpLobo =
+    public static final ImageIcon chimpLobo =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-lobotized.gif", false);
-    public static ImageIcon chimpMad =
+    public static final ImageIcon chimpMad =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-mad.gif", false);
-    public static ImageIcon chimpNogood =
+    public static final ImageIcon chimpNogood =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-nogood.gif", false);
-    public static ImageIcon chimpSad =
+    public static final ImageIcon chimpSad =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-sad.gif", false);
-    public static ImageIcon chimpSmile =
+    public static final ImageIcon chimpSmile =
             ImageUtilities.loadImageIcon("com/jme3/gde/core/icons/chimpanzee-smile.gif", false);
 //    public static ImageIcon icon =
 //            ImageUtilities.loadImageIcon("", false);

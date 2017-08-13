@@ -56,32 +56,39 @@ public class AnimationPropertyEditor implements PropertyEditor {
         this.control = control;
     }
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof String) {
             animName = (String) value;
         }
     }
 
+    @Override
     public Object getValue() {
         return animName;
     }
 
+    @Override
     public boolean isPaintable() {
         return false;
     }
 
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public String getJavaInitializationString() {
         return null;
     }
 
+    @Override
     public String getAsText() {
-        return animName.toString();
+        return animName;
     }
 
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         String old = animName;
         if ("".equals(text)) {
@@ -91,6 +98,7 @@ public class AnimationPropertyEditor implements PropertyEditor {
         notifyListeners(old, animName);
     }
 
+    @Override
     public String[] getTags() {
         if(control==null)return new String[]{"none"};
         Collection<String> names = control.getAnimationNames();
@@ -104,19 +112,23 @@ public class AnimationPropertyEditor implements PropertyEditor {
         return strings;
     }
 
+    @Override
     public Component getCustomEditor() {
 //        return new AnimationPanel(control);
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public boolean supportsCustomEditor() {
         return false;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }

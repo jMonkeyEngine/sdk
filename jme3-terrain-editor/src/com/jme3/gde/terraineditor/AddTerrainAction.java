@@ -116,7 +116,7 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
         com.jme3.material.Material mat = new com.jme3.material.Material(manager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
 
         String assetFolder = "";
-        if (manager != null)
+        if (manager != null) {
             assetFolder = manager.getAssetFolderName();
 
         // write out 3 alpha blend images
@@ -128,12 +128,19 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
                     for (int w=0; w<alphaTextureSize; w++)
                         alphaBlend.setRGB(w, h, 0x00FF0000);//argb
             }
-            File textureFolder = new File(assetFolder+"/Textures/");
-            if (!textureFolder.exists())
-                textureFolder.mkdir();
-            File alphaFolder = new File(assetFolder+"/Textures/terrain-alpha/");
-            if (!alphaFolder.exists())
-                alphaFolder.mkdir();
+            File textureFolder = new File(assetFolder + "/Textures/");
+            if (!textureFolder.exists()) {
+                if (!textureFolder.mkdir()) {
+                    throw new IOException("Could not create the Texture Folder (assets/Textures)!");
+                }
+            }
+            
+            File alphaFolder = new File(assetFolder + "/Textures/terrain-alpha/");
+            if (!alphaFolder.exists()) {
+                if (!alphaFolder.mkdir()) {
+                    throw new IOException("Could not create the Terrain Alpha Folder (assets/Textures/terrain-alpha)!");
+                }
+            }
             String alphaBlendFileName = "/Textures/terrain-alpha/"+sceneName+"-"+((Node)terrain).getName()+"-alphablend"+i+".png";
             File alphaImageFile = new File(assetFolder+alphaBlendFileName);
             ImageIO.write(alphaBlend, "png", alphaImageFile);
@@ -185,6 +192,7 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
 
         //setNeedsSave(true);
         //addSpatialUndo(parent, (Node)terrain, jmeNodeParent);
+        }
         
         return (Spatial)terrain;
     }

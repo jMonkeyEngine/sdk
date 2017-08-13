@@ -48,35 +48,42 @@ import java.util.LinkedList;
  */
 public class AudioDataPropertyEditor implements PropertyEditor {
 
-    private LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
+    private final LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
     private String material;
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof String) {
             material = (String) value;
         }
     }
 
+    @Override
     public Object getValue() {
         return material;
     }
 
+    @Override
     public boolean isPaintable() {
         return false;
     }
 
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public String getJavaInitializationString() {
         return null;
     }
 
+    @Override
     public String getAsText() {
-        return material.toString();
+        return material;
     }
 
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         String old=material;
         if ("".equals(text)) {
@@ -86,6 +93,7 @@ public class AudioDataPropertyEditor implements PropertyEditor {
         notifyListeners(old, material);
     }
 
+    @Override
     public String[] getTags() {
         if ("null".equals(material)) {
             SceneRequest request = SceneApplication.getApplication().getCurrentSceneRequest();
@@ -96,18 +104,22 @@ public class AudioDataPropertyEditor implements PropertyEditor {
         return new String[]{"can set only once"};
     }
 
+    @Override
     public Component getCustomEditor() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public boolean supportsCustomEditor() {
         return false;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }

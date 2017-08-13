@@ -134,7 +134,8 @@ public class SpatialUtil {
         final String name = needle.getName();
         final String path = getSpatialPath(needle);
         if (name == null || path == null) {
-            logger.log(Level.INFO, "Trying to find tagged Spatial with null name spatial for {0}.", root);
+            logger.log(Level.WARNING, "Trying to find tagged Spatial with null name spatial for {0}.", root);
+            return null;
         }
         final Class clazz = needle.getClass();
         String rootName = root.getUserData("ORIGINAL_NAME");
@@ -144,6 +145,7 @@ public class SpatialUtil {
         }
         final SpatialHolder holder = new SpatialHolder();
         root.depthFirstTraversal(new SceneGraphVisitor() {
+            @Override
             public void visit(Spatial spatial) {
                 String spName = spatial.getUserData("ORIGINAL_NAME");
                 String spPath = spatial.getUserData("ORIGINAL_PATH");
@@ -171,13 +173,15 @@ public class SpatialUtil {
      */
     public static Spatial findSpatial(final Spatial root, final String name, final String path) {
         if (name == null || path == null) {
-            logger.log(Level.INFO, "Trying to find Spatial with null name spatial for {0}.", root);
+            logger.log(Level.WARNING, "Trying to find Spatial with null name spatial for {0}.", root);
+            return null;
         }
         if (name.equals(root.getName()) && path.equals(getSpatialPath(root))) {
             return root;
         }
         final SpatialHolder holder = new SpatialHolder();
         root.depthFirstTraversal(new SceneGraphVisitor() {
+            @Override
             public void visit(Spatial spatial) {
                 if (name.equals(spatial.getName()) && path.equals(getSpatialPath(spatial))) {
                     if (holder.spatial == null) {

@@ -228,6 +228,7 @@ public abstract class AbstractFilterNode extends AbstractNode implements FilterN
         }
     }
 
+    @Override
     public void propertyChange(final String type, final String name, final Object before, final Object after) {
         if (name.equals("Enabled")) {
             toggleIcon((Boolean) after);
@@ -245,7 +246,9 @@ public abstract class AbstractFilterNode extends AbstractNode implements FilterN
         return filter;
     }
 
+    @Override
     public abstract Class<?> getExplorerObjectClass();
 
+    @Override
     public abstract Node[] createNodes(Object key, DataObject dataObject, boolean readOnly);
 }

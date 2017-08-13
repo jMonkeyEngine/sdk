@@ -45,7 +45,6 @@ import org.openide.nodes.Sheet;
  */
 @org.openide.util.lookup.ServiceProvider(service = FilterNode.class)
 public class JmeFilter extends AbstractFilterNode {
-
     
     public JmeFilter() {
     }
@@ -59,19 +58,39 @@ public class JmeFilter extends AbstractFilterNode {
     @Override
     protected Sheet createSheet() {
         Sheet sheet = super.createSheet();
-        Sheet.Set set = Sheet.createPropertiesSet();
-        set.setDisplayName(filter.getName());
-        set.setName(Node.class.getName());
         
-        Filter obj = filter;
-        if (obj == null) {
+        if (filter == null) {
+            Sheet.Set set = Sheet.createPropertiesSet();
             return sheet;
         }
-
-        createFields(filter.getClass(), set, obj);
-        sheet.put(set);
+        
+        filter.setName(filter.getClass().getSimpleName());
+        Class<?> c = filter.getClass();
+        
+        do {
+            // The Filter class is already processed in AbstractFilterNode#createSheet
+            if (c.equals(Filter.class)) {
+                c = c.getSuperclass();
+                continue;
+            }
+            
+            Sheet.Set set = Sheet.createPropertiesSet();
+            
+            if (filter.getClass().equals(c)) { // is level of current filter.
+                set.setDisplayName(filter.getName());
+                set.setName(Node.class.getName());
+            } else {
+                set.setName(Node.class.getName());
+                set.setDisplayName(c.getName());
+            }
+            
+            createFields(c, set, filter);
+            sheet.put(set);
+            
+            c = c.getSuperclass();
+        } while (c != null);
+        
         return sheet;
-
     }
 
     @Override
