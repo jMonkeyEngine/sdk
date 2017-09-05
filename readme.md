@@ -14,6 +14,8 @@ and many more!
 It is important to know that the SDK is not coupled with the engine itself, so if you have issues which are unrelated to the IDE, report them [here](https://github.com/jMonkeyEngine/jmonkeyengine).
 This however also means, that the SDK can have a different pace than the engine (at the time of writing, the SDK is on 3.1.0-stable whereas the engine team is already working on 3.2) but you can nonetheless work on a different engine version than the one which is bundled.
 
+__!!! Note: You are currently watching the master branch which is the active development for JMonkeyEngine 3.2. For the current release candidate, see the v3.1 branch! !!!__
+
 ## Getting Started / Downloading the SDK
 Just have a look at our [releases](https://github.com/jMonkeyEngine/sdk/releases) section.
 There you can download the version you desire. The SDK will generally follow the convention that it's version number is lined up with the matching engine version
@@ -30,7 +32,7 @@ __Note:__ The Tag `stable` is refering to 3.0-stable, which is an ancient versio
 Building the SDK is an easy process basically, but it depends on what kind of distribution you want to build.
 You also have to know that the build process changes from time to time, so have a look at the `.travis.yml` file, or related, you will see how we build our releases then.  
 
-__Note:__ Currently, the SDK has to build the engine on it's own, because not all needed dependencies are in mavenCentral/jCenter. Thus you have to call `build_engine.sh` first on a Linux System, Inside your Windows-Git-Shell or you can manually checkout the [jMonkeyEngine](https://github.com/jMonkeyEngine/jmonkeyengine) repository and then invoke `gradlew.bat install`. This will add _all_ jMonkeyEngine Libraries into your local maven "server".
+__Note:__ Currently, the SDK has to build the engine on it's own, because not all needed dependencies are in mavenCentral/jCenter. Thus you have to call `build_engine.sh` first on a Linux System, Inside your Windows-Git-Shell or you can manually checkout the [jMonkeyEngine](https://github.com/jMonkeyEngine/jmonkeyengine) repository and then invoke `gradlew.bat -PbuildJavaDoc=true install`. This will add _all_ jMonkeyEngine Libraries into your local maven "server".
 
 Technically the gradle task `buildSdk` is the main task which builds the sdk (Invoking `./gradlew buildSdk` or `gradlew.bat buildSdk` on Windows).
 

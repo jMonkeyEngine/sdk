@@ -159,17 +159,13 @@ public class TerrainCameraController extends AbstractCameraController {
      * of the editing.
      */
     private void doTerrainUpdates(float dt) {
-
         if (terrainEditToolActivated) {
             lastModifyTime += dt;
 
             if (lastModifyTime >= toolModifyRate) {
-
                 lastModifyTime = 0;
-                if (terrainEditToolActivated) {
-                    toolController.doTerrainEditToolActivated();
-                    toolController.doTerrainEditToolAlternateActivated();
-                }
+                toolController.doTerrainEditToolActivated();
+                toolController.doTerrainEditToolAlternateActivated();
                 //terrainEditToolActivated = false;
                 lastModifyTime = app.getContext().getTimer().getTime();
             }
@@ -208,13 +204,10 @@ public class TerrainCameraController extends AbstractCameraController {
         ray.setOrigin(pos);
         ray.setDirection(dir);
         editorController.getTerrain(null).collideWith(ray, results);
-        if (results == null) {
+        if (results.size() == 0) {
             return null;
         }
         final CollisionResult result = results.getClosestCollision();
-        if (result == null) {
-            return null;
-        }
         return result.getContactPoint();
     }
 

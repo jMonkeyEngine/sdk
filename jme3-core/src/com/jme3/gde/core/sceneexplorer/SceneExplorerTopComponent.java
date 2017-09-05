@@ -248,6 +248,7 @@ public final class SceneExplorerTopComponent extends TopComponent implements Exp
     }
     private transient ExplorerManager explorerManager = new ExplorerManager();
 
+    @Override
     public ExplorerManager getExplorerManager() {
         return explorerManager;
     }
@@ -280,6 +281,7 @@ public final class SceneExplorerTopComponent extends TopComponent implements Exp
 //        }
 //        selectedSpatial = null;
 //    }
+    @Override
     public void sceneOpened(SceneRequest request) {
         final JmeNode node = request.getJmeNode();
         for (Iterator it = materialChangeProviders.values().iterator(); it.hasNext();) {
@@ -296,14 +298,16 @@ public final class SceneExplorerTopComponent extends TopComponent implements Exp
             } catch (PropertyVetoException ex) {
                 Exceptions.printStackTrace(ex);
             }
+            setTerrainLodCamera(node);
         }
-        setTerrainLodCamera(node);
     }
 
+    @Override
     public void sceneClosed(SceneRequest request) {
         explorerManager.setRootContext(Node.EMPTY);
     }
 
+    @Override
     public void previewCreated(PreviewRequest request) {
     }
 

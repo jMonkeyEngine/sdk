@@ -277,7 +277,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
         hintTextArea = new javax.swing.JTextArea();
 
         textureFileChooser.setApproveButtonText(org.openide.util.NbBundle.getMessage(TerrainEditorTopComponent.class, "TerrainEditorTopComponent.textureFileChooser.approveButtonText_1")); // NOI18N
-        textureFileChooser.setCurrentDirectory(new java.io.File("/Assets/Textures"));
+        textureFileChooser.setCurrentDirectory(new java.io.File("/Users/darki/assets/Textures"));
         textureFileChooser.setDialogTitle(org.openide.util.NbBundle.getMessage(TerrainEditorTopComponent.class, "TerrainEditorTopComponent.textureFileChooser.dialogTitle_1")); // NOI18N
         textureFileChooser.setFileFilter(new ImageFilter());
 
@@ -1121,6 +1121,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
     private void refreshSelected() {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 if (selectedSpat != null) {
                     selectedSpat.refresh(false);
@@ -1133,6 +1134,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
     /**
      * listener for node selection changes
      */
+    @Override
     public void resultChanged(LookupEvent ev) {
         if (currentRequest == null || !currentRequest.isDisplayed()) {
             return;
@@ -1159,20 +1161,25 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
      */
     private class TerrainNodeListener implements NodeListener {
 
+        @Override
         public void childrenAdded(NodeMemberEvent nme) {
         }
 
+        @Override
         public void childrenRemoved(NodeMemberEvent nme) {
         }
 
+        @Override
         public void childrenReordered(NodeReorderEvent nre) {
         }
 
+        @Override
         public void nodeDestroyed(NodeEvent ne) {
             createTerrainButton.setEnabled(true);
             reinitTextureTable();
         }
 
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
         }
     }
@@ -1299,6 +1306,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
     }
 
     // runs on AWT thread now
+    @Override
     public void sceneOpened(SceneRequest request) {
 
         if (request.equals(sentRequest) && editorController != null) {
@@ -1356,6 +1364,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
     protected synchronized void addDataObject(final DataObjectSaveNode dataObject) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 addSaveNode(dataObject);
             }
@@ -1368,10 +1377,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
 
     private void setSceneInfo(final JmeNode jmeNode, final boolean active) {
         final TerrainEditorTopComponent inst = this;
-        if (jmeNode != null) {
-        } else {
-        }
-
+     
         if (!active) {
             result.removeLookupListener(inst);
             close();
@@ -1381,6 +1387,7 @@ public final class TerrainEditorTopComponent extends TopComponent implements Sce
         }
     }
 
+    @Override
     public void sceneClosed(SceneRequest request) {
         if (request.equals(currentRequest)) {
             setActivatedNodes(new org.openide.nodes.Node[]{});

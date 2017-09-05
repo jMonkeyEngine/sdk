@@ -28,6 +28,8 @@ import com.jme3.app.LegacyApplication;
 import com.jme3.app.StatsView;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.environment.EnvironmentCamera;
+import com.jme3.environment.util.LightsDebugState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.gde.core.Installer;
@@ -244,7 +246,8 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                 viewPort.attachScene(toolsNode);
                 guiViewPort.attachScene(guiNode);
                 cam.setLocation(new Vector3f(0, 0, 10));
-
+                getStateManager().attach(new EnvironmentCamera());
+                
                 wireProcessor = new WireProcessor(assetManager);
 
                 inputManager.addMapping("MouseAxisX", new MouseAxisTrigger(MouseInput.AXIS_X, false));

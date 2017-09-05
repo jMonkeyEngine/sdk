@@ -36,6 +36,7 @@ import com.jme3.light.PointLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.post.SceneProcessor;
+import com.jme3.profile.AppProfiler;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -124,17 +125,21 @@ public class ScenePreviewProcessor implements SceneProcessor {
 
     }
 
+    @Override
     public void initialize(RenderManager rm, ViewPort vp) {
        
     }
 
+    @Override
     public void reshape(ViewPort vp, int i, int i1) {
     }
 
+    @Override
     public boolean isInitialized() {
         return true;
     }
 
+    @Override
     public void preFrame(float f) {
         currentPreviewRequest = previewQueue.poll();
         if (currentPreviewRequest != null) {
@@ -165,9 +170,11 @@ public class ScenePreviewProcessor implements SceneProcessor {
         update(f);
     }
 
+    @Override
     public void postQueue(RenderQueue rq) {
     }
 
+    @Override
     public void postFrame(FrameBuffer fb) {
         if (currentPreviewRequest != null) {
             cpuBuf.clear();
@@ -203,7 +210,13 @@ public class ScenePreviewProcessor implements SceneProcessor {
             currentPreviewRequest = null;
         }
     }
+    
+    @Override
+    public void setProfiler(AppProfiler profiler) {
+        /* We don't support profiling yet */
+    }
 
+    @Override
     public void cleanup() {
     }
 }

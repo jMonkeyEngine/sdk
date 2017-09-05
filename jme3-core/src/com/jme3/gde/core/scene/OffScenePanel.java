@@ -43,6 +43,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.post.SceneProcessor;
+import com.jme3.profile.AppProfiler;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -106,6 +107,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void resizeGLView(final int x, final int y) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 width = x;
                 height = y;
@@ -118,6 +120,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
             }
         });
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 Dimension dim = new Dimension(x, y);
                 setPreferredSize(dim);
@@ -136,6 +139,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 //            }
 //        });
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 setupOffView();
                 setupOffBuffer();
@@ -148,6 +152,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
     public void stopPreview() {
         //TODO add your handling code here:
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 SceneApplication.getApplication().getRenderManager().removePreView(viewPort);
                 return null;
@@ -197,26 +202,33 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
         viewPort.addProcessor(this);
     }
 
+    @Override
     public void initialize(RenderManager rm, ViewPort vp) {
         this.rm = rm;
     }
 
+    @Override
     public void reshape(ViewPort vp, int i, int i1) {
     }
 
+    @Override
     public boolean isInitialized() {
         return true;
     }
 
+    @Override
     public void preFrame(float f) {
         light.setPosition(camera.getLocation());
         rootNode.updateLogicalState(f);
         rootNode.updateGeometricState();
     }
 
+    
+    @Override
     public void postQueue(RenderQueue rq) {
     }
 
+    @Override
     public void postFrame(FrameBuffer fb) {
 //        cpuBuf.clear();
         SceneApplication.getApplication().getRenderer().readFrameBufferWithFormat(offBuffer, cpuBuf,Format.BGRA8);
@@ -247,7 +259,13 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
         }
         repaint();
     }
+    
+    @Override
+    public void setProfiler(AppProfiler profiler) {
+        /* We don't support profiling yet */
+    }
 
+    @Override
     public void cleanup() {
     }
 
@@ -299,6 +317,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
      */
     public void detach(final Spatial spat) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 rootNode.detachChild(spat);
                 return null;
@@ -309,10 +328,10 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
     /**
      * threadsafe detach from root node
      *
-     * @param spat
      */
     public void detachAll() {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 rootNode.detachAllChildren();
                 return null;
@@ -322,6 +341,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void setCamFocus(final Vector3f focus) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 doSetCamFocus(focus);
                 return null;
@@ -332,6 +352,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void doSetCamFocus(final Vector3f focus_) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 focus.set(focus_);
                 camera.setLocation(focus_.add(vector, camera.getLocation()));
@@ -345,6 +366,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
      */
     public void rotateCamera(final Vector3f axis, final float amount_) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 float amount = amount_;
                 if (axis.equals(camera.getLeft())) {
@@ -367,6 +389,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void panCamera(final float left, final float up) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 camera.getLeft().mult(left, vector);
                 vector.scaleAdd(up, camera.getUp(), vector);
@@ -380,6 +403,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void moveCamera(final float forward) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 camera.getDirection().mult(forward, vector);
                 camera.setLocation(camera.getLocation().add(vector));
@@ -390,6 +414,7 @@ public class OffScenePanel extends javax.swing.JPanel implements SceneProcessor 
 
     public void zoomCamera(final float amount_) {
         SceneApplication.getApplication().enqueue(new Callable<Object>() {
+            @Override
             public Object call() throws Exception {
                 float amount = amount_;
                 amount = camera.getLocation().distance(focus) * amount;

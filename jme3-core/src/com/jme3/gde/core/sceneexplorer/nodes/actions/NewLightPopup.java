@@ -31,13 +31,20 @@
  */
 package com.jme3.gde.core.sceneexplorer.nodes.actions;
 
+import com.jme3.bounding.BoundingSphere;
+import com.jme3.environment.EnvironmentCamera;
+import com.jme3.environment.LightProbeFactory;
+import com.jme3.environment.generation.JobProgressAdapter;
 import com.jme3.gde.core.scene.SceneApplication;
+import com.jme3.gde.core.scene.controller.SceneToolController;
+import com.jme3.gde.core.sceneexplorer.nodes.JmeLightProbeProgressHandler;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeSpatial;
 import com.jme3.gde.core.undoredo.AbstractUndoableSceneEdit;
 import com.jme3.gde.core.undoredo.SceneUndoRedoManager;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.light.Light;
+import com.jme3.light.LightProbe;
 import com.jme3.light.PointLight;
 import com.jme3.light.SpotLight;
 import com.jme3.math.ColorRGBA;
@@ -50,6 +57,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import org.netbeans.api.progress.ProgressHandle;
+import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.loaders.DataObject;
 import org.openide.util.Lookup;
 import org.openide.util.actions.Presenter;
@@ -79,6 +88,7 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
         result.add(new JMenuItem(new AddDirectionalAction()));
         result.add(new JMenuItem(new AddPointAction()));
         result.add(new JMenuItem(new AddSpotAction()));
+        result.add(new JMenuItem(new AddProbeAction()));
         
         return result;
     }
@@ -147,7 +157,7 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
         }
     }
     
-      private class AddSpotAction extends AbstractAction {
+    private class AddSpotAction extends AbstractAction {
 
         public AddSpotAction() {
             putValue(NAME, "Spot Light");
@@ -162,6 +172,39 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
                      node.addLight(light);
                     addLightUndo(node, light);
                     setModified();
+                    return null;
+                }
+            });
+        }
+    }
+      
+    private class AddProbeAction extends AbstractAction {
+
+        public AddProbeAction() {
+            putValue(NAME, "Light Probe");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SceneApplication.getApplication().enqueue(new Callable<Void>() {
+
+                @Override
+                public Void call() throws Exception {
+                    
+                    EnvironmentCamera envCam = SceneApplication.getApplication().getStateManager().getState(EnvironmentCamera.class);
+                    SceneToolController toolController =  SceneApplication.getApplication().getStateManager().getState(SceneToolController.class);
+                    if(toolController != null){
+                        envCam.setPosition(toolController.getCursorLocation());                    
+                    } else {
+                        envCam.setPosition(new Vector3f(0, 0, 0));                    
+                    }
+                    LightProbe lightProbe = LightProbeFactory.makeProbe(envCam, node, new JmeLightProbeProgressHandler());                                
+                    node.addLight(lightProbe);
+                    ((BoundingSphere)lightProbe.getBounds()).setRadius(10);
+                    addLightUndo(node, lightProbe);
+                    setModified();
+                    
+                   
                     return null;
                 }
             });

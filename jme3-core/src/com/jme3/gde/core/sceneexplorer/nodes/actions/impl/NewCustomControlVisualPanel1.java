@@ -66,7 +66,6 @@ public final class NewCustomControlVisualPanel1 extends JPanel {
      * Creates new form NewCustomControlVisualPanel1
      */
     public NewCustomControlVisualPanel1() {
-        this.proj = proj;
         initComponents();
     }
 
@@ -103,6 +102,7 @@ public final class NewCustomControlVisualPanel1 extends JPanel {
                         JavaSource js = JavaSource.create(cpInfo);
                         try {
                             js.runUserActionTask(new Task<CompilationController>() {
+                                @Override
                                 public void run(CompilationController control)
                                         throws Exception {
                                     control.toPhase(Phase.RESOLVED);

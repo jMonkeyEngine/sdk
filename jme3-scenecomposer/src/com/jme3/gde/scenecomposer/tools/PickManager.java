@@ -16,6 +16,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
+import java.util.logging.Logger;
 import org.openide.util.lookup.ServiceProvider;
 
 /**
@@ -28,7 +29,7 @@ public class PickManager {
     private Vector3f startPickLoc;
     private Vector3f finalPickLoc;
     private Vector3f startSpatialLocation;
-    private Quaternion origineRotation;
+    private Quaternion originRotation;
     private final Node plane;
     private Spatial spatial;
     private SceneComposerToolController.TransformationType transformationType;
@@ -71,15 +72,15 @@ public class PickManager {
                 case local:
                     rot.set(spatial.getWorldRotation());
                     rot.multLocal(planeRotation);
-                    origineRotation = spatial.getWorldRotation().clone();
+                    originRotation = spatial.getWorldRotation().clone();
                     break;
                 case global:
                     rot.set(planeRotation);
-                    origineRotation = new Quaternion(Quaternion.IDENTITY);
+                    originRotation = new Quaternion(Quaternion.IDENTITY);
                     break;
                 case camera:
                     rot.set(camera.getRotation());
-                    origineRotation = camera.getRotation();
+                    originRotation = camera.getRotation();
                     break;
                 default:
                     break;
@@ -149,20 +150,28 @@ public class PickManager {
      * @return the Quaternion rotation in the ToolSpace
      */
     public Quaternion getLocalRotation() {
-        return getRotation(origineRotation.inverse());
+        return getRotation(originRotation.inverse());
     }
 
     /**
      * Get the Rotation into a specific custom space.
      *
-     * @param transforme the rotation to the custom space (World to Custom
+     * @param transform the rotation to the custom space (World to Custom
      * space)
      * @return the Rotation in the custom space
      */
-    public Quaternion getRotation(Quaternion transforme) {
+    public Quaternion getRotation(Quaternion transform) {
+        if (startPickLoc == null) {
+            Logger.getLogger(this.getClass().getSimpleName()).warning("startPickLoc null in PickManager#getRotation()");
+            return transform;
+        } else if (finalPickLoc == null) {
+            Logger.getLogger(this.getClass().getSimpleName()).warning("finalPickLoc null in PickManager#getRotation()");
+            return transform;
+        }
+        
         Vector3f v1, v2;
-        v1 = transforme.mult(startPickLoc.subtract(startSpatialLocation).normalize());
-        v2 = transforme.mult(finalPickLoc.subtract(startSpatialLocation).normalize());
+        v1 = transform.mult(startPickLoc.subtract(startSpatialLocation).normalize());
+        v2 = transform.mult(finalPickLoc.subtract(startSpatialLocation).normalize());
         Vector3f axis = v1.cross(v2);
         float angle = v1.angleBetween(v2);
         return new Quaternion().fromAngleAxis(angle, axis);
@@ -178,22 +187,22 @@ public class PickManager {
 
     /**
      *
-     * @param axisConstrainte
+     * @param axisConstraint
      * @return
      */
-    public Vector3f getTranslation(Vector3f axisConstrainte) {
-        Vector3f localConstrainte = (origineRotation.mult(axisConstrainte)).normalize(); // according to the "plane" rotation
-        Vector3f constrainedTranslation = localConstrainte.mult(getTranslation().dot(localConstrainte));
+    public Vector3f getTranslation(Vector3f axisConstraint) {
+        Vector3f localConstraint = (originRotation.mult(axisConstraint)).normalize(); // according to the "plane" rotation
+        Vector3f constrainedTranslation = localConstraint.mult(getTranslation().dot(localConstraint));
         return constrainedTranslation;
     }
 
     /**
      *
-     * @param axisConstrainte
+     * @param axisConstraint
      * @return
      */
-    public Vector3f getLocalTranslation(Vector3f axisConstrainte) {
-        return getTranslation(origineRotation.inverse().mult(axisConstrainte));
+    public Vector3f getLocalTranslation(Vector3f axisConstraint) {
+        return getTranslation(originRotation.inverse().mult(axisConstraint));
     }
 
 }

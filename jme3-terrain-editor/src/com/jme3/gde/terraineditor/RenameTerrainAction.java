@@ -45,6 +45,7 @@ public class RenameTerrainAction extends AbstractToolWizardAction {
         name = "Rename Terrain Alphamaps";
     }
     
+    @Override
     public Class<?> getNodeClass() {
         return JmeTerrainQuad.class;
     }
@@ -108,10 +109,8 @@ public class RenameTerrainAction extends AbstractToolWizardAction {
     }
     
     private void rename(TerrainQuad quad, String prevName, String newName) {
-        
         ProjectAssetManager manager = (ProjectAssetManager) SceneApplication.getApplication().getAssetManager();
         String texFolder =  "Textures/terrain-alpha/";
-        
         
         // rename the files
         String texFolderFilePath = manager.getAssetFolderName() +"/"+ texFolder;
@@ -162,7 +161,9 @@ public class RenameTerrainAction extends AbstractToolWizardAction {
     
     private void copyFile(File sourceFile, File destFile) throws IOException {
         if(!destFile.exists()) {
-            destFile.createNewFile();
+            if (!destFile.createNewFile()) {
+                throw new IOException(String.format("Could not create File %s, probably because it already exists!", destFile.toString()));
+            }
         }
 
         FileChannel source = null;

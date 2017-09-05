@@ -338,6 +338,7 @@ public class TerrainEditorController implements NodeListener {
         } else {
             SceneApplication.getApplication().enqueue(new Callable<Object>() {
 
+                @Override
                 public Object call() throws Exception {
                     generateEntropies(progressMonitor);
                     return null;
@@ -355,15 +356,16 @@ public class TerrainEditorController implements NodeListener {
             Terrain terrain = (Terrain) getTerrain(null);
             if (terrain == null)
                 return 1f;
-            MatParam matParam = null;
-            matParam = terrain.getMaterial().getParam("DiffuseMap_"+layer+"_scale");
-            if (matParam == null)
+            MatParam matParam = terrain.getMaterial().getParam("DiffuseMap_"+layer+"_scale");
+            if (matParam == null) {
                 return -1f;
+            }
             return (Float) matParam.getValue();
         } else {
             try {
                 Float scale =
                     SceneApplication.getApplication().enqueue(new Callable<Float>() {
+                        @Override
                         public Float call() throws Exception {
                             return getTextureScale(layer);
                         }
@@ -393,6 +395,7 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
+                    @Override
                     public Object call() throws Exception {
                         setTextureScale(layer, scale);
                         return null;
@@ -416,11 +419,12 @@ public class TerrainEditorController implements NodeListener {
             Terrain terrain = (Terrain) getTerrain(null);
             if (terrain == null)
                 return null;
-            MatParam matParam = null;
-            if (layer == 0)
+            MatParam matParam;
+            if (layer == 0) {
                 matParam = terrain.getMaterial().getParam("DiffuseMap");
-            else
+            } else {
                 matParam = terrain.getMaterial().getParam("DiffuseMap_"+layer);
+            }
 
             if (matParam == null || matParam.getValue() == null) {
                 return null;
@@ -432,6 +436,7 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Texture tex =
                     SceneApplication.getApplication().enqueue(new Callable<Texture>() {
+                        @Override
                         public Texture call() throws Exception {
                             return getDiffuseTexture(layer);
                         }
@@ -447,15 +452,25 @@ public class TerrainEditorController implements NodeListener {
     }
 
     private Texture doGetAlphaTexture(Terrain terrain, int alphaLayer) {
-        if (terrain == null)
+        if (terrain == null) {
             return null;
+        }
+        
         MatParam matParam = null;
-        if (alphaLayer == 0)
-            matParam = terrain.getMaterial().getParam("AlphaMap");
-        else if(alphaLayer == 1)
-            matParam = terrain.getMaterial().getParam("AlphaMap_1");
-        else if(alphaLayer == 2)
-            matParam = terrain.getMaterial().getParam("AlphaMap_2");
+        
+        switch (alphaLayer) {
+            case 0:
+                matParam = terrain.getMaterial().getParam("AlphaMap");
+                break;
+            case 1:
+                matParam = terrain.getMaterial().getParam("AlphaMap_1");
+                break;
+            case 2:
+                matParam = terrain.getMaterial().getParam("AlphaMap_2");
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid AlphaLayer");
+        }
         
         if (matParam == null || matParam.getValue() == null) {
             return null;
@@ -500,6 +515,7 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
+                    @Override
                     public Object call() throws Exception {
                         setDiffuseTexture(layer, texture);
                         return null;
@@ -526,6 +542,7 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
+                    @Override
                     public Object call() throws Exception {
                         removeTextureLayer(layer);
                         return null;
@@ -591,6 +608,8 @@ public class TerrainEditorController implements NodeListener {
                         color.b = 0; break;
                     case 3:
                         color.a = 0; break;
+                    default:
+                        throw new IllegalArgumentException("Invalid texIndex " + texIndex);
                 }
                 color.clamp();
                 paint.manipulatePixel(image, x, y, color, true); // set the new color
@@ -611,12 +630,13 @@ public class TerrainEditorController implements NodeListener {
             Terrain terrain = (Terrain) getTerrain(null);
             if (terrain == null)
                 return null;
-            MatParam matParam = null;
-            if (layer == 0)
+            MatParam matParam;
+            if (layer == 0) {
                 matParam = terrain.getMaterial().getParam("NormalMap");
-            else
+            } else {
                 matParam = terrain.getMaterial().getParam("NormalMap_"+layer);
-
+            }
+            
             if (matParam == null || matParam.getValue() == null) {
                 return null;
             }

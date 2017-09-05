@@ -25,14 +25,21 @@ repositories {
 
 }
 
+println System.env.TRAVIS_PULL_REQUEST
+println System.env.TRAVIS_PULL_REQUEST_BRANCH
+
 if (System.getenv('TRAVIS') != null) {
-    /*if (System.env.TRAVIS_TAG != "") {
-        ext.jmeEngineVersion = "3.1.0-" + System.env.TRAVIS_TAG + "-SNAPSHOT"
-    } else {*/
-        ext.jmeEngineVersion = "3.1.0-stable" // Use Beta 2 instead of 3.1.0-master-SNAPSHOT
-    //}
+    if (System.env.TRAVIS_TAG != "") {
+        ext.jmeEngineVersion = "3.2.0-" + System.env.TRAVIS_TAG + "-SNAPSHOT"
+    } else {
+        if (System.env.TRAVIS_PULL_REQUEST == "false") {
+            ext.jmeEngineVersion = "3.2.0-SNAPSHOT" // Use Beta 2 instead of 3.1.0-master-SNAPSHOT
+        } else {
+            ext.jmeEngineVersion = "3.2.0-" + System.env.TRAVIS_PULL_REQUEST_BRANCH + "-pr-" + System.env.TRAVIS_PULL_REQUEST + "-SNAPSHOT"
+        }
+    }
 } else {
-    ext.jmeEngineVersion = "3.1.0-stable" // In case you build of the HEAD of 3.1, you need to change that to 3.1.0-SNAPSHOT again
+    ext.jmeEngineVersion = "3.2.0-SNAPSHOT" // In case you build of the HEAD of 3.1, you need to change that to 3.1.0-SNAPSHOT again
 }
 
 configurations {

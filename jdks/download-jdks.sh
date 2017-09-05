@@ -3,8 +3,9 @@
 #Author MeFisto94
 set -e # Quit on Error
 
-jdk_version="8u111"
-jdk_build_version="b14"
+jdk_version="8u144"
+jdk_build_version="b01"
+jdk_hash=090f390dda5b47b9b721c7dfaa008135
 platforms=( "linux-x64.tar.gz" "linux-i586.tar.gz" "windows-i586.exe" "windows-x64.exe" "macosx-x64.dmg" )
 
 function install_xar {
@@ -62,7 +63,7 @@ function download_jdk {
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -L  -s -o downloads/jdk-$1 http://download.oracle.com/otn-pub/java/jdk/$jdk_version-$jdk_build_version/jdk-$jdk_version-$1 --cookie "gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" #--progress-bar
+        curl -L  -s -o downloads/jdk-$1 http://download.oracle.com/otn-pub/java/jdk/$jdk_version-$jdk_build_version/$jdk_hash/jdk-$jdk_version-$1 --cookie "gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" #--progress-bar
         echo "<<< OK!"
     fi
 }
