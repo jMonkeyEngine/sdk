@@ -3,8 +3,9 @@
 #Author MeFisto94
 set -e # Quit on Error
 
-jdk_version="8u111"
-jdk_build_version="b14"
+jdk_version="8u152"
+jdk_build_version="b16"
+jdk_hash=aa0333dd3019491ca4f6ddbe78cdb6d0
 platforms=( "linux-x64.tar.gz" "linux-i586.tar.gz" "windows-i586.exe" "windows-x64.exe" "macosx-x64.dmg" )
 
 function install_xar {
@@ -62,7 +63,7 @@ function download_jdk {
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -L  -s -o downloads/jdk-$1 http://download.oracle.com/otn-pub/java/jdk/$jdk_version-$jdk_build_version/jdk-$jdk_version-$1 --cookie "gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" #--progress-bar
+        curl -v -o downloads/jdk-$1 -L -b oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jdk/$jdk_version-$jdk_build_version/$jdk_hash/jdk-$jdk_version-$1 #--progress-bar
         echo "<<< OK!"
     fi
 }
@@ -79,7 +80,7 @@ function unpack_mac_jdk {
     fi
 
     download_jdk macosx-x64.dmg
-
+	
     mkdir -p MacOS
     cd MacOS
 
@@ -89,21 +90,25 @@ function unpack_mac_jdk {
         xar -xf /Volumes/JDK*/JDK*.pkg
         hdiutil detach /Volumes/JDK*
     else # Linux
-        7z x ../downloads/jdk-macosx-x64.dmg > /dev/null
+        7z x ../downloads/jdk-macosx-x64.dmg 
         # The following seems dependent of the 7zip version. If not they also changed their MacOSX Installer
-        7z x 4.hfs > /dev/null
-        install_xar
-        ./xar-1.5.2/src/xar -xf JDK*/JDK*.pkg
+        #7z x 4.hfs > /dev/null
+        #install_xar
+        #./xar-1.5.2/src/xar -xf JDK*/JDK*.pkg
+    cd JDK*
+    
+    7z x JDK*.pkg 
+    cd jdk1*.pkg
+    
     fi
 
-    cd jdk1*.pkg
     cat Payload | gunzip -dc | cpio -i
     #mkdir -p Contents/jdk/
     cd Contents/
     # FROM HERE: build-osx-zip.sh by normen (with changes)
     mv Home jdk # rename folder
-    zip -9 -r -y -q ../../../compiled/jdk-macosx.zip jdk
-    cd ../../../
+    zip -9 -r -y -q ../../../../compiled/jdk-macosx.zip jdk
+    cd ../../../../
     rm -rf MacOS/
 
     if [ "$TRAVIS" == "true" ]; then
