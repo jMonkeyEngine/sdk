@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 AutoUpdate-Show-In-Client: true
 OpenIDE-Module: com.jme3.gde.glsl.highlighter
+OpenIDE-Module-Layer: com/jme3/gde/glsl/highlighter/layer.xml
 OpenIDE-Module-Localizing-Bundle: com/jme3/gde/glsl/highlighter/Bundle.properties
 OpenIDE-Module-Specification-Version: 1.0
 
