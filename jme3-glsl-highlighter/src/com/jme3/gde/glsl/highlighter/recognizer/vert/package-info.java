@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-@TemplateRegistration(folder = "GLSL", displayName = "Vertex Shader", content = "GLSLVertTemplate.vert")
+@TemplateRegistration(folder = "Other", content = "GLSLVertTemplate.vert")
 package com.jme3.gde.glsl.highlighter.recognizer.vert;
 
 import org.netbeans.api.templates.TemplateRegistration;

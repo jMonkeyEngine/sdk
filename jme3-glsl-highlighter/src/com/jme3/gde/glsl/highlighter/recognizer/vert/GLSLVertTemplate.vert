@@ -1,4 +1,1 @@
-
-void main(){
-    
-}
+sample content
