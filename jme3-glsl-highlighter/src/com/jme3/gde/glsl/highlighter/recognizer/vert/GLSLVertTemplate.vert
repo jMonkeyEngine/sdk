@@ -1,1 +1,4 @@
-sample content
+
+void main(){
+    
+}

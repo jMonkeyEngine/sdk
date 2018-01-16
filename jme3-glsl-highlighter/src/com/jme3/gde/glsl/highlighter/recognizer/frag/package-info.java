@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-@TemplateRegistration(folder = "Other", content = "GLSLFragTemplate.frag")
+@TemplateRegistration(folder = "GLSL", displayName = "Fragment Shader", content = "GLSLFragTemplate.frag")
 package com.jme3.gde.glsl.highlighter.recognizer.frag;
 
 import org.netbeans.api.templates.TemplateRegistration;
