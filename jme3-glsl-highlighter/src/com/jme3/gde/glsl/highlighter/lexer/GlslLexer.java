@@ -18,6 +18,8 @@ import org.netbeans.spi.lexer.TokenFactory;
 public class GlslLexer implements Lexer<GlslTokenID>{
     private LexerInput lexerInput;
     private TokenFactory tokenFactory;
+    
+    private int oneCBack;
 
     public GlslLexer(LexerRestartInfo info) {
         lexerInput = info.input();
@@ -27,40 +29,52 @@ public class GlslLexer implements Lexer<GlslTokenID>{
     @Override
     public Token<GlslTokenID> nextToken() {
         int c;
-        while (true){
-            c = lexerInput.read();
-            if (isDigit(c)){
-                while (true){
-                    int next = lexerInput.read();
-                    if (!isDigit(next)){
-                        if (next == '.' || next == 'f' || next == 'F')
-                            continue;
-                        lexerInput.backup(1);
-                        return token(GlslTokenID.NUMBER);
-                    }
+        c = lexerInput.read();
+        if (isDigit(c)){
+            while (true){
+                int next = lexerInput.read();
+                if (!isDigit(next)){
+                    if (next == '.' || next == 'f' || next == 'F')
+                        continue;
+                    lexerInput.backup(1);
+                    return token(GlslTokenID.NUMBER);
                 }
             }
-            switch (c){
-                case '/':
-                    if (lexerInput.read() == '/'){
-                        //It's an inline comment
-                        while (true){
-                            int in = lexerInput.read();
-                            if (in == '\n' || in == '\r'){
-                                lexerInput.backup(1);
-                                break;
-                            }
-                        }
-                        return token(GlslTokenID.INLINE_COMMENT);
-                    }else
-                        lexerInput.backup(1);
-                    break;
-                case LexerInput.EOF:
-                    return null;
-                default:
-                    return token(GlslTokenID.TEXT);
-            }
         }
+        switch (c){
+            case '/':
+                if (lexerInput.read() == '/'){
+                    //It's an inline comment
+                    readTillNewLine();
+                    return token(GlslTokenID.INLINE_COMMENT);
+                }else
+                    lexerInput.backup(1);
+                break;
+            case '\"':
+            case '\'':
+                //String starts here
+                int previous = c, starter = c;
+                while (true){
+                    int now = lexerInput.read();
+
+                    if (now == starter && previous != '\\')
+                        break;
+                    previous = now;
+                }
+                return token(GlslTokenID.STRING);
+            case '#':
+                if (oneCBack == '\n' || oneCBack == '\r' || oneCBack == -22222){
+                    //Preprocessor code
+                    readTillNewLine();
+                    return token(GlslTokenID.PREPROCESSOR);
+                }
+                break;
+            case LexerInput.EOF:
+                return null;
+            default:
+                return token(GlslTokenID.TEXT);
+        }
+        return null; //Should never get to here anyway
     }
 
     @Override
@@ -83,6 +97,16 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 return true;
             default:
                 return false;
+        }
+    }
+    
+    private void readTillNewLine(){
+        while (true){
+            int in = lexerInput.read();
+            if (in == '\n' || in == '\r'){
+                lexerInput.backup(1);
+                break;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
                 <folder name="FontsColors">
                     <folder name="Dark Monkey">
                         <folder name="Defaults">
-                            <file name="FontAndColors.xml" url="FontAndColors.xml"/>
+                            <!--<file name="FontAndColors.xml" url="FontAndColors.xml"/>-->
                         </folder>
                     </folder>
                 </folder>

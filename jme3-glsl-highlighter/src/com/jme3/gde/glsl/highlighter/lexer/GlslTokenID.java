@@ -13,12 +13,13 @@ import org.netbeans.api.lexer.TokenId;
  */
 public enum GlslTokenID implements TokenId{
     KEYWORD("keywords"),
-    INLINE_COMMENT("comments"),
+    INLINE_COMMENT("comment"),
     STRING("string"),
     SPACE("whitespace"),
     NEW_LINE("whitespace"),
-    TEXT("generic"),
-    NUMBER("primitives");
+    TEXT("operator"),
+    PREPROCESSOR("preprocessor"),
+    NUMBER("number");
 
     private final String category;
 
