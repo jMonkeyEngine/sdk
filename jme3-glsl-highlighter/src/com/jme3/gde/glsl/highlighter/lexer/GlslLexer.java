@@ -5,6 +5,7 @@
  */
 package com.jme3.gde.glsl.highlighter.lexer;
 
+import java.util.logging.Logger;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.spi.lexer.Lexer;
 import org.netbeans.spi.lexer.LexerInput;
@@ -18,8 +19,9 @@ import org.netbeans.spi.lexer.TokenFactory;
 public class GlslLexer implements Lexer<GlslTokenID>{
     private LexerInput lexerInput;
     private TokenFactory tokenFactory;
+    private Logger log = Logger.getLogger(this.getClass().getCanonicalName());
     
-    private int oneCBack;
+    private int oneCBack = -22222;
 
     public GlslLexer(LexerRestartInfo info) {
         lexerInput = info.input();
@@ -63,18 +65,22 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 }
                 return token(GlslTokenID.STRING);
             case '#':
+                log.info("One c back was: " + (char) oneCBack);
                 if (oneCBack == '\n' || oneCBack == '\r' || oneCBack == -22222){
                     //Preprocessor code
                     readTillNewLine();
                     return token(GlslTokenID.PREPROCESSOR);
                 }
                 break;
+            case '\n':
+            case '\r':
+                oneCBack = c;
+                return token(GlslTokenID.NEW_LINE);
             case LexerInput.EOF:
                 return null;
-            default:
-                return token(GlslTokenID.TEXT);
         }
-        return null; //Should never get to here anyway
+        oneCBack = c;
+        return token(GlslTokenID.TEXT);
     }
 
     @Override
@@ -103,7 +109,7 @@ public class GlslLexer implements Lexer<GlslTokenID>{
     private void readTillNewLine(){
         while (true){
             int in = lexerInput.read();
-            if (in == '\n' || in == '\r'){
+            if (in == '\n' || in == '\r' || in == LexerInput.EOF){
                 lexerInput.backup(1);
                 break;
             }
