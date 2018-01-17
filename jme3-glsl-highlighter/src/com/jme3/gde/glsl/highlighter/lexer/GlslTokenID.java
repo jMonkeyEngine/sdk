@@ -18,9 +18,15 @@ public enum GlslTokenID implements TokenId{
     STRING("string"),
     SPACE("whitespace"),
     NEW_LINE("whitespace"),
-    TEXT("operator"),
+    OPERATOR("operator"),
+    TEXT("default"),
     PREPROCESSOR("preprocessor"),
-    NUMBER("number");
+    NUMBER("number"),
+    
+    //Stuff that has to be recognized
+    LBRACKET("operator"), RBRACKET("operator"),
+    LPARENTHESIS("operator"), RPARENTHESIS("operator"),
+    LSQUARE("operator"), RSQUARE("operator");
 
     private final String category;
 

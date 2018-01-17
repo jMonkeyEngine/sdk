@@ -33,6 +33,7 @@ public class GlslLexer implements Lexer<GlslTokenID>{
         int c;
         c = lexerInput.read();
         thisLineSoFar += (char)c;
+        log.fine("This line so far: " + thisLineSoFar + " Current char: " + (char)c);
         if (isDigit(c)){
             while (true){
                 int next = lexerInput.read();
@@ -64,7 +65,7 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                     }
                 }else
                     lexerInput.backup(1);
-                break;
+                return token(GlslTokenID.OPERATOR);
             case '\"':
             case '\'':
                 //String starts here
@@ -83,7 +84,32 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                     readTillNewLine();
                     return token(GlslTokenID.PREPROCESSOR);
                 }
-                break;
+                return token(GlslTokenID.OPERATOR);
+            case '|':
+            case '&':
+            case '.':
+            case '>':
+            case '<':
+            case ',':
+            case ';':
+            case ':':
+            case '=':
+            case '+':
+            case '-':
+            case '*':
+            case '%':
+            case '!':
+            case '~':
+            case '^':
+            case '\\':
+                return token(GlslTokenID.OPERATOR);
+            //Those have to be recognized separately for closing bracket recognition
+            case '(':return token(GlslTokenID.LPARENTHESIS);
+            case ')':return token(GlslTokenID.RPARENTHESIS);
+            case '{':return token(GlslTokenID.LBRACKET);
+            case '}':return token(GlslTokenID.RBRACKET);
+            case '[':return token(GlslTokenID.LSQUARE);
+            case ']':return token(GlslTokenID.RSQUARE);
             case '\n':
             case '\r':
                 thisLineSoFar = "";
