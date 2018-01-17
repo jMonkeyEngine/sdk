@@ -14,6 +14,7 @@ import org.netbeans.api.lexer.TokenId;
 public enum GlslTokenID implements TokenId{
     KEYWORD("keywords"),
     INLINE_COMMENT("comment"),
+    BLOCK_COMMENT("comment"),
     STRING("string"),
     SPACE("whitespace"),
     NEW_LINE("whitespace"),

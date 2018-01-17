@@ -45,10 +45,22 @@ public class GlslLexer implements Lexer<GlslTokenID>{
         }
         switch (c){
             case '/':
-                if (lexerInput.read() == '/'){
+                int next = lexerInput.read();
+                if (next == '/'){
                     //It's an inline comment
                     readTillNewLine();
                     return token(GlslTokenID.INLINE_COMMENT);
+                }else if (next == '*'){
+                    while (true){
+                        int c1 = lexerInput.read();
+                        if (c1 == '*'){
+                            if (lexerInput.read() == '/')
+                                return token(GlslTokenID.BLOCK_COMMENT);
+                            else
+                                lexerInput.backup(1);
+                        }else if (c1 == LexerInput.EOF)
+                            return token(GlslTokenID.BLOCK_COMMENT);
+                    }
                 }else
                     lexerInput.backup(1);
                 break;
@@ -65,7 +77,6 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 }
                 return token(GlslTokenID.STRING);
             case '#':
-                log.info("One c back was: " + (char) oneCBack);
                 if (oneCBack == '\n' || oneCBack == '\r' || oneCBack == -22222){
                     //Preprocessor code
                     readTillNewLine();
