@@ -17,11 +17,11 @@ import org.netbeans.spi.lexer.TokenFactory;
  * @author grizeldi
  */
 public class GlslLexer implements Lexer<GlslTokenID>{
-    private LexerInput lexerInput;
-    private TokenFactory tokenFactory;
-    private Logger log = Logger.getLogger(this.getClass().getCanonicalName());
+    private final LexerInput lexerInput;
+    private final TokenFactory tokenFactory;
+    private final Logger log = Logger.getLogger(this.getClass().getCanonicalName());
     
-    private int oneCBack = -22222;
+    private String thisLineSoFar = "";
 
     public GlslLexer(LexerRestartInfo info) {
         lexerInput = info.input();
@@ -32,6 +32,7 @@ public class GlslLexer implements Lexer<GlslTokenID>{
     public Token<GlslTokenID> nextToken() {
         int c;
         c = lexerInput.read();
+        thisLineSoFar += (char)c;
         if (isDigit(c)){
             while (true){
                 int next = lexerInput.read();
@@ -77,7 +78,7 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 }
                 return token(GlslTokenID.STRING);
             case '#':
-                if (oneCBack == '\n' || oneCBack == '\r' || oneCBack == -22222){
+                if (thisLineSoFar.trim().equals("#")){
                     //Preprocessor code
                     readTillNewLine();
                     return token(GlslTokenID.PREPROCESSOR);
@@ -85,12 +86,11 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 break;
             case '\n':
             case '\r':
-                oneCBack = c;
+                thisLineSoFar = "";
                 return token(GlslTokenID.NEW_LINE);
             case LexerInput.EOF:
                 return null;
         }
-        oneCBack = c;
         return token(GlslTokenID.TEXT);
     }
 
