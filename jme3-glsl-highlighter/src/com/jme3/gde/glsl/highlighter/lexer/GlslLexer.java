@@ -116,6 +116,23 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 return token(GlslTokenID.NEW_LINE);
             case LexerInput.EOF:
                 return null;
+            default:
+                //Text, gotta look it up the library
+                String word = "" + (char)c;
+                if (GlslKeywordLibrary.lookup(word) != null){
+                    GlslKeywordLibrary.KeywordType current;
+                    while ((current = GlslKeywordLibrary.lookup(word)) == GlslKeywordLibrary.KeywordType.UNFINISHED){
+                        word += (char) lexerInput.read();
+                    }
+                    if (current == null)
+                        break;
+                    switch(current){
+                        case BASIC_TYPE:
+                            return token(GlslTokenID.PRIMITIVE);
+                        case KEYWORD:
+                            return token(GlslTokenID.KEYWORD);
+                    }
+                }
         }
         return token(GlslTokenID.TEXT);
     }

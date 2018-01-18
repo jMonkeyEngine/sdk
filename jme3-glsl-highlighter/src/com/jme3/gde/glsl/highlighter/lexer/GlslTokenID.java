@@ -12,7 +12,7 @@ import org.netbeans.api.lexer.TokenId;
  * @author grizeldi
  */
 public enum GlslTokenID implements TokenId{
-    KEYWORD("keywords"),
+    KEYWORD("keyword"),
     INLINE_COMMENT("comment"),
     BLOCK_COMMENT("comment"),
     STRING("string"),
@@ -22,6 +22,7 @@ public enum GlslTokenID implements TokenId{
     TEXT("default"),
     PREPROCESSOR("preprocessor"),
     NUMBER("number"),
+    PRIMITIVE("basictype"),
     
     //Stuff that has to be recognized
     LBRACKET("operator"), RBRACKET("operator"),
