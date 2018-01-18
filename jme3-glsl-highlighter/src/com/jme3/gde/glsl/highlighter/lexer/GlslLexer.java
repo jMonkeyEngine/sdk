@@ -121,8 +121,20 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 String word = "" + (char)c;
                 if (GlslKeywordLibrary.lookup(word) != null){
                     GlslKeywordLibrary.KeywordType current;
-                    while ((current = GlslKeywordLibrary.lookup(word)) == GlslKeywordLibrary.KeywordType.UNFINISHED){
+                    while (true){
                         word += (char) lexerInput.read();
+                        current = GlslKeywordLibrary.lookup(word);
+                        if (current != GlslKeywordLibrary.KeywordType.UNFINISHED){
+                            if (current == null)
+                                break;
+                            char nextChar = (char)lexerInput.read();
+                            if (GlslKeywordLibrary.lookup(word + nextChar) == null && (
+                                    nextChar == ' ' || nextChar == '(')){ //Define here what is allowed to be directly behind a keyword
+                                lexerInput.backup(1);
+                                break;
+                            }
+                            lexerInput.backup(1);
+                        }
                     }
                     if (current == null)
                         break;

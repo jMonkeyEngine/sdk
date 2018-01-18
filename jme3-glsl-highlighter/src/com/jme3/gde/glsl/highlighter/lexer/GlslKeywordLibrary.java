@@ -184,23 +184,27 @@ class GlslKeywordLibrary {
     }
     
     public static KeywordType lookup(String s){
-        for (String keyword : keywords){
-            if (keyword.startsWith(s)){
-                if (keyword.equals(s))
-                    return KeywordType.KEYWORD;
-                else
-                    return KeywordType.UNFINISHED;
-            }
-        }
+        KeywordType returnType = null;
         for (String primitive : basicTypes){
             if (primitive.startsWith(s)){
-                if (primitive.equals(s))
-                    return KeywordType.BASIC_TYPE;
+                if (primitive.equals(s)){
+                    returnType = KeywordType.BASIC_TYPE;
+                    break;
+                }else
+                    returnType = KeywordType.UNFINISHED;
+            }
+        }
+        for (String keyword : keywords){
+            if (keyword.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)){
+                if (keyword.equals(s)){
+                    returnType = KeywordType.KEYWORD;
+                    break;
+                }
                 else
-                    return KeywordType.UNFINISHED;
+                    returnType = KeywordType.UNFINISHED;
             }
         }
         
-        return null;
+        return returnType;
     }
 }
