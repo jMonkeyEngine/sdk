@@ -181,6 +181,51 @@ class GlslKeywordLibrary {
         basicTypes.add("iimage2DMSArray");
         basicTypes.add("uimage2DMSArray");
         basicTypes.add("struct");
+        //builtin variables
+        //compute shaders
+        builtinVariables.add("gl_NumWorkGroups");
+        builtinVariables.add("gl_WorkGroupSize");
+        builtinVariables.add("gl_WorkGroupID");
+        builtinVariables.add("gl_LocalInvocationID");
+        builtinVariables.add("gl_GlobalInvocationID");
+        builtinVariables.add("gl_LocalInvocationIndex");
+        //vertex shaders
+        builtinVariables.add("gl_VertexID");
+        builtinVariables.add("gl_InstanceID");
+        //geometry shaders
+        builtinVariables.add("gl_PrimitiveIDIn");
+        builtinVariables.add("gl_Layer");
+        builtinVariables.add("gl_ViewportIndex");
+        //tesselation shaders
+        builtinVariables.add("gl_MaxPatchVertices");
+        builtinVariables.add("gl_PatchVerticesIn");
+        builtinVariables.add("gl_TessLevelOuter");
+        builtinVariables.add("gl_TessLevelInner");
+        builtinVariables.add("gl_TessCoord");
+        //fragment shaders
+        builtinVariables.add("gl_FragCoord");
+        builtinVariables.add("gl_FrontFacing");
+        builtinVariables.add("gl_PointCoord");
+        builtinVariables.add("gl_SampleID");
+        builtinVariables.add("gl_SamplePosition");
+        builtinVariables.add("gl_SampleMaskIn");
+        builtinVariables.add("gl_Layer");
+        builtinVariables.add("gl_ViewportIndex");
+        //general
+        builtinVariables.add("gl_Position");
+        builtinVariables.add("gl_PointSize");
+        builtinVariables.add("gl_ClipDistance");
+        builtinVariables.add("gl_InvocationID");
+        builtinVariables.add("gl_PrimitiveID");
+        //jme variables - this is why we build custom plugins :) (apart from existing being under GPL)
+        builtinVariables.add("inPosition");
+        builtinVariables.add("inNormal");
+        builtinVariables.add("inColor");
+        builtinVariables.add("inTextCoord");
+        builtinVariables.add("g_WorldViewMatrix");
+        builtinVariables.add("g_ProjectionMatrix");
+        builtinVariables.add("g_WorldViewProjectionMatrix");
+        builtinVariables.add("g_NormalMatrix");
     }
     
     public static KeywordType lookup(String s){
@@ -189,6 +234,15 @@ class GlslKeywordLibrary {
             if (primitive.startsWith(s)){
                 if (primitive.equals(s)){
                     returnType = KeywordType.BASIC_TYPE;
+                    break;
+                }else
+                    returnType = KeywordType.UNFINISHED;
+            }
+        }
+        for (String var : builtinVariables){
+            if (var.startsWith(s)){
+                if (var.equals(s)){
+                    returnType = KeywordType.BUILTIN_VARIABLE;
                     break;
                 }else
                     returnType = KeywordType.UNFINISHED;

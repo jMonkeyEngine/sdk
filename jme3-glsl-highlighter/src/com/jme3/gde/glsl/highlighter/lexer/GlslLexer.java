@@ -129,7 +129,8 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                                 break;
                             char nextChar = (char)lexerInput.read();
                             if (GlslKeywordLibrary.lookup(word + nextChar) == null && (
-                                    nextChar == ' ' || nextChar == '(')){ //Define here what is allowed to be directly behind a keyword
+                                    nextChar == ' ' || nextChar == '(' || nextChar == '\n' || nextChar == '\r'
+                                    || nextChar == ';' || nextChar == ',' || nextChar == '.')){ //Define here what is allowed to be directly behind a keyword
                                 lexerInput.backup(1);
                                 break;
                             }
@@ -143,6 +144,8 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                             return token(GlslTokenID.PRIMITIVE);
                         case KEYWORD:
                             return token(GlslTokenID.KEYWORD);
+                        case BUILTIN_VARIABLE:
+                            return token(GlslTokenID.BUILTIN_VARIABLE);
                     }
                 }
         }

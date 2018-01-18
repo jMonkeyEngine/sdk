@@ -23,6 +23,7 @@ public enum GlslTokenID implements TokenId{
     PREPROCESSOR("preprocessor"),
     NUMBER("number"),
     PRIMITIVE("basictype"),
+    BUILTIN_VARIABLE("builtinvar"),
     
     //Stuff that has to be recognized
     LBRACKET("operator"), RBRACKET("operator"),
