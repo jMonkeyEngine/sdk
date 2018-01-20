@@ -24,6 +24,7 @@ public enum GlslTokenID implements TokenId{
     NUMBER("number"),
     PRIMITIVE("basictype"),
     BUILTIN_VARIABLE("builtinvar"),
+    BUILTIN_FUNCTION("builtinfunc"),
     
     //Stuff that has to be recognized
     LBRACKET("operator"), RBRACKET("operator"),

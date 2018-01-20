@@ -1,6 +1,6 @@
 @TemplateRegistrations({
-    @TemplateRegistration(folder = "GLSL", content = "FragmentShader.frag"),
-    @TemplateRegistration(folder = "GLSL", content = "VertexShader.vert")
+    @TemplateRegistration(folder = "GLSL", displayName = "Fragment Shader", content = "FragmentShader.frag"),
+    @TemplateRegistration(folder = "GLSL", displayName = "Vertex Shader", content = "VertexShader.vert")
 })
 package com.jme3.gde.glsl.highlighter.recognizer;
 

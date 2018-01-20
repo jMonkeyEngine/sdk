@@ -128,13 +128,28 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                             if (current == null)
                                 break;
                             char nextChar = (char)lexerInput.read();
-                            if (GlslKeywordLibrary.lookup(word + nextChar) == null && (
-                                    nextChar == ' ' || nextChar == '(' || nextChar == '\n' || nextChar == '\r'
-                                    || nextChar == ';' || nextChar == ',' || nextChar == '.')){ //Define here what is allowed to be directly behind a keyword
-                                lexerInput.backup(1);
-                                break;
-                            }
                             lexerInput.backup(1);
+                            if (GlslKeywordLibrary.lookup(word + nextChar) == null /*&& (
+                                    nextChar == ' ' || nextChar == '(' || nextChar == '\n' || nextChar == '\r'
+                                    || nextChar == ';' || nextChar == ',' || nextChar == '.')*/){ //Define here what is allowed to be directly behind a keyword
+                                if (current == GlslKeywordLibrary.KeywordType.BASIC_TYPE && (//What can be behind a primitve
+                                        nextChar == ' ' || nextChar == '(' || nextChar == '\n' ||
+                                        nextChar == '\r'))
+                                    break;
+                                if (current == GlslKeywordLibrary.KeywordType.KEYWORD && (//What can be behind a keyword
+                                        nextChar == ' ' || nextChar == '{' || nextChar == ':' ||
+                                        nextChar == ';' || nextChar == '(' || nextChar == ')' ||
+                                        nextChar == '\n' || nextChar == '\r'))
+                                    break;
+                                if (current == GlslKeywordLibrary.KeywordType.BUILTIN_VARIABLE && (//What can be behind a builtin variable
+                                        nextChar == ';' || nextChar == '.' || nextChar == ' ' ||
+                                        nextChar == ',' || nextChar == '\n' || nextChar == '\r' ||
+                                        nextChar == ')'))
+                                    break;
+                                if (current == GlslKeywordLibrary.KeywordType.BUILTIN_FUNCTION && (//What can be behind a builtin functions
+                                        nextChar == '(' || nextChar == '\n' || nextChar == '\r'))
+                                    break;
+                            }
                         }
                     }
                     if (current == null)
@@ -146,6 +161,8 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                             return token(GlslTokenID.KEYWORD);
                         case BUILTIN_VARIABLE:
                             return token(GlslTokenID.BUILTIN_VARIABLE);
+                        case BUILTIN_FUNCTION:
+                            return token(GlslTokenID.BUILTIN_FUNCTION);
                     }
                 }
         }

@@ -15,9 +15,7 @@ import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectExistsException;
 import org.openide.loaders.MultiDataObject;
 import org.openide.loaders.MultiFileLoader;
-import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
-import org.openide.windows.TopComponent;
 
 @Messages({
     "LBL_Glsl_LOADER=Files of Glsl"
@@ -25,7 +23,7 @@ import org.openide.windows.TopComponent;
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Glsl_LOADER",
         mimeType = "text/x-glsl",
-        extension = {"frag", "FRAG", "vert", "VERT"}
+        extension = {"frag", "FRAG", "vert", "VERT", "glsllib", "GLSLLIB"}
 )
 @DataObject.Registration(
         mimeType = "text/x-glsl",

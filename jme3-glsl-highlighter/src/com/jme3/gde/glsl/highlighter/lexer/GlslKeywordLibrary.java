@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Brace, yourselves, this file contains every word that means something in GLSL.
+ * Expect about 400 lines of code that just adds strings.
  * @author grizeldi
  */
 class GlslKeywordLibrary {
@@ -226,6 +227,182 @@ class GlslKeywordLibrary {
         builtinVariables.add("g_ProjectionMatrix");
         builtinVariables.add("g_WorldViewProjectionMatrix");
         builtinVariables.add("g_NormalMatrix");
+        //builtin functions
+        builtinFunctions.add("radians");
+        builtinFunctions.add("degrees");
+        builtinFunctions.add("sin");
+        builtinFunctions.add("cos");
+        builtinFunctions.add("tan");
+        builtinFunctions.add("asin");
+        builtinFunctions.add("acos");
+        builtinFunctions.add("atan");
+        builtinFunctions.add("sinh");
+        builtinFunctions.add("cosh");
+        builtinFunctions.add("tanh");
+        builtinFunctions.add("asinh");
+        builtinFunctions.add("acosh");
+        builtinFunctions.add("atanh");
+        builtinFunctions.add("pow");
+        builtinFunctions.add("exp");
+        builtinFunctions.add("log");
+        builtinFunctions.add("exp2");
+        builtinFunctions.add("log2");
+        builtinFunctions.add("sqrt");
+        builtinFunctions.add("inversesqrt");
+        builtinFunctions.add("abs");
+        builtinFunctions.add("sign");
+        builtinFunctions.add("floor");
+        builtinFunctions.add("trunc");
+        builtinFunctions.add("round");
+        builtinFunctions.add("roundEven");
+        builtinFunctions.add("ceil");
+        builtinFunctions.add("fract");
+        builtinFunctions.add("mod");
+        builtinFunctions.add("modf");
+        builtinFunctions.add("min");
+        builtinFunctions.add("max");
+        builtinFunctions.add("clamp");
+        builtinFunctions.add("mix");
+        builtinFunctions.add("step");
+        builtinFunctions.add("smoothstep");
+        builtinFunctions.add("isnan");
+        builtinFunctions.add("isinf");
+        builtinFunctions.add("floatBitsToInt");
+        builtinFunctions.add("floatBitsToUInt");
+        builtinFunctions.add("intBitsToFloat");
+        builtinFunctions.add("uintBitsToFloat");
+        builtinFunctions.add("fma");
+        builtinFunctions.add("frexp");
+        builtinFunctions.add("packUnorm2x16");
+        builtinFunctions.add("packSnorm2x16");
+        builtinFunctions.add("packUnorm4x8");
+        builtinFunctions.add("packSnorm4x8");
+        builtinFunctions.add("unpackUnorm2x16");
+        builtinFunctions.add("unpackSnorm2x16");
+        builtinFunctions.add("unpackUnorm4x8");
+        builtinFunctions.add("unpackSnorm4x8");
+        builtinFunctions.add("packDouble2x32");
+        builtinFunctions.add("unpackDouble2x32");
+        builtinFunctions.add("packHalf2x16");
+        builtinFunctions.add("unpackHalf2x16");
+        builtinFunctions.add("length");
+        builtinFunctions.add("distance");
+        builtinFunctions.add("dot");
+        builtinFunctions.add("cross");
+        builtinFunctions.add("normalize");
+        builtinFunctions.add("ftransform");
+        builtinFunctions.add("faceforward");
+        builtinFunctions.add("reflect");
+        builtinFunctions.add("refract");
+        builtinFunctions.add("matrixCompMult");
+        builtinFunctions.add("outerProduct");
+        builtinFunctions.add("transpose");
+        builtinFunctions.add("determinant");
+        builtinFunctions.add("inverse");
+        builtinFunctions.add("lessThan");
+        builtinFunctions.add("lessThanEqual");
+        builtinFunctions.add("greaterThan");
+        builtinFunctions.add("greaterThanEqual");
+        builtinFunctions.add("equal");
+        builtinFunctions.add("notEqual");
+        builtinFunctions.add("any");
+        builtinFunctions.add("all");
+        builtinFunctions.add("not");
+        builtinFunctions.add("uaddCarry");
+        builtinFunctions.add("usubBorrow");
+        builtinFunctions.add("umulExtended");
+        builtinFunctions.add("imulExtended");
+        builtinFunctions.add("bitfieldExtract");
+        builtinFunctions.add("bitfieldInsert");
+        builtinFunctions.add("bitfieldReverse");
+        builtinFunctions.add("bitCount");
+        builtinFunctions.add("findLSB");
+        builtinFunctions.add("findMSB");
+        builtinFunctions.add("textureSize");
+        builtinFunctions.add("textureQueryLod");
+        builtinFunctions.add("textureQueryLevels");
+        builtinFunctions.add("texture");
+        builtinFunctions.add("textureProj");
+        builtinFunctions.add("textureLod");
+        builtinFunctions.add("textureOffset");
+        builtinFunctions.add("texelFetch");
+        builtinFunctions.add("texelFetchOffset");
+        builtinFunctions.add("textureProjOffset");
+        builtinFunctions.add("textureLodOffset");
+        builtinFunctions.add("textureProjLod");
+        builtinFunctions.add("textureProjLodOffset");
+        builtinFunctions.add("textureGrad");
+        builtinFunctions.add("textureGradOffset");
+        builtinFunctions.add("textureProjGrad");
+        builtinFunctions.add("textureProjGradOffset");
+        builtinFunctions.add("textureGather");
+        builtinFunctions.add("textureGatherOffset");
+        builtinFunctions.add("textureGatherOffsets");
+        builtinFunctions.add("texture1D");
+        builtinFunctions.add("texture1DProj");
+        builtinFunctions.add("texture1DLod");
+        builtinFunctions.add("texture1DProjLod");
+        builtinFunctions.add("texture2D");
+        builtinFunctions.add("texture2DProj");
+        builtinFunctions.add("texture2DLod");
+        builtinFunctions.add("texture2DProjLod");
+        builtinFunctions.add("texture3D");
+        builtinFunctions.add("texture3DProj");
+        builtinFunctions.add("texture3DLod");
+        builtinFunctions.add("texture3DProjLod");
+        builtinFunctions.add("textureCube");
+        builtinFunctions.add("textureCubeLod");
+        builtinFunctions.add("shadow1D");
+        builtinFunctions.add("shadow2D");
+        builtinFunctions.add("shadow1DProj");
+        builtinFunctions.add("shadow2DProj");
+        builtinFunctions.add("shadow1DLod");
+        builtinFunctions.add("shadow2DLod");
+        builtinFunctions.add("shadow1DProjLod");
+        builtinFunctions.add("shadow2DProjLod");
+        builtinFunctions.add("atomicCounterIncrement");
+        builtinFunctions.add("atomicCounterDecrement");
+        builtinFunctions.add("atomicCounter");
+        builtinFunctions.add("atomicAdd");
+        builtinFunctions.add("atomicMin");
+        builtinFunctions.add("atomicMax");
+        builtinFunctions.add("atomicAnd");
+        builtinFunctions.add("atomicOr");
+        builtinFunctions.add("atomicXor");
+        builtinFunctions.add("atomicExchange");
+        builtinFunctions.add("atomicCompSwap");
+        builtinFunctions.add("imageSize");
+        builtinFunctions.add("imageLoad");
+        builtinFunctions.add("imageStore");
+        builtinFunctions.add("imageAtomicAdd");
+        builtinFunctions.add("imageAtomicMin");
+        builtinFunctions.add("imageAtomicMax");
+        builtinFunctions.add("imageAtomicAnd");
+        builtinFunctions.add("imageAtomicOr");
+        builtinFunctions.add("imageAtomicXor");
+        builtinFunctions.add("imageAtomicExchange");
+        builtinFunctions.add("imageAtomicCompSwap");
+        builtinFunctions.add("dFdx");
+        builtinFunctions.add("dFdy");
+        builtinFunctions.add("fwidth");
+        builtinFunctions.add("interpolateAtCentroid");
+        builtinFunctions.add("interpolateAtSample");
+        builtinFunctions.add("interpolateAtOffset");
+        builtinFunctions.add("noise1");
+        builtinFunctions.add("noise2");
+        builtinFunctions.add("noise3");
+        builtinFunctions.add("noise4");
+        builtinFunctions.add("EmitStreamVertex");
+        builtinFunctions.add("EndStreamPrimitive");
+        builtinFunctions.add("EmitVertex");
+        builtinFunctions.add("EndPrimitive");
+        builtinFunctions.add("barrier");
+        builtinFunctions.add("memoryBarrier");
+        builtinFunctions.add("memoryBarrierAtomicCounter");
+        builtinFunctions.add("memoryBarrierBuffer");
+        builtinFunctions.add("memoryBarrierShared");
+        builtinFunctions.add("memoryBarrierImage");
+        builtinFunctions.add("groupMemoryBarrier");
     }
     
     public static KeywordType lookup(String s){
@@ -243,6 +420,15 @@ class GlslKeywordLibrary {
             if (var.startsWith(s)){
                 if (var.equals(s)){
                     returnType = KeywordType.BUILTIN_VARIABLE;
+                    break;
+                }else
+                    returnType = KeywordType.UNFINISHED;
+            }
+        }
+        for (String func : builtinFunctions){
+            if (func.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)){
+                if (func.equals(s)){
+                    returnType = KeywordType.BUILTIN_FUNCTION;
                     break;
                 }else
                     returnType = KeywordType.UNFINISHED;
