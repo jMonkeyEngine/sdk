@@ -13,7 +13,7 @@ import org.netbeans.spi.lexer.LexerRestartInfo;
 import org.netbeans.spi.lexer.TokenFactory;
 
 /**
- *
+ * Tokenizes the text the user is typing, so we can highlight it as needed.
  * @author grizeldi
  */
 public class GlslLexer implements Lexer<GlslTokenID>{
@@ -33,7 +33,6 @@ public class GlslLexer implements Lexer<GlslTokenID>{
         int c;
         c = lexerInput.read();
         thisLineSoFar += (char)c;
-        log.fine("This line so far: " + thisLineSoFar + " Current char: " + (char)c);
         if (isDigit(c)){
             while (true){
                 int next = lexerInput.read();

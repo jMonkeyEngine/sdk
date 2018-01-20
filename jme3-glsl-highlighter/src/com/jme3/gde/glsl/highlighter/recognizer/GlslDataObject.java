@@ -18,7 +18,7 @@ import org.openide.loaders.MultiFileLoader;
 import org.openide.util.NbBundle.Messages;
 
 @Messages({
-    "LBL_Glsl_LOADER=Files of Glsl"
+    "LBL_Glsl_LOADER=OpenGL Shader Language files"
 })
 @MIMEResolver.ExtensionRegistration(
         displayName = "#LBL_Glsl_LOADER",
@@ -27,7 +27,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @DataObject.Registration(
         mimeType = "text/x-glsl",
-        iconBase = "com/jme3/gde/glsl/highlighter/recognizer/DB.gif",
+        iconBase = "com/jme3/gde/glsl/highlighter/recognizer/vertIcon.png",
         displayName = "#LBL_Glsl_LOADER",
         position = 300
 )
@@ -102,5 +102,5 @@ public class GlslDataObject extends MultiDataObject {
     protected int associateLookup() {
         return 1;
     }
-
+    
 }
