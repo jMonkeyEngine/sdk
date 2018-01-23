@@ -5,16 +5,22 @@
  */
 package com.jme3.gde.glsl.highlighter.recognizer;
 
+import java.awt.Image;
 import java.io.IOException;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.MIMEResolver;
+import org.openide.loaders.DataNode;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectExistsException;
 import org.openide.loaders.MultiDataObject;
 import org.openide.loaders.MultiFileLoader;
+import org.openide.nodes.Children;
+import org.openide.nodes.Node;
+import org.openide.util.ImageUtilities;
+import org.openide.util.Lookup;
 import org.openide.util.NbBundle.Messages;
 
 @Messages({
@@ -27,7 +33,6 @@ import org.openide.util.NbBundle.Messages;
 )
 @DataObject.Registration(
         mimeType = "text/x-glsl",
-        iconBase = "com/jme3/gde/glsl/highlighter/recognizer/vertIcon.png",
         displayName = "#LBL_Glsl_LOADER",
         position = 300
 )
@@ -102,5 +107,29 @@ public class GlslDataObject extends MultiDataObject {
     protected int associateLookup() {
         return 1;
     }
+
+    @Override
+    protected Node createNodeDelegate() {
+        return new GlslNode(getLookup());
+    }
     
+    //We need a custom node in order to get a dynamic icon for some reason
+    private class GlslNode extends DataNode {
+        private final Image fragIcon = ImageUtilities.loadImage("com/jme3/gde/glsl/highlighter/recognizer/fragIcon.png"),
+                vertIcon = ImageUtilities.loadImage("com/jme3/gde/glsl/highlighter/recognizer/vertIcon.png"),
+                defaultIcon = ImageUtilities.loadImage("org/netbeans/modules/java/resources/annotation_file.png");
+        
+        public GlslNode(Lookup lookup) {
+            super(GlslDataObject.this, Children.LEAF, lookup);
+        }        
+
+        @Override
+        public Image getIcon(int type) {
+            if (getPrimaryFile().getExt().toLowerCase().equals("frag"))
+                return fragIcon;
+            else if (getPrimaryFile().getExt().toLowerCase().equals("vert"))
+                return vertIcon;
+            return defaultIcon;
+        }
+    }
 }

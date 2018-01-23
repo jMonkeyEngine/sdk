@@ -5,13 +5,6 @@
     <folder name="Editors">
         <folder name="text">
             <folder name="x-glsl">
-                <folder name="FontsColors">
-                    <folder name="Dark Monkey">
-                        <folder name="Defaults">
-                            <!--<file name="FontAndColors.xml" url="FontAndColors.xml"/>-->
-                        </folder>
-                    </folder>
-                </folder>
                 <file name="language.instance">
                     <attr name="instanceCreate" methodvalue="com.jme3.gde.glsl.highlighter.GlslLanguage.getLanguage"/>
                     <attr name="instanceOf" stringvalue="org.netbeans.api.lexer.Language"/>
