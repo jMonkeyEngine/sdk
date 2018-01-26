@@ -42,7 +42,8 @@ import org.netbeans.modules.csl.spi.LanguageRegistration;
  * @author grizeldi
  */
 @LanguageRegistration(mimeType = "text/x-glsl")
-public class GlslLanguage extends DefaultLanguageConfig{
+public class GlslLanguage extends DefaultLanguageConfig {
+
     @Override
     public Language getLexerLanguage() {
         return new GlslLanguageHierarchy().language();
@@ -52,8 +53,8 @@ public class GlslLanguage extends DefaultLanguageConfig{
     public String getDisplayName() {
         return "GLSL - OpenGL Shading Language";
     }
-    
-    public static Language<GlslTokenID> getLanguage(){
+
+    public static Language<GlslTokenID> getLanguage() {
         return new GlslLanguageHierarchy().language();
     }
 }

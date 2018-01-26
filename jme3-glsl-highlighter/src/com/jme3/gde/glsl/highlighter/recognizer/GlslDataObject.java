@@ -138,23 +138,25 @@ public class GlslDataObject extends MultiDataObject {
     protected Node createNodeDelegate() {
         return new GlslNode(getLookup());
     }
-    
+
     //We need a custom node in order to get a dynamic icon for some reason
     private class GlslNode extends DataNode {
+
         private final Image fragIcon = ImageUtilities.loadImage("com/jme3/gde/glsl/highlighter/recognizer/fragIcon.png"),
                 vertIcon = ImageUtilities.loadImage("com/jme3/gde/glsl/highlighter/recognizer/vertIcon.png"),
                 defaultIcon = ImageUtilities.loadImage("org/netbeans/modules/java/resources/annotation_file.png");
-        
+
         public GlslNode(Lookup lookup) {
             super(GlslDataObject.this, Children.LEAF, lookup);
-        }        
+        }
 
         @Override
         public Image getIcon(int type) {
-            if (getPrimaryFile().getExt().toLowerCase().equals("frag"))
+            if (getPrimaryFile().getExt().toLowerCase().equals("frag")) {
                 return fragIcon;
-            else if (getPrimaryFile().getExt().toLowerCase().equals("vert"))
+            } else if (getPrimaryFile().getExt().toLowerCase().equals("vert")) {
                 return vertIcon;
+            }
             return defaultIcon;
         }
     }

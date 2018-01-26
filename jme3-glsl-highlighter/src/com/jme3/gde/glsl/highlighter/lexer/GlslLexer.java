@@ -40,13 +40,15 @@ import org.netbeans.spi.lexer.TokenFactory;
 
 /**
  * Tokenizes the text the user is typing, so we can highlight it as needed.
+ *
  * @author grizeldi
  */
-public class GlslLexer implements Lexer<GlslTokenID>{
+public class GlslLexer implements Lexer<GlslTokenID> {
+
     private final LexerInput lexerInput;
     private final TokenFactory tokenFactory;
     private final Logger log = Logger.getLogger(this.getClass().getCanonicalName());
-    
+
     private String thisLineSoFar = "";
 
     public GlslLexer(LexerRestartInfo info) {
@@ -58,53 +60,59 @@ public class GlslLexer implements Lexer<GlslTokenID>{
     public Token<GlslTokenID> nextToken() {
         int c;
         c = lexerInput.read();
-        thisLineSoFar += (char)c;
-        if (isDigit(c)){
-            while (true){
+        thisLineSoFar += (char) c;
+        if (isDigit(c)) {
+            while (true) {
                 int next = lexerInput.read();
-                if (!isDigit(next)){
-                    if (next == '.' || next == 'f' || next == 'F')
+                if (!isDigit(next)) {
+                    if (next == '.' || next == 'f' || next == 'F') {
                         continue;
+                    }
                     lexerInput.backup(1);
                     return token(GlslTokenID.NUMBER);
                 }
             }
         }
-        switch (c){
+        switch (c) {
             case '/':
                 int next = lexerInput.read();
-                if (next == '/'){
+                if (next == '/') {
                     //It's an inline comment
                     readTillNewLine();
                     return token(GlslTokenID.INLINE_COMMENT);
-                }else if (next == '*'){
-                    while (true){
+                } else if (next == '*') {
+                    while (true) {
                         int c1 = lexerInput.read();
-                        if (c1 == '*'){
-                            if (lexerInput.read() == '/')
+                        if (c1 == '*') {
+                            if (lexerInput.read() == '/') {
                                 return token(GlslTokenID.BLOCK_COMMENT);
-                            else
+                            } else {
                                 lexerInput.backup(1);
-                        }else if (c1 == LexerInput.EOF)
+                            }
+                        } else if (c1 == LexerInput.EOF) {
                             return token(GlslTokenID.BLOCK_COMMENT);
+                        }
                     }
-                }else
+                } else {
                     lexerInput.backup(1);
+                }
                 return token(GlslTokenID.OPERATOR);
             case '\"':
             case '\'':
                 //String starts here
-                int previous = c, starter = c;
-                while (true){
+                int previous = c,
+                 starter = c;
+                while (true) {
                     int now = lexerInput.read();
 
-                    if (now == starter && previous != '\\')
+                    if (now == starter && previous != '\\') {
                         break;
+                    }
                     previous = now;
                 }
                 return token(GlslTokenID.STRING);
             case '#':
-                if (thisLineSoFar.trim().equals("#")){
+                if (thisLineSoFar.trim().equals("#")) {
                     //Preprocessor code
                     readTillNewLine();
                     return token(GlslTokenID.PREPROCESSOR);
@@ -129,12 +137,18 @@ public class GlslLexer implements Lexer<GlslTokenID>{
             case '\\':
                 return token(GlslTokenID.OPERATOR);
             //Those have to be recognized separately for closing bracket recognition
-            case '(':return token(GlslTokenID.LPARENTHESIS);
-            case ')':return token(GlslTokenID.RPARENTHESIS);
-            case '{':return token(GlslTokenID.LBRACKET);
-            case '}':return token(GlslTokenID.RBRACKET);
-            case '[':return token(GlslTokenID.LSQUARE);
-            case ']':return token(GlslTokenID.RSQUARE);
+            case '(':
+                return token(GlslTokenID.LPARENTHESIS);
+            case ')':
+                return token(GlslTokenID.RPARENTHESIS);
+            case '{':
+                return token(GlslTokenID.LBRACKET);
+            case '}':
+                return token(GlslTokenID.RBRACKET);
+            case '[':
+                return token(GlslTokenID.LSQUARE);
+            case ']':
+                return token(GlslTokenID.RSQUARE);
             case '\n':
             case '\r':
                 thisLineSoFar = "";
@@ -143,43 +157,49 @@ public class GlslLexer implements Lexer<GlslTokenID>{
                 return null;
             default:
                 //Text, gotta look it up the library
-                String word = "" + (char)c;
-                if (GlslKeywordLibrary.lookup(word) != null){
+                String word = "" + (char) c;
+                if (GlslKeywordLibrary.lookup(word) != null) {
                     GlslKeywordLibrary.KeywordType current;
-                    while (true){
+                    while (true) {
                         word += (char) lexerInput.read();
                         current = GlslKeywordLibrary.lookup(word);
-                        if (current != GlslKeywordLibrary.KeywordType.UNFINISHED){
-                            if (current == null)
+                        if (current != GlslKeywordLibrary.KeywordType.UNFINISHED) {
+                            if (current == null) {
                                 break;
-                            char nextChar = (char)lexerInput.read();
+                            }
+                            char nextChar = (char) lexerInput.read();
                             lexerInput.backup(1);
                             if (GlslKeywordLibrary.lookup(word + nextChar) == null /*&& (
                                     nextChar == ' ' || nextChar == '(' || nextChar == '\n' || nextChar == '\r'
-                                    || nextChar == ';' || nextChar == ',' || nextChar == '.')*/){ //Define here what is allowed to be directly behind a keyword
+                                    || nextChar == ';' || nextChar == ',' || nextChar == '.')*/) { //Define here what is allowed to be directly behind a keyword
                                 if (current == GlslKeywordLibrary.KeywordType.BASIC_TYPE && (//What can be behind a primitve
-                                        nextChar == ' ' || nextChar == '(' || nextChar == '\n' ||
-                                        nextChar == '\r'))
+                                        nextChar == ' ' || nextChar == '(' || nextChar == '\n'
+                                        || nextChar == '\r')) {
                                     break;
+                                }
                                 if (current == GlslKeywordLibrary.KeywordType.KEYWORD && (//What can be behind a keyword
-                                        nextChar == ' ' || nextChar == '{' || nextChar == ':' ||
-                                        nextChar == ';' || nextChar == '(' || nextChar == ')' ||
-                                        nextChar == '\n' || nextChar == '\r'))
+                                        nextChar == ' ' || nextChar == '{' || nextChar == ':'
+                                        || nextChar == ';' || nextChar == '(' || nextChar == ')'
+                                        || nextChar == '\n' || nextChar == '\r')) {
                                     break;
+                                }
                                 if (current == GlslKeywordLibrary.KeywordType.BUILTIN_VARIABLE && (//What can be behind a builtin variable
-                                        nextChar == ';' || nextChar == '.' || nextChar == ' ' ||
-                                        nextChar == ',' || nextChar == '\n' || nextChar == '\r' ||
-                                        nextChar == ')'))
+                                        nextChar == ';' || nextChar == '.' || nextChar == ' '
+                                        || nextChar == ',' || nextChar == '\n' || nextChar == '\r'
+                                        || nextChar == ')')) {
                                     break;
+                                }
                                 if (current == GlslKeywordLibrary.KeywordType.BUILTIN_FUNCTION && (//What can be behind a builtin functions
-                                        nextChar == '(' || nextChar == '\n' || nextChar == '\r'))
+                                        nextChar == '(' || nextChar == '\n' || nextChar == '\r')) {
                                     break;
+                                }
                             }
                         }
                     }
-                    if (current == null)
+                    if (current == null) {
                         break;
-                    switch(current){
+                    }
+                    switch (current) {
                         case BASIC_TYPE:
                             return token(GlslTokenID.PRIMITIVE);
                         case KEYWORD:
@@ -201,26 +221,35 @@ public class GlslLexer implements Lexer<GlslTokenID>{
 
     //Honestly, I have no idea what is this.
     @Override
-    public void release() {}
-    
-    private Token<GlslTokenID> token(GlslTokenID id){
+    public void release() {
+    }
+
+    private Token<GlslTokenID> token(GlslTokenID id) {
         return tokenFactory.createToken(id);
     }
-    
-    private boolean isDigit(int c){
-        switch (c){
-            case'0':case'1':case'2':case'3':case'4':
-            case'5':case'6':case'7':case'8':case'9':
+
+    private boolean isDigit(int c) {
+        switch (c) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 return true;
             default:
                 return false;
         }
     }
-    
-    private void readTillNewLine(){
-        while (true){
+
+    private void readTillNewLine() {
+        while (true) {
             int in = lexerInput.read();
-            if (in == '\n' || in == '\r' || in == LexerInput.EOF){
+            if (in == '\n' || in == '\r' || in == LexerInput.EOF) {
                 lexerInput.backup(1);
                 break;
             }

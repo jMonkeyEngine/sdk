@@ -35,19 +35,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Brace, yourselves, this file contains every word that means something in GLSL.
- * Expect about 400 lines of code that just adds strings.
+ * Brace, yourselves, this file contains every word that means something in
+ * GLSL. Expect about 400 lines of code that just adds strings.
+ *
  * @author grizeldi
  */
 class GlslKeywordLibrary {
-    public enum KeywordType{
+
+    public enum KeywordType {
         KEYWORD, BUILTIN_FUNCTION, BUILTIN_VARIABLE, BASIC_TYPE, UNFINISHED;
     }
     private static final List<String> keywords = new ArrayList<>(),
             builtinFunctions = new ArrayList<>(),
             builtinVariables = new ArrayList<>(),
             basicTypes = new ArrayList<>();
-    
+
     static {
         //keywords
         keywords.add("attribute");
@@ -435,47 +437,50 @@ class GlslKeywordLibrary {
         builtinFunctions.add("memoryBarrierImage");
         builtinFunctions.add("groupMemoryBarrier");
     }
-    
-    public static KeywordType lookup(String s){
+
+    public static KeywordType lookup(String s) {
         KeywordType returnType = null;
-        for (String primitive : basicTypes){
-            if (primitive.startsWith(s)){
-                if (primitive.equals(s)){
+        for (String primitive : basicTypes) {
+            if (primitive.startsWith(s)) {
+                if (primitive.equals(s)) {
                     returnType = KeywordType.BASIC_TYPE;
                     break;
-                }else
+                } else {
                     returnType = KeywordType.UNFINISHED;
+                }
             }
         }
-        for (String var : builtinVariables){
-            if (var.startsWith(s)){
-                if (var.equals(s)){
+        for (String var : builtinVariables) {
+            if (var.startsWith(s)) {
+                if (var.equals(s)) {
                     returnType = KeywordType.BUILTIN_VARIABLE;
                     break;
-                }else
+                } else {
                     returnType = KeywordType.UNFINISHED;
+                }
             }
         }
-        for (String func : builtinFunctions){
-            if (func.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)){
-                if (func.equals(s)){
+        for (String func : builtinFunctions) {
+            if (func.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)) {
+                if (func.equals(s)) {
                     returnType = KeywordType.BUILTIN_FUNCTION;
                     break;
-                }else
+                } else {
                     returnType = KeywordType.UNFINISHED;
+                }
             }
         }
-        for (String keyword : keywords){
-            if (keyword.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)){
-                if (keyword.equals(s)){
+        for (String keyword : keywords) {
+            if (keyword.startsWith(s) && (returnType == KeywordType.UNFINISHED || returnType == null)) {
+                if (keyword.equals(s)) {
                     returnType = KeywordType.KEYWORD;
                     break;
-                }
-                else
+                } else {
                     returnType = KeywordType.UNFINISHED;
+                }
             }
         }
-        
+
         return returnType;
     }
 }

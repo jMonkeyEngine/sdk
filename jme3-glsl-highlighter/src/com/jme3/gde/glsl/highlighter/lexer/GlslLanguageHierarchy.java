@@ -41,7 +41,7 @@ import org.netbeans.spi.lexer.LexerRestartInfo;
  *
  * @author grizeldi
  */
-public class GlslLanguageHierarchy extends LanguageHierarchy<GlslTokenID>{
+public class GlslLanguageHierarchy extends LanguageHierarchy<GlslTokenID> {
 
     @Override
     protected Collection<GlslTokenID> createTokenIds() {
@@ -57,5 +57,5 @@ public class GlslLanguageHierarchy extends LanguageHierarchy<GlslTokenID>{
     protected String mimeType() {
         return "text/x-glsl";
     }
-    
+
 }
