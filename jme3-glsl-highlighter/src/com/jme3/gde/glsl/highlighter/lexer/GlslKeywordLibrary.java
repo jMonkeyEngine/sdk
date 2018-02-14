@@ -226,6 +226,7 @@ class GlslKeywordLibrary {
         //vertex shaders
         builtinVariables.add("gl_VertexID");
         builtinVariables.add("gl_InstanceID");
+        builtinVariables.add("gl_Position");
         //geometry shaders
         builtinVariables.add("gl_PrimitiveIDIn");
         builtinVariables.add("gl_Layer");
@@ -245,6 +246,7 @@ class GlslKeywordLibrary {
         builtinVariables.add("gl_SampleMaskIn");
         builtinVariables.add("gl_Layer");
         builtinVariables.add("gl_ViewportIndex");
+        builtinVariables.add("gl_FragColor");
         //general
         builtinVariables.add("gl_Position");
         builtinVariables.add("gl_PointSize");
@@ -256,10 +258,38 @@ class GlslKeywordLibrary {
         builtinVariables.add("inNormal");
         builtinVariables.add("inColor");
         builtinVariables.add("inTextCoord");
-        builtinVariables.add("g_WorldViewMatrix");
+        builtinVariables.add("g_WorldMatrix");
+        builtinVariables.add("g_ViewMatrix");
         builtinVariables.add("g_ProjectionMatrix");
+        builtinVariables.add("g_WorldViewMatrix");
         builtinVariables.add("g_WorldViewProjectionMatrix");
+        builtinVariables.add("g_WorldNormalMatrix");
         builtinVariables.add("g_NormalMatrix");
+        builtinVariables.add("g_ViewProjectionMatrix");
+        builtinVariables.add("g_WorldMatrixInverseTranspose");
+        builtinVariables.add("g_WorldMatrixInverse");
+        builtinVariables.add("g_ViewMatrixInverse");
+        builtinVariables.add("g_ProjectionMatrixInverse");
+        builtinVariables.add("g_ViewProjectionMatrixInverse");
+        builtinVariables.add("g_WorldViewMatrixInverse");
+        builtinVariables.add("g_NormalMatrixInverse");
+        builtinVariables.add("g_WorldViewProjectionMatrixInverse");
+        builtinVariables.add("g_ViewPort");
+        builtinVariables.add("g_FrustumNearFar");
+        builtinVariables.add("g_Resolution");
+        builtinVariables.add("g_ResolutionInverse");
+        builtinVariables.add("g_Aspect");
+        builtinVariables.add("g_CameraPosition");
+        builtinVariables.add("g_CameraDirection");
+        builtinVariables.add("g_CameraLeft");
+        builtinVariables.add("g_CameraUp");
+        builtinVariables.add("g_Time");
+        builtinVariables.add("g_Tpf");
+        builtinVariables.add("g_FrameRate");
+        builtinVariables.add("g_LightDirection");
+        builtinVariables.add("g_LightPosition");
+        builtinVariables.add("g_LightColor");
+        builtinVariables.add("g_AmbientLightColor");
         //builtin functions
         builtinFunctions.add("radians");
         builtinFunctions.add("degrees");
