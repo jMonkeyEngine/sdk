@@ -49,15 +49,17 @@ public class GlslIndentTask implements IndentTask{
         this.context = context;
     }
     
+    @Override
     public void reindent() throws BadLocationException {
-        Document doc = context.document();
-        System.out.println("Document: " + context.document());
-        System.out.println("Start: " + context.startOffset() + " End: " + context.endOffset());
-        System.out.println("Line start offset of previous line: " + context.lineStartOffset(context.startOffset() - 1));
+        context.setCaretOffset(1);
+        final Document doc = context.document();
         int indentModifier = 0;
+        
         //Check if previous line ends with a {
         int previousLineLength = context.startOffset() - 1 - context.lineStartOffset(context.startOffset() - 1);
         String previousLine = doc.getText(context.lineStartOffset(context.startOffset() - 1), previousLineLength);
+        
+        //Hook other reasons for changes in indentation into this for loop
         for (int i = previousLineLength - 1; i >= 0; i--){
             if (previousLine.charAt(i) == '}'){
                 break;
@@ -66,9 +68,11 @@ public class GlslIndentTask implements IndentTask{
                 break;
             }
         }
-        context.modifyIndent(context.startOffset(), context.lineIndent(context.lineStartOffset(context.startOffset() - 1)) + indentModifier);
+        int previousLineIndent = context.lineIndent(context.lineStartOffset(context.startOffset() - 1));
+        context.modifyIndent(context.startOffset(),  previousLineIndent + indentModifier);
     }
 
+    @Override
     public ExtraLock indentLock() {
         return null;
     }
