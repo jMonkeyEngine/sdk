@@ -154,7 +154,7 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
             if (sky.getEditorSingle().getAsText() == null){ throw new WizardValidationException(null, " Single Texture: Missing texture!", null); }
             if (sky.getEditorSingle().getValue() == null || ((Texture)sky.getEditorSingle().getValue()).getImage() == null){ throw new WizardValidationException(null, " Single Texture: Cannot load texture!", null); }
             Image I = ((Texture)sky.getEditorSingle().getValue()).getImage();
-            if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Single Texture: Image has to be a square (width == height)!", null); }
+            //if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Single Texture: Image has to be a square (width == height)!", null); }
         }
     }
     
