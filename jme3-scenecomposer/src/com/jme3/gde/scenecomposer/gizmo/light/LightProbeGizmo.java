@@ -92,7 +92,7 @@ public class LightProbeGizmo extends NodeCallback {
      */
     @Override
     public void onResize(Vector3f oldScale, Vector3f newScale) {
-        ((BoundingSphere)jmeProbe.getLightProbe().getBounds()).setRadius(LightGizmoFactory.scaleToRadius(newScale));
+        jmeProbe.getLightProbe().getArea().setRadius(LightGizmoFactory.scaleToRadius(newScale));
     }
 
     /**
