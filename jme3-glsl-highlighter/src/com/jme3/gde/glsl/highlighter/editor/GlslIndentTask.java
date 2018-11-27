@@ -42,34 +42,35 @@ import org.netbeans.modules.editor.indent.spi.IndentTask;
  *
  * @author grizeldi
  */
-public class GlslIndentTask implements IndentTask{
+public class GlslIndentTask implements IndentTask {
+
     private Context context;
 
     public GlslIndentTask(Context context) {
         this.context = context;
     }
-    
+
     @Override
     public void reindent() throws BadLocationException {
         context.setCaretOffset(1);
         final Document doc = context.document();
         int indentModifier = 0;
-        
+
         //Check if previous line ends with a {
         int previousLineLength = context.startOffset() - 1 - context.lineStartOffset(context.startOffset() - 1);
         String previousLine = doc.getText(context.lineStartOffset(context.startOffset() - 1), previousLineLength);
-        
+
         //Hook other reasons for changes in indentation into this for loop
-        for (int i = previousLineLength - 1; i >= 0; i--){
-            if (previousLine.charAt(i) == '}'){
+        for (int i = previousLineLength - 1; i >= 0; i--) {
+            if (previousLine.charAt(i) == '}') {
                 break;
-            }else if (previousLine.charAt(i) == '{'){
+            } else if (previousLine.charAt(i) == '{') {
                 indentModifier += IndentUtils.indentLevelSize(doc);
                 break;
             }
         }
         int previousLineIndent = context.lineIndent(context.lineStartOffset(context.startOffset() - 1));
-        context.modifyIndent(context.startOffset(),  previousLineIndent + indentModifier);
+        context.modifyIndent(context.startOffset(), previousLineIndent + indentModifier);
     }
 
     @Override
