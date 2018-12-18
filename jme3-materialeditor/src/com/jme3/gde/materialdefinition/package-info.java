@@ -29,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-@TemplateRegistration(folder = "Material", content = "MatDef.j3md",displayName="Material Definition Template")
+@TemplateRegistration(folder = "Material", content = "MatDef.j3md", displayName="Material Definition Template")
 package com.jme3.gde.materialdefinition;
 
 import org.netbeans.api.templates.TemplateRegistration;

@@ -93,11 +93,12 @@ public class JmeDirectionalLight extends JmeLight {
 
     public void setDirection(Vector3f direction) {
         // Don't directly pass it on to the Light
-        if (gizmo == null) {
+         /* See Implementation in DirectionalLightGizmo, why it's commented */
+        //if (gizmo == null) {
             directionalLight.setDirection(direction.normalize());
-        } else {
+        /*} else {
             gizmo.onSetDirection(direction.normalize());
-        }
+        }*/
     }
     
     public Vector3f getDirection() {

@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.mycompany.wizard.panels.HelloWorldPanel;
 import org.mycompany.installer.utils.applications.NetBeansRCPUtils;
 import org.netbeans.installer.product.components.ProductConfigurationLogic;

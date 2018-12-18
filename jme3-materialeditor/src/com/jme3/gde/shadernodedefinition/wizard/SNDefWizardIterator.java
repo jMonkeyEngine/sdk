@@ -32,7 +32,7 @@ import org.openide.util.NbBundle.Messages;
 
 // TODO define position attribute
 @TemplateRegistrations({
-    @TemplateRegistration(folder = "Material", content = "../SNDefTemplate.j3sn", displayName = "Shader Node Definition", iconBase = "com/jme3/gde/materialdefinition/icons/node.png", description = "./sNDef.html", scriptEngine = "freemarker"),
+    @TemplateRegistration(folder = "Material", content = "../SNDefTemplate.j3sn", displayName = "Shader Node Definition", iconBase = "com/jme3/gde/core/editor/icons/node.png", description = "./sNDef.html", scriptEngine = "freemarker"),
     @TemplateRegistration(folder = "Material", content = "../ShaderNodeSource", scriptEngine = "freemarker")
 })
 @Messages("SNDefWizardIterator_displayName=Shader Node Definition")

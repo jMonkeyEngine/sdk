@@ -16,20 +16,15 @@ import com.jme3.gde.core.properties.TexturePropertyEditor;
 import com.jme3.gde.core.properties.preview.TexturePreview;
 import com.jme3.gde.materials.MaterialProperty;
 import com.jme3.gde.materials.multiview.MaterialEditorTopComponent;
-import com.jme3.texture.Texture;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.SwingUtilities;
-import jme3tools.converters.ImageToAwt;
-import org.openide.util.ImageUtilities;
 
 /**
- *
+ * The TexturePanel is a row in the material editor representing a special texture
  * @author normenhansen
  */
 public class TexturePanel extends MaterialPropertyWidget {
@@ -38,7 +33,7 @@ public class TexturePanel extends MaterialPropertyWidget {
     private final ProjectAssetManager manager;
     private boolean flip = false;
     private boolean repeat = false;
-    private String textureName = null;
+    protected String textureName = null; // always enclosed with ""
     private TexturePreview texPreview;
     private final ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
 
@@ -52,20 +47,23 @@ public class TexturePanel extends MaterialPropertyWidget {
     private void displayPreview() {
         if (!"".equals(textureName)) {
             exec.execute(new Runnable() {
-
                 @Override
                 public void run() {
                     try{
                         if (texPreview == null) {
                             texPreview = new TexturePreview(manager);
                         }
-                        texPreview.requestPreview(textureName, "", 80, 25, texturePreview, null);
+                        texPreview.requestPreview(stripQuotes(textureName), "", 80, 25, texturePreview, null);
                     } catch (AssetNotFoundException a) {
                         Logger.getLogger(MaterialEditorTopComponent.class.getName()).log(Level.WARNING, "Could not load texture {0}", textureName);
                     }
                 }
             });
         }
+    }
+    
+    private String stripQuotes(String s) {
+        return s.substring(1, s.length() - 1);
     }
 
     private void updateFlipRepeat() {
@@ -243,15 +241,21 @@ public class TexturePanel extends MaterialPropertyWidget {
         Component view = editor.getCustomEditor();
         view.setVisible(true);
         if (editor.getValue() != null) {
-            textureName = editor.getAsText();
+            textureName = "\"" + editor.getAsText() + "\"";
             displayPreview();
             updateFlipRepeat();
+            fireChanged();
+        } else { // "No Texture" has been clicked
+            textureName = "\"\"";
+            texturePreview.setIcon(null);
+            texturePreview.setToolTipText("");
+            property.setValue("");
             fireChanged();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        textureName = "";
+        textureName = "\"\"";
         texturePreview.setIcon(null);
         texturePreview.setToolTipText("");
         property.setValue("");
@@ -280,6 +284,7 @@ public class TexturePanel extends MaterialPropertyWidget {
     protected void readProperty() {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 if (property.getValue().startsWith("Flip Repeat ")) {
                     flip = true;

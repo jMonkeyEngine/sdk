@@ -1,3 +1,5 @@
 Updating Bundled Products:
 a) To update the JDK edit ~/jdks/download-jdks.sh and make sure to clean any caches (on CI-Systems like Travis) or delete the file links in ~/jdks/
 b) To update blender you simply need to change the download URLs AND the Base Folder (just see their properties files, it’s self explanatory)
+
+The product "helloworld" is the SDK itself (don't ask me, legacy code)

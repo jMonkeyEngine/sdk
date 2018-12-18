@@ -1,7 +1,33 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.scenecomposer.gizmo.light;
 
@@ -11,7 +37,6 @@ import com.jme3.gde.core.sceneexplorer.nodes.JmeDirectionalLight;
 import com.jme3.gde.core.sceneexplorer.nodes.gizmo.DirectionalLightGizmoInterface;
 import com.jme3.gde.scenecomposer.SceneComposerToolController;
 import com.jme3.gde.scenecomposer.SceneComposerTopComponent;
-import com.jme3.gde.scenecomposer.SceneEditTool;
 import com.jme3.gde.scenecomposer.gizmo.NodeCallback;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.FastMath;
@@ -60,6 +85,15 @@ public class DirectionalLightGizmo extends NodeCallback implements DirectionalLi
     
     @Override
     public void onSetDirection(Vector3f direction) {
+        /*
+          Commented out on 17/01/2018 by MeFisto94
+          Reason: This method and interface have been introduced by me in order
+          to fix a bug. Unfortunately I did not see the real root cause back then.
+          I've now fixed the actual cause, but this block of code will stay, because
+          it's what we'll ultimatively refactor to: Event-Driven Property -> Gizmos.
+          Currently we have stupid Controls checking the Direction every frame and
+          adjusting the gizmos if they changed...
+        
         // We cannot set the light direction directly, we have to adjust the
         // rotation as well (which in turn calls onRotation to set the direction)
          
@@ -81,7 +115,7 @@ public class DirectionalLightGizmo extends NodeCallback implements DirectionalLi
         SceneComposerToolController sctc = SceneComposerTopComponent.findInstance().getToolController();
         if (sctc.getSelectedSpatial() != null) {
            sctc.selectedSpatialTransformed();
-        }
+        }*/
     }
 
     private final BoundingSphere bv = new BoundingSphere(10f, getWorldTranslation());

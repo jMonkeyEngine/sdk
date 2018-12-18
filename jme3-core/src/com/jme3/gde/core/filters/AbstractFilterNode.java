@@ -36,12 +36,17 @@ import com.jme3.gde.core.icons.IconList;
 import com.jme3.gde.core.properties.SceneExplorerProperty;
 import com.jme3.gde.core.properties.ScenePropertyChangeListener;
 import com.jme3.gde.core.scene.SceneSyncListener;
+import com.jme3.gde.core.sceneexplorer.nodes.AbstractSceneExplorerNode;
 import com.jme3.gde.core.util.PropertyUtils;
 import com.jme3.post.Filter;
 import java.awt.Image;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.Action;
 import org.openide.actions.DeleteAction;
 import org.openide.actions.MoveDownAction;
@@ -219,11 +224,79 @@ public abstract class AbstractFilterNode extends AbstractNode implements FilterN
         return prop;
     }
 
-    protected void createFields(Class c, Sheet.Set set, Object obj) throws SecurityException {
+    /**
+     * Scans the passed object for all it's fields and adds them to the Property
+     * Sheet Set.
+     * 
+     * @param c The Class of obj
+     * @param set The Property Sheet Set to add values to
+     * @param obj The Object to inspect
+     * @return The Methods which have been added/discovered. See
+     * {@link #createMethods(java.lang.Class, org.openide.nodes.Sheet.Set,
+     * java.lang.Object, java.lang.reflect.Method[]) }
+     * @throws SecurityException When Inspecting using Reflection failed
+     * @see AbstractSceneExplorerNode#createFields(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object) 
+     */
+    protected Method[] createFields(Class c, Sheet.Set set, Object obj) throws SecurityException {
+        ArrayList<Method> methodList = new ArrayList<Method>(c.getDeclaredFields().length);
         for (Field field : c.getDeclaredFields()) {
             PropertyDescriptor prop = PropertyUtils.getPropertyDescriptor(c, field);
             if (prop != null) {
-                set.put(makeProperty(obj, prop.getPropertyType(), prop.getReadMethod().getName(), prop.getWriteMethod().getName(), prop.getDisplayName()));
+                methodList.add(prop.getReadMethod());
+                methodList.add(prop.getWriteMethod());
+                set.put(
+                    makeProperty(
+                            obj, prop.getPropertyType(),
+                            prop.getReadMethod().getName(),
+                            prop.getWriteMethod().getName(),
+                            prop.getDisplayName()
+                    )
+                );
+            }
+        }
+        
+        return methodList.toArray(new Method[methodList.size()]);
+    }
+    
+    /**
+     * Scans the passed object for all it's methods and adds them to the
+     * PropertySheet Set. Excludes the methods passed in, which are typically
+     * already found by {@link #createFields(java.lang.Class,
+     * org.openide.nodes.Sheet.Set, java.lang.Object) } and should not
+     * be added twice to the Properties.
+     * 
+     * @param c The Class of obj
+     * @param set The Property Sheet Set to add values to
+     * @param obj The Object to inspect
+     * @param ignoreMethods The Methods to ignore
+     * @throws SecurityException When Inspecting using Reflection failed
+     */
+    protected void createMethods(Class c, Sheet.Set set, Object obj, Method[] ignoreMethods) throws SecurityException {
+        List<Method> ignoreMethodList = new ArrayList<Method>(Arrays.asList(ignoreMethods));
+        
+        for (Method m : c.getDeclaredMethods()) {
+            // Ignore Methods which were already discovered by the fields.
+            if (!ignoreMethodList.contains(m)) {
+                PropertyDescriptor prop = PropertyUtils.getPropertyDescriptor(c, m);
+                if (prop != null) {
+                    /* add the setter/getter to the ignoreMethodsList, to
+                     * prevent double discovery of the same internal field
+                     */
+                    ignoreMethodList.add(prop.getReadMethod());
+                    ignoreMethodList.add(prop.getWriteMethod());
+                    
+                    set.put(
+                        makeProperty(
+                            obj, prop.getPropertyType(),
+                            prop.getReadMethod().getName(),
+                            prop.getWriteMethod().getName(),
+                            prop.getDisplayName().substring(
+                                // Remove "Is " "Set "
+                                prop.getDisplayName().indexOf(" ") + 1
+                            )
+                        )
+                    );
+                }
             }
         }
     }

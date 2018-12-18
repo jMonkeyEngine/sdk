@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 jMonkeyEngine
+ * Copyright (c) 2009-2018 jMonkeyEngine
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +55,7 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
     // is kept separate. This can be more efficient: if the wizard is created
     // but never displayed, or not all panels are displayed, it is better to
     // create only those which really need to be visible.
+    @Override
     public Component getComponent() {
         if (component == null) {
             component = new SkyboxVisualPanel2();
@@ -62,6 +63,7 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
         return component;
     }
 
+    @Override
     public HelpCtx getHelp() {
         // Show no Help button for this panel:
         return HelpCtx.DEFAULT_HELP;
@@ -69,6 +71,7 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
         // return new HelpCtx(SampleWizardPanel1.class);
     }
 
+    @Override
     public boolean isValid() {
         // If it is always OK to press Next or Finish, then:
         return true;
@@ -132,6 +135,8 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
             if (sky.getEditorBottom().getValue() == null || ((Texture)sky.getEditorBottom().getValue()).getImage() == null) { throw new WizardValidationException(null, " Texture Bottom: Cannot load texture!", null); }
             
             /* Check for squares */
+            /* Commented out because "equirect" hdr maps don't need that somehow. */
+            /*
             Image I = ((Texture)sky.getEditorNorth().getValue()).getImage();
             if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Texture North: Image has to be a square (width == height)!", null); }
             I = ((Texture)sky.getEditorSouth().getValue()).getImage();
@@ -144,11 +149,12 @@ public class SkyboxWizardPanel2 implements WizardDescriptor.ValidatingPanel<Wiza
             if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Texture Top: Image has to be a square (width == height)!", null); }
             I = ((Texture)sky.getEditorBottom().getValue()).getImage();
             if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Texture Bottom: Image has to be a square (width == height)!", null); }
+            */
         } else {
             if (sky.getEditorSingle().getAsText() == null){ throw new WizardValidationException(null, " Single Texture: Missing texture!", null); }
             if (sky.getEditorSingle().getValue() == null || ((Texture)sky.getEditorSingle().getValue()).getImage() == null){ throw new WizardValidationException(null, " Single Texture: Cannot load texture!", null); }
             Image I = ((Texture)sky.getEditorSingle().getValue()).getImage();
-            if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Single Texture: Image has to be a square (width == height)!", null); }
+            //if (I.getWidth() != I.getHeight()) { throw new WizardValidationException(null, " Single Texture: Image has to be a square (width == height)!", null); }
         }
     }
     

@@ -1,10 +1,37 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.materialdefinition.editor;
 
+import com.jme3.gde.core.editor.nodes.Diagram;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
 import com.jme3.material.Material;
 import java.awt.Container;
@@ -16,6 +43,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
@@ -24,10 +52,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- *
+ * The ShaderBackdrop Panel is the Material renderer in the background of the
+ * ShaderNodes Editor. It can be placed behind all the out-busses but can also
+ * be toggled to be drawn infront of everything
  * @author Nehon
  */
-public class BackdropPanel extends javax.swing.JPanel implements MouseListener, ChangeListener,MouseMotionListener {
+public class BackdropPanel extends JPanel implements MouseListener, ChangeListener,MouseMotionListener {
 
     private final MaterialPreviewRenderer renderer;
     private Material mat;
@@ -114,7 +144,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         toolBar.setOpaque(false);
 
         reloadButton.setBackground(new java.awt.Color(153, 153, 153));
-        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/reload.png"))); // NOI18N
+        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/reload.png"))); // NOI18N
         reloadButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.reloadButton.toolTipText")); // NOI18N
         reloadButton.setBorder(null);
         reloadButton.setBorderPainted(false);
@@ -140,7 +170,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         });
 
         expandButton.setBackground(new java.awt.Color(153, 153, 153));
-        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/collapse.png"))); // NOI18N
+        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/collapse.png"))); // NOI18N
         expandButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.expandButton.toolTipText")); // NOI18N
         expandButton.setBorder(null);
         expandButton.setBorderPainted(false);
@@ -166,7 +196,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         });
 
         sphereButton.setBackground(new java.awt.Color(153, 153, 153));
-        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/Sphere.png"))); // NOI18N
+        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Sphere.png"))); // NOI18N
         sphereButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.sphereButton.toolTipText")); // NOI18N
         sphereButton.setBorder(null);
         sphereButton.setBorderPainted(false);
@@ -192,7 +222,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         });
 
         boxButton.setBackground(new java.awt.Color(153, 153, 153));
-        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/cube.png"))); // NOI18N
+        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/cube.png"))); // NOI18N
         boxButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.boxButton.toolTipText")); // NOI18N
         boxButton.setBorder(null);
         boxButton.setBorderPainted(false);
@@ -218,7 +248,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         });
 
         quadButton.setBackground(new java.awt.Color(153, 153, 153));
-        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/Quad.png"))); // NOI18N
+        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Quad.png"))); // NOI18N
         quadButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.quadButton.toolTipText")); // NOI18N
         quadButton.setBorder(null);
         quadButton.setBorderPainted(false);
@@ -244,7 +274,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         });
 
         bringToFrontButton.setBackground(new java.awt.Color(153, 153, 153));
-        bringToFrontButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/frontBack.png"))); // NOI18N
+        bringToFrontButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/frontBack.png"))); // NOI18N
         bringToFrontButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.bringToFrontButton.toolTipText")); // NOI18N
         bringToFrontButton.setBorder(null);
         bringToFrontButton.setBorderPainted(false);
@@ -440,6 +470,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         t.restart();
     }
 
+    @Override
     public void stateChanged(ChangeEvent e) {
         JViewport vp = (JViewport) e.getSource();
         update(vp);
@@ -448,6 +479,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
 
     private final Timer recalculateTimer = new Timer(20, new ActionListener() {
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             refresh();
         }
@@ -481,6 +513,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         }
     }
 
+    @Override
     public void mouseDragged(MouseEvent e) {
         Container c = getParent();
         if (c != null) {
@@ -488,6 +521,7 @@ public class BackdropPanel extends javax.swing.JPanel implements MouseListener, 
         }
     }
 
+    @Override
     public void mouseMoved(MouseEvent e) {
         Container c = getParent();
         if (c != null) {

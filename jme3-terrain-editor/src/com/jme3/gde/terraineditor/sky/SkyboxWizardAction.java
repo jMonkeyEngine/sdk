@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 jMonkeyEngine
+ * Copyright (c) 2009-2018 jMonkeyEngine
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,8 +41,6 @@ import org.openide.WizardDescriptor;
 import org.openide.util.HelpCtx;
 import org.openide.util.actions.CallableSystemAction;
 
-// An example action demonstrating how the wizard could be called from within
-// your code. You can copy-paste the code below wherever you need.
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class SkyboxWizardAction extends CallableSystemAction {
 
@@ -53,6 +51,7 @@ public final class SkyboxWizardAction extends CallableSystemAction {
         this.topComponent = topComponent;
     }
 
+    @Override
     public void performAction() {
         WizardDescriptor wizardDescriptor = new WizardDescriptor(getPanels());
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
@@ -103,8 +102,9 @@ public final class SkyboxWizardAction extends CallableSystemAction {
         return panels;
     }
 
+    @Override
     public String getName() {
-        return "Start Sample Wizard";
+        return "Start Skybox Wizard";
     }
 
     @Override
@@ -112,6 +112,7 @@ public final class SkyboxWizardAction extends CallableSystemAction {
         return null;
     }
 
+    @Override
     public HelpCtx getHelpCtx() {
         return HelpCtx.DEFAULT_HELP;
     }

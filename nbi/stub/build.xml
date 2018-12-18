@@ -242,7 +242,7 @@ jarsigner.enabled=${jarsigner.enabled}
                                    target="${bundles.release.dir}/${bundle.files.prefix}-${platform}.${bundle.extention}">
                     <component uid="${main.product.uid}" version="${main.product.version}"/>
                     <component uid="blender" version="${main.product.version}"/>
-                    <!--<component uid="jdk" version="${main.product.version}"/>-->
+                    <component uid="jdk" version="${main.product.version}"/>
                     <!--property name="nbi.bundled.jvm.file" value="${basedir}/../../jdks/mac_jdk.bin"/-->
                 </create-bundle>
             </if>

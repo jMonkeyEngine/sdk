@@ -34,7 +34,6 @@ package com.jme3.gde.core.sceneexplorer.nodes.actions;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.environment.EnvironmentCamera;
 import com.jme3.environment.LightProbeFactory;
-import com.jme3.environment.generation.JobProgressAdapter;
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.scene.controller.SceneToolController;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeLightProbeProgressHandler;
@@ -57,13 +56,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
-import org.netbeans.api.progress.ProgressHandle;
-import org.netbeans.api.progress.ProgressHandleFactory;
 import org.openide.loaders.DataObject;
 import org.openide.util.Lookup;
 import org.openide.util.actions.Presenter;
 
 /**
+ * Handles the SceneExplorers Popup Menu "New Light"
  *
  * @author normenhansen
  */
@@ -79,9 +77,11 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
         this.dataObject = node.getLookup().lookup(DataObject.class);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
     }
 
+    @Override
     public JMenuItem getPopupPresenter() {
         JMenu result = new JMenu("Add Light..");
         result.add(new JMenuItem(new AddAmbientAction()));
@@ -89,7 +89,7 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
         result.add(new JMenuItem(new AddPointAction()));
         result.add(new JMenuItem(new AddSpotAction()));
         result.add(new JMenuItem(new AddProbeAction()));
-        
+
         return result;
     }
 
@@ -99,11 +99,14 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
             putValue(NAME, "Ambient Light");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
 
+                @Override
                 public Void call() throws Exception {
                     AmbientLight light = new AmbientLight();
+                    light.setName("AmbientLight");
                     light.setColor(ColorRGBA.White);
                     node.addLight(light);
                     addLightUndo(node, light);
@@ -120,11 +123,14 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
             putValue(NAME, "Directional Light");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
 
+                @Override
                 public Void call() throws Exception {
                     DirectionalLight light = new DirectionalLight();
+                    light.setName("DirectionalLight");
                     light.setDirection(new Vector3f(-1, -1, -1).normalizeLocal());
                     light.setColor(ColorRGBA.White);
                     node.addLight(light);
@@ -142,13 +148,15 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
             putValue(NAME, "Point Light");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
-
+                @Override
                 public Void call() throws Exception {
                     PointLight light = new PointLight();
                     light.setColor(ColorRGBA.White);
-                     node.addLight(light);
+                    light.setName("PointLight");
+                    node.addLight(light);
                     addLightUndo(node, light);
                     setModified();
                     return null;
@@ -156,20 +164,22 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
             });
         }
     }
-    
+
     private class AddSpotAction extends AbstractAction {
 
         public AddSpotAction() {
             putValue(NAME, "Spot Light");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
-
+                @Override
                 public Void call() throws Exception {
                     SpotLight light = new SpotLight();
                     light.setColor(ColorRGBA.White);
-                     node.addLight(light);
+                    light.setName("SpotLight");
+                    node.addLight(light);
                     addLightUndo(node, light);
                     setModified();
                     return null;
@@ -177,7 +187,7 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
             });
         }
     }
-      
+
     private class AddProbeAction extends AbstractAction {
 
         public AddProbeAction() {
@@ -187,24 +197,23 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
         @Override
         public void actionPerformed(ActionEvent e) {
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
-
                 @Override
                 public Void call() throws Exception {
-                    
                     EnvironmentCamera envCam = SceneApplication.getApplication().getStateManager().getState(EnvironmentCamera.class);
-                    SceneToolController toolController =  SceneApplication.getApplication().getStateManager().getState(SceneToolController.class);
-                    if(toolController != null){
-                        envCam.setPosition(toolController.getCursorLocation());                    
+                    SceneToolController toolController = SceneApplication.getApplication().getStateManager().getState(SceneToolController.class);
+                    if (toolController != null) {
+                        envCam.setPosition(toolController.getCursorLocation());
                     } else {
-                        envCam.setPosition(new Vector3f(0, 0, 0));                    
+                        envCam.setPosition(new Vector3f(0, 0, 0));
                     }
-                    LightProbe lightProbe = LightProbeFactory.makeProbe(envCam, node, new JmeLightProbeProgressHandler());                                
+                    LightProbe lightProbe = LightProbeFactory.makeProbe(envCam, node, new JmeLightProbeProgressHandler());
+                    lightProbe.setName("LightProbe");
                     node.addLight(lightProbe);
-                    ((BoundingSphere)lightProbe.getBounds()).setRadius(10);
+                    ((BoundingSphere) lightProbe.getBounds()).setRadius(10);
+                    node.updateModelBound();
                     addLightUndo(node, lightProbe);
                     setModified();
-                    
-                   
+
                     return null;
                 }
             });
@@ -244,6 +253,7 @@ public class NewLightPopup extends AbstractAction implements Presenter.Popup {
     private void setModified() {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
                 dataObject.setModified(true);
                 jmeNode.refresh(true);

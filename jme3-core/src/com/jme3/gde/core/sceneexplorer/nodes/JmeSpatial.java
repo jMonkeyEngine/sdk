@@ -32,7 +32,6 @@
 package com.jme3.gde.core.sceneexplorer.nodes;
 
 import com.jme3.bounding.BoundingVolume;
-import com.jme3.export.binary.BinaryExporter;
 import com.jme3.gde.core.properties.UserDataProperty;
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.sceneexplorer.nodes.actions.AddUserDataAction;
@@ -50,10 +49,8 @@ import com.jme3.scene.Spatial.CullHint;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import javax.swing.Action;
@@ -77,6 +74,9 @@ import org.openide.util.actions.SystemAction;
 public class JmeSpatial extends AbstractSceneExplorerNode {
 
     protected Spatial spatial;
+    /* DataFlavor is a kind of metadata/mime-type
+     * (https://docs.oracle.com/javase/7/docs/api/java/awt/datatransfer/DataFlavor.html)
+     */
     protected final DataFlavor SPATIAL_FLAVOR = new DataFlavor(ClipboardSpatial.class, "Spatial");
 
     public JmeSpatial() {
@@ -108,8 +108,7 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
         }
 
         Node[] children = getChildren().getNodes();
-        for (int i = 0; i < children.length; i++) {
-            Node node = children[i];
+        for (Node node: children) {
             if (node instanceof JmeSpatial) {
                 JmeSpatial jmeSpatial = (JmeSpatial) node;
                 JmeSpatial found = jmeSpatial.getChild(spat);
@@ -156,6 +155,7 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
 
     @Override
     public boolean canCopy() {
+        // @TODO: Is readOnly really relevant here?
         return !((JmeSpatialChildren) jmeChildren).readOnly;
     }
 
@@ -186,6 +186,7 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
             fireSave(true);
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
 
+                @Override
                 public Void call() throws Exception {
                     spatial.setName(s);
                     return null;
@@ -204,6 +205,7 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
             fireSave(true);
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
 
+                @Override
                 public Void call() throws Exception {
                     spatial.removeFromParent();
                     return null;
@@ -225,24 +227,21 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
     @Override
     public Transferable clipboardCopy() throws IOException {
         Transferable trans = new Transferable() {
-
+            @Override
             public DataFlavor[] getTransferDataFlavors() {
-                return new DataFlavor[]{SPATIAL_FLAVOR};
+                return new DataFlavor[] { SPATIAL_FLAVOR };
             }
 
+            @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
-                if (SPATIAL_FLAVOR.equals(flavor)) {
-                    return true;
-                }
-                return false;
+                return SPATIAL_FLAVOR.equals(flavor);
             }
 
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            @Override
+            public Object getTransferData(DataFlavor flavor) 
+                    throws UnsupportedFlavorException, IOException {
                 if (SPATIAL_FLAVOR.equals(flavor)) {
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    BinaryExporter.getInstance().save(spatial, out);
-
-                    return new ClipboardSpatial(out.toByteArray());
+                    return new ClipboardSpatial(spatial);
                 } else {
                     throw new UnsupportedFlavorException(flavor);
                 }
@@ -255,38 +254,36 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
     public Transferable clipboardCut() throws IOException {
         fireSave(true);
         Transferable trans = new Transferable() {
-
+            @Override
             public DataFlavor[] getTransferDataFlavors() {
-                return new DataFlavor[]{SPATIAL_FLAVOR};
+                return new DataFlavor[]{ SPATIAL_FLAVOR };
             }
 
+            @Override
             public boolean isDataFlavorSupported(DataFlavor flavor) {
-                if (SPATIAL_FLAVOR.equals(flavor)) {
-                    return true;
-                }
-                return false;
+                return SPATIAL_FLAVOR.equals(flavor);
             }
 
-            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+            @Override
+            public Object getTransferData(DataFlavor flavor) throws 
+                    UnsupportedFlavorException, IOException {
                 if (SPATIAL_FLAVOR.equals(flavor)) {
                     try {
                         SceneApplication.getApplication().enqueue(new Callable<Void>() {
-
+                            @Override
                             public Void call() throws Exception {
                                 spatial.removeFromParent();
                                 return null;
                             }
                         }).get();
-                        //TODO: not a good cast
+                        
+                        // @TODO: not a good cast
                         JmeNode node = ((JmeNode) getParentNode());
                         if (node != null) {
                             node.refresh(false);
                         }
-//                        return spatial;
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        BinaryExporter.getInstance().save(spatial, out);
-//
-                        return new ClipboardSpatial(out.toByteArray());
+                        
+                        return new ClipboardSpatial(spatial);
                     } catch (InterruptedException ex) {
                         Exceptions.printStackTrace(ex);
                     } catch (ExecutionException ex) {
@@ -305,20 +302,20 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
     protected Sheet createSheet() {
         Sheet sheet = super.createSheet();        
 
-        //TODO: multithreading.. but we only read
+        //@TODO: multithreading.. but we only read
         Collection<String> dataKeys = spatial.getUserDataKeys();
         if (dataKeys.size() > 0) {
             Sheet.Set set = Sheet.createPropertiesSet();
             set.setDisplayName("User Data");
             set.setName(Spatial.class.getName() + "_UserData");
-            for (Iterator<String> it = dataKeys.iterator(); it.hasNext();) {
-                String string = it.next();
+            for (String string : dataKeys) {
                 UserDataProperty prop = new UserDataProperty(this, string);
                 prop.addPropertyChangeListener(this);
                 set.put(prop);
             }
             sheet.put(set);
         }
+        
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setDisplayName("Spatial");
         set.setName(Spatial.class.getName());
@@ -342,10 +339,15 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
 
         set.put(makeProperty(obj, BoundingVolume.class, "getWorldBound", "World Bound"));
 
-        set.put(makeProperty(obj, CullHint.class, "getCullHint", "setCullHint", "Cull Hint"));
-        set.put(makeProperty(obj, CullHint.class, "getLocalCullHint", "Local Cull Hint"));
-        set.put(makeProperty(obj, ShadowMode.class, "getShadowMode", "setShadowMode", "Shadow Mode"));
-        set.put(makeProperty(obj, ShadowMode.class, "getLocalShadowMode", "Local Shadow Mode"));
+        /* Global CullHint and ShadowMode disabled because: A) they are confusing
+         * as users expect the local version to be shown and B) if the local mode
+         * is updated, the global property isn't automatically. This code has to
+         * be implemented if one wants the read-only globals.
+        */
+        //set.put(makeProperty(obj, CullHint.class, "getCullHint", "Cull Hint"));
+        set.put(makeProperty(obj, CullHint.class, "getLocalCullHint", "setCullHint", "Local Cull Hint"));
+        //set.put(makeProperty(obj, ShadowMode.class, "getShadowMode", "Shadow Mode"));
+        set.put(makeProperty(obj, ShadowMode.class, "getLocalShadowMode", "setShadowMode", "Local Shadow Mode"));
         set.put(makeProperty(obj, LightList.class, "getWorldLightList", "World Light List"));
 
         set.put(makeProperty(obj, RenderQueue.Bucket.class, "getQueueBucket", "setQueueBucket", "Queue Bucket"));
@@ -355,6 +357,7 @@ public class JmeSpatial extends AbstractSceneExplorerNode {
 
     }
 
+    @Override
     public Class<?> getExplorerObjectClass() {
         return Spatial.class;
     }

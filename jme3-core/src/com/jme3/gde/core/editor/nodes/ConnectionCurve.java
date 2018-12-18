@@ -1,11 +1,36 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jme3.gde.materialdefinition.editor;
+package com.jme3.gde.core.editor.nodes;
 
-import com.jme3.gde.materialdefinition.fileStructure.leaves.MappingBlock;
-import com.jme3.gde.materialdefinition.utils.MaterialUtils;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,16 +56,17 @@ import javax.swing.event.MouseInputListener;
  *
  * @author Nehon
  */
-public class ConnectionCurve extends JPanel implements ComponentListener, MouseInputListener, KeyListener, Selectable, PropertyChangeListener {
-
-    protected Dot start;
-    protected Dot end;
+public class ConnectionCurve extends JPanel implements ComponentListener, 
+        MouseInputListener, KeyListener, Selectable, PropertyChangeListener {
+    
+    protected ConnectionEndpoint start;
+    protected ConnectionEndpoint end;
     private final Point[] points = new Point[7];
     private int pointsSize = 7;
     private int nbCurve = 2;
     private final CubicCurve2D[] curves = new CubicCurve2D[2];    
     private String key = "";
-    protected MappingBlock mapping;
+    protected Object mapping; // used to be "Mapping" but is implementation specific
 
     private MouseEvent convertEvent(MouseEvent e) {
         MouseEvent me = null;
@@ -68,11 +94,10 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
     }
     
     @SuppressWarnings("LeakingThisInConstructor")
-    public ConnectionCurve(Dot start, Dot end) {
-
-        if (start.getParamType() == Dot.ParamType.Output
-                || (start.getParamType() == Dot.ParamType.Both && end.getParamType() != Dot.ParamType.Output)
-                || (end.getParamType() == Dot.ParamType.Both && start.getParamType() != Dot.ParamType.Input)) {
+    public ConnectionCurve(ConnectionEndpoint start, ConnectionEndpoint end) {
+        if (start.getParamType() == ConnectionEndpoint.ParamType.Output
+                || (start.getParamType() == ConnectionEndpoint.ParamType.Both && end.getParamType() != ConnectionEndpoint.ParamType.Output)
+                || (end.getParamType() == ConnectionEndpoint.ParamType.Both && start.getParamType() != ConnectionEndpoint.ParamType.Input)) {
             this.start = start;
             this.end = end;
         } else {
@@ -109,14 +134,21 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
         return key;
     }
 
-    protected void makeKey(MappingBlock mapping, String techName) {
-        this.mapping = mapping;
-        key = MaterialUtils.makeKey(mapping, techName);
+    public Object getMapping() {
+        return mapping;
+    }
+    
+    public void makeKey(Object mapping, String techName) {
+        if (this instanceof Connection) {
+            key = getDiagram().makeKeyForConnection((Connection)this, mapping);
+            this.mapping = mapping;
+        } else {
+            key = "error";
+        }
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-
         Graphics2D g2 = ((Graphics2D) g);
         g2.setRenderingHint(
                 RenderingHints.KEY_ANTIALIASING,
@@ -231,18 +263,18 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
 
     }
 
-    public final void resize(Dot start, Dot end) {
+    public final void resize(ConnectionEndpoint start, ConnectionEndpoint end) {
         Point startLocation = start.getStartLocation();
         Point endLocation = end.getEndLocation();
 
-        if (start.getParamType() == Dot.ParamType.Both) {
+        if (start.getParamType() == ConnectionEndpoint.ParamType.Both) {
             startLocation.x = endLocation.x - MARGIN * 2;
             pointsSize = 3;
             points[0].setLocation(startLocation);
             points[1].x = startLocation.x;
             points[1].y = endLocation.y;
             points[2].setLocation(endLocation);
-        } else if (end.getParamType() == Dot.ParamType.Both) {
+        } else if (end.getParamType() == ConnectionEndpoint.ParamType.Both) {
             endLocation.x = startLocation.x + MARGIN * 2;
             pointsSize = 3;
             points[0].setLocation(startLocation);
@@ -376,7 +408,6 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
     }
 
     public void select(MouseEvent e) {
-
         requestFocusInWindow(true);
         int margin = MARGIN / 2;
         boolean selected = false;
@@ -405,7 +436,6 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
 
     @Override
     public void keyPressed(KeyEvent e) {
-
         if (e.getKeyCode() == KeyEvent.VK_DELETE) {
             Diagram diag = getDiagram();
             diag.removeSelected();
@@ -434,16 +464,20 @@ public class ConnectionCurve extends JPanel implements ComponentListener, MouseI
     }
 
     @Override
+    /**
+     * Specific implementations register this class as propertyChangeListener.
+     * This method is called when the "mapping" changes.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
-        MappingBlock map = (MappingBlock) evt.getSource();
-        key = MaterialUtils.makeKey(map, getDiagram().getCurrentTechniqueName());
+        key = getDiagram().makeKeyForConnection((Connection)this, evt.getSource());
+        this.mapping = evt.getSource(); // The original code did not save the new mapping.
     }
 
-    public Dot getStart() {
+    public ConnectionEndpoint getStart() {
         return start;
     }
 
-    public Dot getEnd() {
+    public ConnectionEndpoint getEnd() {
         return end;
     }
     

@@ -34,6 +34,8 @@ package com.jme3.gde.core.filters.impl;
 import com.jme3.gde.core.filters.AbstractFilterNode;
 import com.jme3.gde.core.filters.FilterNode;
 import com.jme3.post.Filter;
+import com.jme3.shadow.AbstractShadowFilter;
+import java.lang.reflect.Method;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
 import org.openide.nodes.Sheet;
@@ -69,22 +71,18 @@ public class JmeFilter extends AbstractFilterNode {
         
         do {
             // The Filter class is already processed in AbstractFilterNode#createSheet
-            if (c.equals(Filter.class)) {
+            if (c.equals(Filter.class) || c.equals(Object.class)) {
                 c = c.getSuperclass();
                 continue;
             }
             
             Sheet.Set set = Sheet.createPropertiesSet();
+            set.setName(c.getName()); // A set's name is it's unique identifier
+            set.setDisplayName(c.getName());
             
-            if (filter.getClass().equals(c)) { // is level of current filter.
-                set.setDisplayName(filter.getName());
-                set.setName(Node.class.getName());
-            } else {
-                set.setName(Node.class.getName());
-                set.setDisplayName(c.getName());
-            }
+            Method[] methods = createFields(c, set, filter);
+            createMethods(c, set, filter, methods);
             
-            createFields(c, set, filter);
             sheet.put(set);
             
             c = c.getSuperclass();

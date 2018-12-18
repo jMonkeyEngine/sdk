@@ -31,7 +31,7 @@ import org.openide.windows.TopComponent;
 )
 @DataObject.Registration(
         mimeType = "text/x-j3sn",
-        iconBase = "com/jme3/gde/materialdefinition/icons/node.png",
+        iconBase = "com/jme3/gde/core/editor/icons/node.png",
         displayName = "#LBL_SNDef_LOADER",
         position = 300
 )
@@ -101,7 +101,7 @@ public class SNDefDataObject extends MultiDataObject {
 
     @MultiViewElement.Registration(
             displayName = "#LBL_SNDef_EDITOR",
-            iconBase = "com/jme3/gde/materialdefinition/icons/node.png",
+            iconBase = "com/jme3/gde/core/editor/icons/node.png",
             mimeType = "text/x-j3sn",
             persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED,
             preferredID = "SNDef",

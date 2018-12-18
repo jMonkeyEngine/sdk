@@ -2,9 +2,12 @@
 import groovy.xml.MarkupBuilder
 import java.util.zip.ZipFile
 
+plugins {
+    id "de.undercouch.download" version "3.4.3"
+}
+
 apply from: 'gradle/libs/digest.gradle'
 apply from: file('version.gradle')
-
 
 if (!hasProperty('mainClass')) {
     ext.mainClass = ''
@@ -30,21 +33,21 @@ repositories {
 }
 
 if (System.getenv('TRAVIS') != null) {
-    if (System.env.TRAVIS_TAG != "") {
-        // v3.2.0-stable-sdk1 becomes 3.2.0-stable
+    if (System.env.TRAVIS_TAG != null && System.env.TRAVIS_TAG != "") { // Strangely it has to be both, because it's sometimes set as TRAVIS_TAG="" when we're in travis but no tag is set
+        // v3.3.0-stable-sdk1 becomes 3.3.0-stable
         // Intentionally not using lastIndexOf here, we want the second "-".
         ext.jmeEngineVersion = System.env.TRAVIS_TAG.substring(1, System.env.TRAVIS_TAG.indexOf("-", System.env.TRAVIS_TAG.indexOf("-") + 1));
         // The old way doesn't work anymore, not sure why.
-        //ext.jmeEngineVersion = "3.2.0-" + System.env.TRAVIS_TAG + "-SNAPSHOT"
+        //ext.jmeEngineVersion = "3.3.0-" + System.env.TRAVIS_TAG + "-SNAPSHOT"
     } else {
-        if (System.env.TRAVIS_PULL_REQUEST == "false") {
-            ext.jmeEngineVersion = "3.2.0-SNAPSHOT" // Use Beta 2 instead of 3.1.0-master-SNAPSHOT
+        if (System.env.TRAVIS_PULL_REQUEST == null || System.env.TRAVIS_PULL_REQUEST == "" || System.env.TRAVIS_PULL_REQUEST == "false") {
+            ext.jmeEngineVersion = "3.3.0-SNAPSHOT" // Use Beta 2 instead of 3.1.0-master-SNAPSHOT
         } else {
-            ext.jmeEngineVersion = "3.2.0-" + System.env.TRAVIS_PULL_REQUEST_BRANCH + "-pr-" + System.env.TRAVIS_PULL_REQUEST + "-SNAPSHOT"
+            ext.jmeEngineVersion = "3.3.0-" + System.env.TRAVIS_PULL_REQUEST_BRANCH + "-pr-" + System.env.TRAVIS_PULL_REQUEST + "-SNAPSHOT"
         }
     }
 } else {
-    ext.jmeEngineVersion = "3.2.0-SNAPSHOT" // In case you build of the HEAD of 3.1, you need to change that to 3.1.0-SNAPSHOT again
+    ext.jmeEngineVersion = "3.3.0-SNAPSHOT" // In case you build of the HEAD of 3.1, you need to change that to 3.1.0-SNAPSHOT again
 }
 
 configurations {
@@ -111,13 +114,21 @@ task checkPlatformConfig {
         def netbeansFolder = file("netbeans")
         if(!netbeansFolder.exists() || netbeansFolder.list().length == 0){
             println "Downloading NetBeans Platform base, this only has to be done once.."
-            def f = file("netbeans.zip")
-            new URL(netbeansUrl).withInputStream{ i -> f.withOutputStream{ it << i }}
-            copy{
-                from zipTree(f)
+            /* The following method is discouraged as it does not handle HTTP 301 Redirects
+             * def f = file("netbeans.zip")
+             * new URL(netbeansUrl).withInputStream{ i -> f.withOutputStream{ it << i }}
+             */
+            download {
+                src netbeansUrl
+                dest "netbeans.zip"
+                overwrite false // however if overwrite matters the build failed anyway
+            }
+
+            copy {
+                from zipTree(file("netbeans.zip"))
                 into "."
             }
-            f.delete()
+            file("netbeans.zip").delete()
         }
         file("nbproject/private/").mkdirs()
         platformFile.createNewFile()

@@ -34,7 +34,6 @@ package com.jme3.gde.core.sceneexplorer.nodes;
 
 import com.jme3.light.LightProbe;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.beans.PropertyEditor;
 import java.lang.reflect.InvocationTargetException;
@@ -94,17 +93,6 @@ public class JmeLightProbe extends JmeLight{
         return JmeLightProbe.class;
     }
     
-    protected void setModified(){
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                fireSave(true);
-            }
-        });
-        
-    }
-
      private Property createButtonProperty() {
         return new PropertySupport.ReadWrite<Object>("update", Object.class, "Refresh maps", "Click here to refresh environment maps ") {
             JmeLightProbeButtonProperty pe;
@@ -117,7 +105,7 @@ public class JmeLightProbe extends JmeLight{
             @Override
             public PropertyEditor getPropertyEditor() {
                 if (pe == null) {
-                    pe = new JmeLightProbeButtonProperty(JmeLightProbe.this, (Node)getSpatial());
+                    pe = new JmeLightProbeButtonProperty(JmeLightProbe.this, getSpatial());
                     pe.attachEnv(pe.env);
                 }
                 return pe;

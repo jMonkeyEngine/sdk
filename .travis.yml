@@ -44,11 +44,6 @@ install:
   # Remove Engine Source and built class files since travis is low on disk space
   - rm -rf engine/
   - ./gradlew buildSdk
-  - cd jdks
-  - ./download-jdks.sh
-  # Reduce Diskspace by 3G
-  - rm -rf jdks/local/*/{downloads,linux-i586,linux-x64,windows-i586,windows-x64}
-  - cd ../
   #- '[ -z "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && ant -Dstorepass="$NBM_SIGN_PASS" hudson-nightly | awk "{printf(\".\"); fflush(stdout)}" || :'
   #- '[ -z "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && scp -rp -i nbproject/private/www-updater.key build/updates/* www-updater@updates.jmonkeyengine.org:/var/www/updates/nightly/3.1/plugins || :'
   
@@ -60,6 +55,13 @@ before_deploy:
   # In case of STABLE (see hudson-stable target)
   # the above gradlew already sets the correct ant properties to build
   # Include suite.nbms again, when we upload nbms again.
+  
+  # Build the JDKs we package
+  - cd jdks
+  - ./download-jdks.sh
+  # Reduce Diskspace by 3G
+  - rm -rf jdks/local/*/{downloads,linux-i586,linux-x64,windows-i586,windows-x64}
+  - cd ../
   
   # Force Freeing Space.
   - rm -rf build/

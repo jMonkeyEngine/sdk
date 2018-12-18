@@ -5,7 +5,7 @@
 package com.jme3.gde.materialdefinition.utils;
 
 import com.jme3.gde.materialdefinition.dialog.AddNodeDialog;
-import com.jme3.gde.materialdefinition.icons.Icons;
+import com.jme3.gde.core.editor.icons.Icons;
 import com.jme3.shader.ShaderNodeDefinition;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -31,6 +31,7 @@
  */
 package com.jme3.gde.core.sceneexplorer.nodes;
 
+import com.jme3.gde.core.filters.AbstractFilterNode;
 import com.jme3.gde.core.properties.SceneExplorerProperty;
 import com.jme3.gde.core.properties.ScenePropertyChangeListener;
 import com.jme3.gde.core.scene.SceneSyncListener;
@@ -196,6 +197,8 @@ public abstract class AbstractSceneExplorerNode extends AbstractNode implements 
      * @param setter The Setter Method (or null, if read only)
      * @param name The Name to be displayed under Properties
      * @return The created Property
+     * @see AbstractFilterNode#createFields(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object) 
+     * @see AbstractFilterNode#createMethods(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object, java.lang.reflect.Method[]) 
      */
     protected Property<?> makeEmbedProperty(Object obj, Class objectClass, Class returntype, String method, String setter, String name) {
         Property<?> prop = null;
@@ -214,8 +217,8 @@ public abstract class AbstractSceneExplorerNode extends AbstractNode implements 
     }
 
     /**
-     * Simply adds all of c's fields as a property to the Set set.
-     * This is like the Sledge Hammer method for Properties.
+     * Scans the passed object for all it's fields and adds them to the Property
+     * Sheet Set.
      * It will however fail when getters/setters are missing or not following the Convention.
      * It will just skip those fields then.
      * 
@@ -223,6 +226,8 @@ public abstract class AbstractSceneExplorerNode extends AbstractNode implements 
      * @param set The Properties Sheet-Set you want to add things to
      * @param obj The Object for the properties
      * @throws SecurityException 
+     * @see AbstractFilterNode#createFields(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object) 
+     * @see AbstractFilterNode#createMethods(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object, java.lang.reflect.Method[]) 
      */
     protected void createFields(Class<?> c, Sheet.Set set, Object obj) throws SecurityException {
         for (Field field : c.getDeclaredFields()) {
@@ -234,14 +239,17 @@ public abstract class AbstractSceneExplorerNode extends AbstractNode implements 
     }
     
     /**
-     * Adds all of c's fields as a property to the Set.
+     * Scans the passed object for all it's fields and adds them to the Property
+     * Sheet Set.
      * See {@link #createFields(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object) }.
      * Embed additionally takes the object's type over this Nodes. (Compare makeEmbedProperty and makeProperty)
      * 
      * @param c The Class to create Properties for
      * @param set The Properties Sheet-Set you want to add things to
      * @param obj The Object to take the Properties from
-     * @throws SecurityException 
+     * @throws SecurityException
+     * @see AbstractFilterNode#createFields(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object) 
+     * @see AbstractFilterNode#createMethods(java.lang.Class, org.openide.nodes.Sheet.Set, java.lang.Object, java.lang.reflect.Method[]) 
      */
     protected void createEmbedFields(Class<?> c, Sheet.Set set, Object obj) throws SecurityException {
         for (Field field : c.getDeclaredFields()) {

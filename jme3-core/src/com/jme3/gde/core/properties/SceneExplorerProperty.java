@@ -36,6 +36,7 @@ import com.jme3.effect.shapes.EmitterShape;
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.undoredo.AbstractUndoableSceneEdit;
 import com.jme3.gde.core.undoredo.SceneUndoRedoManager;
+import com.jme3.light.Light;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Quaternion;
@@ -44,7 +45,6 @@ import com.jme3.math.Vector3f;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -57,7 +57,7 @@ import org.openide.util.Mutex;
 /**
  * This class allows editing jME scene values in property sheets in a threadsafe
  * manner. The getter and setter are called via reflection and changes in the
- * properties can be listed for.
+ * properties can be listened for.
  *
  * @author normenhansen
  */
@@ -118,6 +118,8 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
             setPropertyEditorClass(Vector2fPropertyEditor.class);
         } else if (valueType == ParticleInfluencer.class) {
             setPropertyEditorClass(ParticleInfluencerPropertyEditor.class);
+        } else if (Light.class.isAssignableFrom(valueType)) {
+            setPropertyEditorClass(LightPropertyEditor.class);
         }
 
         for (SceneExplorerPropertyEditor di : Lookup.getDefault().lookupAll(SceneExplorerPropertyEditor.class)) {
@@ -136,12 +138,14 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
     public void syncValue() {
         final T realValue = getSuperValue();
         mutex.readAccess(new Runnable() {
+            @Override
             public void run() {
                 if (changing) {
                     return;
                 }
                 if ((objectLocal == null) && !inited) {
                     mutex.postWriteRequest(new Runnable() {
+                        @Override
                         public void run() {
                             inited = true;
                             objectLocal = duplicateObject(realValue);
@@ -151,6 +155,7 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
                     });
                 } else if ((objectLocal != null) && !objectLocal.equals(realValue)) {
                     mutex.postWriteRequest(new Runnable() {
+                        @Override
                         public void run() {
                             T oldObject = objectLocal;
                             T newObject = duplicateObject(realValue);
@@ -161,6 +166,7 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
                     });
                 } else if ((objectLocal == null) && (realValue != null)) {
                     mutex.postWriteRequest(new Runnable() {
+                        @Override
                         public void run() {
                             objectLocal = duplicateObject(realValue);
                             notifyListeners(PROP_SCENE_CHANGE, null, objectLocal);
@@ -186,6 +192,7 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
     @Override
     public T getValue() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return mutex.readAccess(new Mutex.Action<T>() {
+            @Override
             public T run() {
                 logger.log(Level.FINE, "Return local value of {0}", objectLocal);
                 return objectLocal;
@@ -205,6 +212,7 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
     @Override
     public void setValue(final T val) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         mutex.postWriteRequest(new Runnable() {
+            @Override
             public void run() {
                 logger.log(Level.FINE, "Set local value to {0}", val);
                 final T oldObject = objectLocal;
@@ -212,8 +220,10 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
                 objectLocal = val;
                 final T sceneObject = duplicateObject(val);
                 SceneApplication.getApplication().enqueue(new Callable<Void>() {
+                    @Override
                     public Void call() throws Exception {
                         mutex.postWriteRequest(new Runnable() {
+                            @Override
                             public void run() {
                                 setSuperValue(sceneObject);
                                 changing = false;
@@ -426,7 +436,9 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
     protected void addUndo(final Object before, final Object after) {
         SceneUndoRedoManager undoRedo = Lookup.getDefault().lookup(SceneUndoRedoManager.class);
         if (undoRedo == null) {
-            logger.log(Level.WARNING, "Cannot access SceneUndoRedoManager");
+            logger.log(Level.WARNING, "Cannot access SceneUndoRedoManager. "
+                + "If you are editing properties without having a j3o file open,"
+                + "you wont have undo/redo support!");
             return;
         }
         undoRedo.addEdit(this, new AbstractUndoableSceneEdit() {
@@ -458,7 +470,7 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
      * Add a ScenePropertyChangeListener to listen for changes of this propety.
      * See the "PROP_XXX" properties for a list of change callback types.
      *
-     * @param listener
+     * @param listener The Listener
      */
     public void addPropertyChangeListener(ScenePropertyChangeListener listener) {
         if (listener != null) {
@@ -470,6 +482,8 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
     /**
      * Removes a ScenePropertyChangeListener that was listening for changes of
      * this propety.
+     * 
+     * @param listener The Listener
      */
     public void removePropertyChangeListener(ScenePropertyChangeListener listener) {
         if (listener != null) {
@@ -486,10 +500,10 @@ public class SceneExplorerProperty<T> extends PropertySupport.Reflection<T> {
      */
     protected void notifyListeners(final String type, final Object before, final Object after) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 logger.log(Level.FINE, "Notify SceneExplorer listeners");
-                for (Iterator<ScenePropertyChangeListener> it = listeners.iterator(); it.hasNext();) {
-                    ScenePropertyChangeListener propertyChangeListener = it.next();
+                for (ScenePropertyChangeListener propertyChangeListener : listeners) {
                     propertyChangeListener.propertyChange(type, getName(), before, after);
                 }
             }

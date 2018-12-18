@@ -10,6 +10,7 @@ import com.jme3.environment.util.BoundingSphereDebug;
 import com.jme3.gde.scenecomposer.gizmo.light.shape.ProbeRadiusShape;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeDirectionalLight;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeLight;
+import com.jme3.gde.core.sceneexplorer.nodes.JmeLightProbe;
 import com.jme3.gde.core.sceneexplorer.nodes.JmePointLight;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeSpotLight;
 import com.jme3.gde.scenecomposer.gizmo.shape.RadiusShape;
@@ -56,7 +57,7 @@ public class LightGizmoFactory {
                 return createDirectionalGizmo(assetManager, (JmeDirectionalLight) lightNode, light);
                 
             case Probe:
-                return createLightProbeGizmo(assetManager, light);
+                return createLightProbeGizmo(assetManager, (JmeLightProbe)lightNode);
 
             //  default:
             //      return createDefaultGizmo(assetManager, lightNode);
@@ -71,7 +72,7 @@ public class LightGizmoFactory {
         Node billboardNode = new Node("billboard lightGizmo");
         billboardNode.addControl(new BillboardControl());
         gizmo.attachChild(billboardNode);
-        billboardNode.attachChild(createLightBulbe(assetManager));
+        billboardNode.attachChild(createLightBulb(assetManager));
         
         Geometry radius = RadiusShape.createShape(assetManager, "radius shape");
         radius.addControl(new LightRadiusUpdate((PointLight) light));
@@ -84,11 +85,12 @@ public class LightGizmoFactory {
     private static Node createDirectionalGizmo(AssetManager assetManager, JmeDirectionalLight jmeLight, Light light) {
         DirectionalLightGizmo gizmo = new DirectionalLightGizmo(jmeLight);
         gizmo.move(0, 5, 0);
+        gizmo.addControl(new LightDirectionUpdate(light, gizmo));
         
         Node billboardNode = new Node("billboard lightGizmo");
         billboardNode.addControl(new BillboardControl());
-        gizmo.attachChild(billboardNode);
-        billboardNode.attachChild(createLightBulbe(assetManager));
+        
+        billboardNode.attachChild(createLightBulb(assetManager));
         
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.White);
@@ -99,6 +101,7 @@ public class LightGizmoFactory {
         arrow.addControl(new LightColorUpdate(light, arrow.getMaterial(), "Color"));
         
         gizmo.attachChild(arrow);
+        gizmo.attachChild(billboardNode);
         
         jmeLight.setGizmo(gizmo);
         return gizmo;
@@ -112,7 +115,7 @@ public class LightGizmoFactory {
         Node billboardNode = new Node("billboard lightGizmo");
         gizmo.attachChild(billboardNode);
         billboardNode.addControl(new BillboardControl());
-        billboardNode.attachChild(createLightBulbe(assetManager));
+        billboardNode.attachChild(createLightBulb(assetManager));
         
         Node radiusNode = new Node("radius Node");
         gizmo.attachChild(radiusNode);
@@ -152,7 +155,24 @@ public class LightGizmoFactory {
         return gizmo;
     }
     
-    protected static Geometry createLightBulbe(AssetManager assetManager) {
+    private static Spatial createLightProbeGizmo(AssetManager assetManager, JmeLightProbe probe){
+        LightProbeGizmo gizmo = new LightProbeGizmo(probe);//new Node("Environment debug Node");
+        gizmo.addControl(new LightPositionUpdate(probe.getLightProbe(), gizmo));
+        gizmo.addControl(new LightProbeUpdate(probe));
+        
+        Sphere s = new Sphere(16, 16, 0.5f);
+        Geometry debugGeom = new Geometry(probe.getLightProbe().getName(), s);
+        Material debugMaterial = new Material(assetManager, "Common/MatDefs/Misc/reflect.j3md");
+        debugGeom.setMaterial(debugMaterial);
+        Spatial debugBounds = ProbeRadiusShape.createShape(assetManager);
+        
+        gizmo.attachChild(debugGeom);
+        gizmo.attachChild(debugBounds);
+        
+        return gizmo;        
+    }
+    
+    protected static Geometry createLightBulb(AssetManager assetManager) {
         Quad q = new Quad(0.5f, 0.5f);
         Geometry lightBulb = new Geometry("light bulb", q);
         lightBulb.move(-q.getHeight() / 2f, -q.getWidth() / 2f, 0);
@@ -167,18 +187,48 @@ public class LightGizmoFactory {
         return lightBulb;
     }
     
-    private static Spatial createLightProbeGizmo(AssetManager assetManager, Light light){
-        Node debugNode = new Node("Environment debug Node");
-        Sphere s = new Sphere(16, 16, 0.5f);
-        Geometry debugGeom = new Geometry(light.getName(), s);
-        Material debugMaterial = new Material(assetManager, "Common/MatDefs/Misc/reflect.j3md");
-        debugGeom.setMaterial(debugMaterial);
-        Spatial debugBounds = ProbeRadiusShape.createShape(assetManager);
+    /**
+     * Helper Method to convert a Vector3f Scale into a radius. This is required,
+     * because the Gizmos are scaled like regular jME Nodes.
+     *
+     * Note: In case of non-uniform scaling, the code picks the minimum or maximum
+     * of all three components.
+     * 
+     * @param scale The Scale to convert
+     * @return The Radius
+     */
+    protected static float scaleToRadius(Vector3f scale) {
+        final float eps = 0.0000125f;        
+        float m;
+
+        float x = FastMath.abs(scale.x);
+        float y = FastMath.abs(scale.y);
+        float z = FastMath.abs(scale.z);
+        float max = Math.max(Math.max(x, y), z);
+        float min = Math.min(Math.min(x, y), z);
+
+        if (max - min <= eps) {
+            // x == y == z
+            m = x;
+        } else {
+            int nbMax = 0;
+            if (max - x <= eps) {
+                nbMax++;
+            }
+            if (max - y <= eps) {
+                nbMax++;
+            }
+            if (max - z <= eps) {
+                nbMax++;
+            }
+            if (nbMax >= 2) {
+                m = min;
+            } else {
+                m = max;
+            }
+        }
         
-        debugNode.attachChild(debugGeom);
-        debugNode.attachChild(debugBounds);
-        debugNode.addControl(new LightProbeGizmoControl((LightProbe)light));
-        
-        return debugNode;        
+        return m;
     }
+    
 }

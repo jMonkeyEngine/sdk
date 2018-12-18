@@ -4,7 +4,7 @@
  */
 package com.jme3.gde.materialdefinition.shadervisual;
 
-import com.jme3.gde.materialdefinition.icons.Icons;
+import com.jme3.gde.core.editor.icons.Icons;
 import com.jme3.shader.Shader;
 
 /**

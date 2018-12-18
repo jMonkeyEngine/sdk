@@ -44,35 +44,37 @@ import java.io.IOException;
 import org.openide.util.Exceptions;
 
 /**
- *
+ * This class handles the clipboard management of Spatials
  * @author normenhansen
  */
 public class ClipboardSpatial implements Transferable, ClipboardOwner {
+    private final byte[] data;
 
-    private byte[] data;
-
-    public ClipboardSpatial(Spatial spat){
+    public ClipboardSpatial(Spatial spat) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             BinaryExporter.getInstance().save(spat, out);
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
-        data= out.toByteArray();
+        data = out.toByteArray();
     }
 
     public ClipboardSpatial(byte[] spatial) {
         data = spatial;
     }
 
+    @Override
     public DataFlavor[] getTransferDataFlavors() {
         return new DataFlavor[]{new DataFlavor(Spatial.class, "Spatial")};
     }
 
+    @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return new DataFlavor(Spatial.class, "Spatial").equals(flavor);
     }
 
+    @Override
     public Object getTransferData(DataFlavor flavor) throws
             UnsupportedFlavorException {
         if (!isDataFlavorSupported(flavor)) {
@@ -82,14 +84,13 @@ public class ClipboardSpatial implements Transferable, ClipboardOwner {
         return createSpatial();
     }
 
+    @Override
     public void lostOwnership(java.awt.datatransfer.Clipboard clip,
-            java.awt.datatransfer.Transferable tr) {
-        return;
-    }
+            java.awt.datatransfer.Transferable tr) {}
 
     public Spatial createSpatial(){
         try {
-            BinaryImporter importer=BinaryImporter.getInstance();
+            BinaryImporter importer = BinaryImporter.getInstance();
             //TODO: unsafe..
             importer.setAssetManager(SceneApplication.getApplication().getCurrentSceneRequest().getManager());
             return (Spatial)importer.load(data);
@@ -98,5 +99,4 @@ public class ClipboardSpatial implements Transferable, ClipboardOwner {
         }
         return null;
     }
-
 }

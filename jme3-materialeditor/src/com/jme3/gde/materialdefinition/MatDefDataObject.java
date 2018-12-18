@@ -69,7 +69,7 @@ mimeType = "text/jme-materialdefinition",
 extension = {"j3md", "J3MD"})
 @DataObject.Registration(
     mimeType = "text/jme-materialdefinition",
-iconBase = "com/jme3/gde/materialdefinition/icons/matdef.png",
+iconBase = "com/jme3/gde/core/editor/icons/matdef.png",
 displayName = "#LBL_MatDef_LOADER",
 position = 300)
 @ActionReferences({
@@ -192,7 +192,7 @@ public class MatDefDataObject extends MultiDataObject {
     
     @MultiViewElement.Registration(
         displayName = "#LBL_MatDef_EDITOR",
-    iconBase = "com/jme3/gde/materialdefinition/icons/matdef.png",
+    iconBase = "com/jme3/gde/core/editor/icons/matdef.png",
     mimeType = "text/jme-materialdefinition",
     persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED,
     preferredID = "MatDef",

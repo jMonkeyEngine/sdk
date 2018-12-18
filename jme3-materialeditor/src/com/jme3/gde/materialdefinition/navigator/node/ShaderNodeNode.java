@@ -6,12 +6,12 @@ package com.jme3.gde.materialdefinition.navigator.node;
 
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.materialdefinition.MatDefDataObject;
-import com.jme3.gde.materialdefinition.editor.Selectable;
+import com.jme3.gde.core.editor.nodes.Selectable;
 import com.jme3.gde.materialdefinition.fileStructure.MatDefBlock;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;
 import com.jme3.gde.materialdefinition.fileStructure.TechniqueBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.MappingBlock;
-import com.jme3.gde.materialdefinition.icons.Icons;
+import com.jme3.gde.core.editor.icons.Icons;
 import com.jme3.gde.materialdefinition.navigator.node.properties.DefaultProperty;
 import com.jme3.gde.materialdefinition.utils.MaterialUtils;
 import com.jme3.shader.Shader;

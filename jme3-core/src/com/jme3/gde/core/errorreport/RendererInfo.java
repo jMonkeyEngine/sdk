@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2010 jMonkeyEngine
+ *  Copyright (c) 2009-2018 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -30,31 +30,27 @@
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * RendererInfo.java
- *
- * Created on 27.02.2011, 06:17:27
- */
 package com.jme3.gde.core.errorreport;
 
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.renderer.Caps;
 import com.jme3.renderer.Renderer;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import javax.swing.JPanel;
 import org.openide.util.Exceptions;
 
 /**
- *
+ * The RendererInfo is the Panel used to display the Graphics Capabilities.
+ * 
  * @author normenhansen
  */
-public class RendererInfo extends javax.swing.JDialog {
+public class RendererInfo extends JPanel {
 
     /** Creates new form RendererInfo */
-    public RendererInfo(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public RendererInfo() {
+        super();
         initComponents();
         updateInfo();
     }
@@ -62,21 +58,21 @@ public class RendererInfo extends javax.swing.JDialog {
     private void updateInfo() {
         try {
             jTextArea1.setText(SceneApplication.getApplication().enqueue(new Callable<String>() {
-
+                @Override
                 public String call() throws Exception {
                     String out = "";
                     Renderer renderer = SceneApplication.getApplication().getRenderer();
                     EnumSet<Caps> caps = renderer.getCaps();
                     out = out + "Graphics Capabilities\n";
                     out = out + "---------------------\n";
-                    for (Iterator<Caps> it = caps.iterator(); it.hasNext();) {
-                        Caps caps1 = it.next();
+                    for (Caps caps1 : caps) {
                         out = out + caps1.name() + "\n";
                     }
                     return out;
                 }
             }).get());
         } catch (InterruptedException ex) {
+            // Warning: Do NOT call ExceptionUtils from here
             Exceptions.printStackTrace(ex);
         } catch (ExecutionException ex) {
             Exceptions.printStackTrace(ex);
@@ -96,29 +92,31 @@ public class RendererInfo extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
-        jTextArea1.setFont(new java.awt.Font("Courier", 0, 13));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Courier", 0, 13)); // NOI18N
         jTextArea1.setRows(5);
         jTextArea1.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jScrollPane1.setViewportView(jTextArea1);
 
         jScrollPane2.setViewportView(jScrollPane1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 340, Short.MAX_VALUE)
+                .addContainerGap())
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 

@@ -19,7 +19,7 @@ import org.openide.windows.TopComponent;
 
 @MultiViewElement.Registration(
         displayName = "#LBL_SNDef_VISUAL",
-        iconBase = "com/jme3/gde/materialdefinition/icons/node.png",
+        iconBase = "com/jme3/gde/core/editor/icons/node.png",
         mimeType = "text/x-j3sn",
         persistenceType = TopComponent.PERSISTENCE_NEVER,
         preferredID = "SNDefVisual",

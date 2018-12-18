@@ -28,7 +28,6 @@ public class PointLightGizmo extends NodeCallback {
         super("point light callback", true, false, false);
         jmeLight = jmelight;
         light = jmeLight.getLookup().lookup(PointLight.class);
-
     }
 
     @Override
@@ -37,40 +36,9 @@ public class PointLightGizmo extends NodeCallback {
         jmeLight.setValue("position", light.getPosition());
     }
 
-    private final float eps = 0.0000125f;
-
     @Override
     public void onResize(Vector3f oldScale, Vector3f newScale) {
-        float m;
-
-        float x = FastMath.abs(newScale.x);
-        float y = FastMath.abs(newScale.y);
-        float z = FastMath.abs(newScale.z);
-        float max = Math.max(Math.max(x, y), z);
-        float min = Math.min(Math.min(x, y), z);
-
-        if (max - min <= eps) {
-            // x == y == z
-            m = x;
-        } else {
-            int nbMax = 0;
-            if (max - x <= eps) {
-                nbMax++;
-            }
-            if (max - y <= eps) {
-                nbMax++;
-            }
-            if (max - z <= eps) {
-                nbMax++;
-            }
-            if (nbMax >= 2) {
-                m = min;
-            } else {
-                m = max;
-            }
-        }
-
-        light.setRadius(m);
+        light.setRadius(LightGizmoFactory.scaleToRadius(newScale));
         jmeLight.setValue("radius", light.getRadius());
     }
 

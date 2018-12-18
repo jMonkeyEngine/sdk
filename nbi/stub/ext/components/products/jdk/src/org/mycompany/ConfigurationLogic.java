@@ -1,6 +1,7 @@
 package org.mycompany;
 
 import java.util.List;
+import java.util.ArrayList;
 import org.netbeans.installer.product.components.ProductConfigurationLogic;
 import org.netbeans.installer.utils.exceptions.InitializationException;
 import org.netbeans.installer.utils.exceptions.InstallationException;
@@ -17,9 +18,10 @@ public class ConfigurationLogic extends ProductConfigurationLogic {
 
     // constructor //////////////////////////////////////////////////////////////////
     public ConfigurationLogic() throws InitializationException {
-        wizardComponents = Wizard.loadWizardComponents(
+        /*wizardComponents = Wizard.loadWizardComponents(
                 WIZARD_COMPONENTS_URI,
-                getClass().getClassLoader());
+                getClass().getClassLoader());*/
+        wizardComponents = new ArrayList<>();
     }
 
     public List<WizardComponent> getWizardComponents() {

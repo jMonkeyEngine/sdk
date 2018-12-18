@@ -47,7 +47,7 @@ import org.openide.windows.TopComponent;
 
 @MultiViewElement.Registration(
     displayName = "#LBL_MatDef_SHADER",
-iconBase = "com/jme3/gde/materialdefinition/icons/matdef.png",
+iconBase = "com/jme3/gde/core/editor/icons/matdef.png",
 mimeType = "text/jme-materialdefinition",
 persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED,
 preferredID = "MatDefVisual",

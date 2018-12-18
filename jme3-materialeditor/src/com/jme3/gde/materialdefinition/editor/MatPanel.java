@@ -1,6 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.materialdefinition.editor;
 
@@ -13,15 +40,16 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 /**
- *
+ * The Mat Panel displays the current state of the Material and has a toolbar
+ * to change properties.
  * @author Nehon
  */
-public class MatPanel extends javax.swing.JPanel implements MouseListener, ComponentListener {
-    
+public class MatPanel extends JPanel implements MouseListener, ComponentListener {
     private final MaterialPreviewRenderer renderer;
     private Material mat;
     /**
@@ -76,7 +104,7 @@ public class MatPanel extends javax.swing.JPanel implements MouseListener, Compo
         toolBar.setOpaque(false);
 
         sphereButton.setBackground(new java.awt.Color(153, 153, 153));
-        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/Sphere.png"))); // NOI18N
+        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Sphere.png"))); // NOI18N
         sphereButton.setToolTipText("Sphere");
         sphereButton.setBorder(null);
         sphereButton.setBorderPainted(false);
@@ -102,7 +130,7 @@ public class MatPanel extends javax.swing.JPanel implements MouseListener, Compo
         });
 
         boxButton.setBackground(new java.awt.Color(153, 153, 153));
-        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/cube.png"))); // NOI18N
+        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/cube.png"))); // NOI18N
         boxButton.setToolTipText("Cube");
         boxButton.setBorder(null);
         boxButton.setBorderPainted(false);
@@ -128,7 +156,7 @@ public class MatPanel extends javax.swing.JPanel implements MouseListener, Compo
         });
 
         reloadButton.setBackground(new java.awt.Color(153, 153, 153));
-        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/reload.png"))); // NOI18N
+        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/reload.png"))); // NOI18N
         reloadButton.setToolTipText("Refresh");
         reloadButton.setBorder(null);
         reloadButton.setBorderPainted(false);
@@ -154,7 +182,7 @@ public class MatPanel extends javax.swing.JPanel implements MouseListener, Compo
         });
 
         quadButton.setBackground(new java.awt.Color(153, 153, 153));
-        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/Quad.png"))); // NOI18N
+        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Quad.png"))); // NOI18N
         quadButton.setToolTipText("Quad");
         quadButton.setBorder(null);
         quadButton.setBorderPainted(false);
@@ -180,7 +208,7 @@ public class MatPanel extends javax.swing.JPanel implements MouseListener, Compo
         });
 
         expandButton.setBackground(new java.awt.Color(153, 153, 153));
-        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/expend.png"))); // NOI18N
+        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/expend.png"))); // NOI18N
         expandButton.setToolTipText("Display Backdrop");
         expandButton.setBorder(null);
         expandButton.setBorderPainted(false);

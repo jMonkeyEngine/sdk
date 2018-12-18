@@ -5,10 +5,10 @@
 package com.jme3.gde.materialdefinition.navigator.node;
 
 import com.jme3.gde.materialdefinition.MatDefDataObject;
-import com.jme3.gde.materialdefinition.editor.Selectable;
+import com.jme3.gde.core.editor.nodes.Selectable;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.MappingBlock;
-import com.jme3.gde.materialdefinition.icons.Icons;
+import com.jme3.gde.core.editor.icons.Icons;
 import com.jme3.gde.materialdefinition.navigator.node.properties.DefaultProperty;
 import com.jme3.gde.materialdefinition.utils.MaterialUtils;
 import java.awt.Image;

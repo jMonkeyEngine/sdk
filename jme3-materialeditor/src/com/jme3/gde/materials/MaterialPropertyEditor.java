@@ -47,7 +47,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditor;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -69,28 +68,34 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
     private LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
     private Material material = new Material();
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof Material) {
             material = (Material) value;
         }
     }
 
+    @Override
     public Object getValue() {
         return material;
     }
 
+    @Override
     public boolean isPaintable() {
         return false;
     }
 
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public String getJavaInitializationString() {
         return null;
     }
 
+    @Override
     public String getAsText() {
         String name = material.getAssetName();
         if (name == null) {
@@ -99,6 +104,7 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
         return name;
     }
 
+    @Override
     public void setAsText(final String text) throws IllegalArgumentException {
         if ("create j3m file".equals(text)) {
             try {
@@ -128,9 +134,7 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
                 currentFolder.refresh();
                 applyMaterial(material.getAssetName());
             } catch (Exception ex) {
-
                 Exceptions.printStackTrace(ex);
-                return;
             }
         } else {
             applyMaterial(text);
@@ -145,6 +149,7 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
         try {
             Material old = material;
             SceneApplication.getApplication().enqueue(new Callable<Void>() {
+                @Override
                 public Void call() throws Exception {
                     SceneRequest request = SceneApplication.getApplication().getCurrentSceneRequest();
                     request.getManager().deleteFromCache(new MaterialKey(text));
@@ -163,6 +168,7 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
         }
     }
 
+    @Override
     public String[] getTags() {
         SceneRequest request = SceneApplication.getApplication().getCurrentSceneRequest();
         if (request == null) {
@@ -188,6 +194,7 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
         }
     }
 
+    @Override
     public Component getCustomEditor() {
         ProjectAssetManager currentProjectAssetManager = null;
 
@@ -200,26 +207,29 @@ public class MaterialPropertyEditor implements PropertyEditor, SceneExplorerProp
 
     }
 
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }
 
     private void notifyListeners(Material before, Material after) {
-        for (Iterator<PropertyChangeListener> it = listeners.iterator(); it.hasNext();) {
-            PropertyChangeListener propertyChangeListener = it.next();
+        for (PropertyChangeListener propertyChangeListener : listeners) {
             //TODO: check what the "programmatic name" is supposed to be here.. for now its Quaternion
             propertyChangeListener.propertyChange(new PropertyChangeEvent(this, "Material", before, after));
         }
     }
 
+    @Override
     public void setEditor(Class valueType, SceneExplorerProperty prop) {
         if (valueType == Material.class) {
             prop.setPropertyEditorClass(MaterialPropertyEditor.class);

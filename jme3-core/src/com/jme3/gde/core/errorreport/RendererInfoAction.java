@@ -33,7 +33,8 @@ package com.jme3.gde.core.errorreport;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JFrame;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.awt.ActionRegistration;
@@ -42,14 +43,18 @@ import org.openide.awt.ActionRegistration;
 @ActionRegistration(displayName = "#CTL_RendererInfoAction", iconInMenu = true)
 @ActionReference(path = "Menu/Help", position = 1225)
 public final class RendererInfoAction implements ActionListener {
-
     RendererInfo info;
+    DialogDescriptor dialogInfo;
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (info == null) {
-            info = new RendererInfo(new JFrame(), false);
+            info = new RendererInfo();
         }
-        info.setLocationRelativeTo(null);
-        info.setVisible(true);
+        if (dialogInfo == null) {
+            dialogInfo = new DialogDescriptor(info, "Graphics Capabilities", true, new Object[] { DialogDescriptor.OK_OPTION }, DialogDescriptor.DEFAULT_OPTION, DialogDescriptor.DEFAULT_ALIGN, null, null);
+        }
+        
+        DialogDisplayer.getDefault().notifyLater(dialogInfo);
     }
 }

@@ -1,11 +1,36 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jme3.gde.materialdefinition.editor;
+package com.jme3.gde.core.editor.nodes;
 
-import com.jme3.gde.materialdefinition.fileStructure.leaves.MappingBlock;
-import com.jme3.gde.materialdefinition.utils.MaterialUtils;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -29,15 +54,16 @@ import javax.swing.event.MouseInputListener;
  * @author Nehon
  */
 @Deprecated
-public class ConnectionStraight extends JPanel implements ComponentListener, MouseInputListener, KeyListener, Selectable, PropertyChangeListener {
+public class ConnectionStraight extends JPanel implements ComponentListener, 
+        MouseInputListener, KeyListener, Selectable, PropertyChangeListener {
 
-    protected Dot start;
-    protected Dot end;
-    private Point[] points = new Point[6];
+    protected ConnectionEndpoint start;
+    protected ConnectionEndpoint end;
+    private final Point[] points = new Point[6];
     private int pointsSize = 6;
-    private Corner[] corners = new Corner[6];
+    private final Corner[] corners = new Corner[6];
     private String key = "";
-    protected MappingBlock mapping;
+    protected Object mapping;
 
     private MouseEvent convertEvent(MouseEvent e) {
         MouseEvent me = null;
@@ -78,12 +104,12 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
         Bottom,
         None,}
 
-    public ConnectionStraight(Dot start, Dot end) {
+    public ConnectionStraight(ConnectionEndpoint start, ConnectionEndpoint end) {
 
 
-        if (start.getParamType() == Dot.ParamType.Output
-                || (start.getParamType() == Dot.ParamType.Both && end.getParamType() != Dot.ParamType.Output)
-                || (end.getParamType() == Dot.ParamType.Both && start.getParamType() != Dot.ParamType.Input)) {
+        if (start.getParamType() == ConnectionEndpoint.ParamType.Output
+                || (start.getParamType() == ConnectionEndpoint.ParamType.Both && end.getParamType() != ConnectionEndpoint.ParamType.Output)
+                || (end.getParamType() == ConnectionEndpoint.ParamType.Both && start.getParamType() != ConnectionEndpoint.ParamType.Input)) {
             this.start = start;
             this.end = end;
         } else {
@@ -107,12 +133,12 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
         store.x = p.x - getLocation().x - 1;
         store.y = p.y - getLocation().y - 1;
     }
-    private Point p1 = new Point();
-    private Point p2 = new Point();
-    private Point tp1 = new Point();
-    private Point bp1 = new Point();
-    private Point tp2 = new Point();
-    private Point bp2 = new Point();
+    private final Point p1 = new Point();
+    private final Point p2 = new Point();
+    private final Point tp1 = new Point();
+    private final Point bp1 = new Point();
+    private final Point tp2 = new Point();
+    private final Point bp2 = new Point();
 
     @Override
     protected void paintBorder(Graphics g) {
@@ -130,9 +156,16 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
         return key;
     }
 
-    protected void makeKey(MappingBlock mapping, String techName) {
-        this.mapping = mapping;
-        key = MaterialUtils.makeKey(mapping, techName);
+    protected void makeKey(Object mapping, String techName) {
+        /* Doesn't work as Connection doesnt extend ConnectionStraight. Actually
+         * those classes should've been made the other way round: ConnectionStraight
+         * extending Connection and not the opposite way.
+        if (this instanceof Connection) {
+            key = getDiagram().makeKeyForConnection(this, mapping);
+            this.mapping = mapping;
+        } else { */
+            key = "error";
+        /* } */
     }
 
     private void adjustCorners(Corner corner, Point tp, Point bp) {
@@ -277,11 +310,11 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
 
     }
 
-    public final void resize(Dot start, Dot end) {
+    public final void resize(ConnectionEndpoint start, ConnectionEndpoint end) {
         Point startLocation = start.getStartLocation();
         Point endLocation = end.getEndLocation();
 
-        if (start.getParamType() == Dot.ParamType.Both) {
+        if (start.getParamType() == ConnectionEndpoint.ParamType.Both) {
             startLocation.x = endLocation.x - MARGIN * 2;
             pointsSize = 3;
             points[0].setLocation(startLocation);
@@ -297,7 +330,7 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
                 corners[1] = Corner.TopRight;
                 corners[2] = Corner.None;
             }
-        } else if (end.getParamType() == Dot.ParamType.Both) {
+        } else if (end.getParamType() == ConnectionEndpoint.ParamType.Both) {
             endLocation.x = startLocation.x + MARGIN * 2;
             pointsSize = 3;
             points[0].setLocation(startLocation);
@@ -520,21 +553,27 @@ public class ConnectionStraight extends JPanel implements ComponentListener, Mou
     public void keyReleased(KeyEvent e) {
     }
 
+    @Override
     public void componentResized(ComponentEvent e) {
     }
 
+    @Override
     public void componentMoved(ComponentEvent e) {
         resize(start, end);
     }
 
+    @Override
     public void componentShown(ComponentEvent e) {
     }
 
+    @Override
     public void componentHidden(ComponentEvent e) {
     }
 
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        MappingBlock mapping = (MappingBlock) evt.getSource();
-        key = MaterialUtils.makeKey(mapping, getDiagram().getCurrentTechniqueName());
+        mapping = (Object) evt.getSource();
+        key = "error";
+        //key = MaterialUtils.makeKey(mapping, getDiagram().getCurrentTechniqueName());
     }
 }

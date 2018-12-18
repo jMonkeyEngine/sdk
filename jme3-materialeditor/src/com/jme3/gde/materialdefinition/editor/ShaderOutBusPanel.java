@@ -1,10 +1,40 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.scene.SceneApplication;
+import com.jme3.gde.core.editor.nodes.DraggablePanel;
+import com.jme3.gde.core.editor.nodes.ConnectionEndpoint;
+import com.jme3.gde.core.editor.nodes.Diagram;
+import com.jme3.gde.core.editor.nodes.Selectable;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
 import com.jme3.material.Material;
@@ -27,18 +57,17 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 /**
- *
+ * The ShaderOutBusPanel is the horizontal line describing the shader outputs.
  * @author Nehon
  */
-public class OutBusPanel extends DraggablePanel implements ComponentListener, Selectable, InOut {
-
+public class ShaderOutBusPanel extends DraggablePanel implements ComponentListener, Selectable, InOut {
     private Color color = new Color(220, 220, 70);
     private String name = "";
     private final InnerPanel panel;
     private final MatPanel preview;
     private final Shader.ShaderType type;
 
-    public OutBusPanel(String name, Shader.ShaderType type) {
+    public ShaderOutBusPanel(String name, Shader.ShaderType type) {
         super(true);
         this.type = type;
         if (type == Shader.ShaderType.Fragment) {
@@ -82,13 +111,19 @@ public class OutBusPanel extends DraggablePanel implements ComponentListener, Se
     @Override
     public void setDiagram(final Diagram diagram) {
         super.setDiagram(diagram);
+        
+        if (!(diagram instanceof ShaderNodeDiagram)) {
+            throw new IllegalStateException("ShaderOutBusPanel requires a "
+                    + "Diagram extending ShaderNodeDiagram");
+        }
+        
         // preview.setBounds(350,300,128,100);
         diagram.add(preview);
         preview.update(this);
         preview.setExpandActionListener(new ActionListener() {
-
+            @Override
             public void actionPerformed(ActionEvent e) {
-                diagram.displayBackdrop();
+                ((ShaderNodeDiagram)diagram).displayBackdrop();
             }
         });
         
@@ -127,8 +162,6 @@ public class OutBusPanel extends DraggablePanel implements ComponentListener, Se
         g.fillRect(5, 10, 6, getHeight() - 20);
         g.fillRect(13, 10, 9, getHeight() - 20);
         g.fillRect(24, 10, 12, getHeight() - 20);
-
-
     }
 
     @Override
@@ -175,7 +208,7 @@ public class OutBusPanel extends DraggablePanel implements ComponentListener, Se
         }
     }
 
-    public Dot getConnectPoint() {
+    public ConnectionEndpoint getConnectPoint() {
         return panel;
     }
 
@@ -203,6 +236,7 @@ public class OutBusPanel extends DraggablePanel implements ComponentListener, Se
 
     }
 
+    @Override
     public String getKey() {
         return name;
     }
@@ -219,28 +253,32 @@ public class OutBusPanel extends DraggablePanel implements ComponentListener, Se
         return false;
     }
 
+    @Override
     public void addInputMapping(InputMappingBlock block) {
     }
 
+    @Override
     public void removeInputMapping(InputMappingBlock block) {
     }
 
+    @Override
     public void addOutputMapping(OutputMappingBlock block) {
     }
 
+    @Override
     public void removeOutputMapping(OutputMappingBlock block) {
     }
 
-    class InnerPanel extends Dot {
-
+    // That's the gradient bar/line it seems
+    class InnerPanel extends ShaderNodeDot {
         boolean over = false;
         boolean dragging = false;
 
         public InnerPanel() {
-            this.shaderType = OutBusPanel.this.type;            
+            this.shaderType = ShaderOutBusPanel.this.type;            
             setOpaque(false);
-            setNode(OutBusPanel.this);
-            setParamType(Dot.ParamType.Both);
+            setNode(ShaderOutBusPanel.this);
+            setParamType(ConnectionEndpoint.ParamType.Both);
             setType("vec4");
             setText(name);
         }

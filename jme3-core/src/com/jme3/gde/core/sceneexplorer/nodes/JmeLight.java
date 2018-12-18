@@ -31,8 +31,10 @@
  */
 package com.jme3.gde.core.sceneexplorer.nodes;
 
+import com.jme3.gde.core.filters.AbstractFilterNode;
 import com.jme3.gde.core.icons.IconList;
 import com.jme3.gde.core.scene.SceneApplication;
+import com.jme3.gde.core.util.PropertyUtils;
 import com.jme3.light.Light;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
@@ -103,9 +105,11 @@ public class JmeLight extends AbstractSceneExplorerNode {
             return sheet;
         }
 
-        set.put(makeProperty(obj, ColorRGBA.class, "getColor", "setColor", "Color"));
-
-
+        createFields(Light.class, set, obj);
+        // We don't want the user to mess with them
+        set.remove("Frustum Check Needed");
+        set.remove("Intersects Frustum");
+        //set.put(makeProperty(obj, ColorRGBA.class, "getColor", "setColor", "Color"));
         sheet.put(set);
         return sheet;
 
@@ -154,8 +158,6 @@ public class JmeLight extends AbstractSceneExplorerNode {
         return spatial;
     }
     
-    
-
     @Override
     public Class getExplorerObjectClass() {
         return Light.class;
@@ -164,5 +166,14 @@ public class JmeLight extends AbstractSceneExplorerNode {
     @Override
     public Class getExplorerNodeClass() {
         return JmeLight.class;
+    }
+    
+    protected void setModified(){
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                fireSave(true);
+            }
+        });
     }
 }

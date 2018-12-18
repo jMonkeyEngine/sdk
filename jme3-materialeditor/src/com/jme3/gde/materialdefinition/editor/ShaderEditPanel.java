@@ -1,7 +1,33 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2018 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.materialdefinition.editor;
 
@@ -16,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.EditorKit;
 import org.openide.awt.UndoRedo;
 import org.openide.cookies.EditorCookie;
@@ -50,15 +75,18 @@ public class ShaderEditPanel extends JPanel {
 
         shaderEditorPane.addKeyListener(new KeyListener() {
 
+            @Override
             public void keyTyped(KeyEvent e) {
             }
 
+            @Override
             public void keyPressed(KeyEvent e) {
                 if ((e.getKeyCode() == KeyEvent.VK_S) && ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
                     saveCurrent();
                 }
             }
 
+            @Override
             public void keyReleased(KeyEvent e) {
             }
         });
@@ -69,9 +97,7 @@ public class ShaderEditPanel extends JPanel {
         undoRedoManager = (UndoRedo.Manager) parent.getUndoRedo();
     }
 
-    public void setFiles(String title, NodePanel.NodeType type, List<FileObject> fos, final Map<String, String> readOnlyFiles) {
-
-        
+    public void setFiles(String title, ShaderNodePanel.NodeType type, List<FileObject> fos, final Map<String, String> readOnlyFiles) {       
         headerText.setText(title);
         headerText.setIcon(Icons.getIconForShaderType(type));
         boolean firstItem = true;
@@ -88,6 +114,7 @@ public class ShaderEditPanel extends JPanel {
             try {
                 b.dataObject = DataObject.find(fo);
                 b.addActionListener(new ActionListener() {
+                    @Override
                     public void actionPerformed(ActionEvent e) {
                         saveCurrent();
                         try {
@@ -114,6 +141,7 @@ public class ShaderEditPanel extends JPanel {
             buttonGroup1.add(b);
             final String theKey = key;
             b.addActionListener(new ActionListener() {
+                @Override
                 public void actionPerformed(ActionEvent e) {
                     switchReadOnlyDoc(readOnlyFiles.get(theKey));
                 }
@@ -174,7 +202,6 @@ public class ShaderEditPanel extends JPanel {
     }
 
     private class Tab extends JToggleButton {
-
         DataObject dataObject;
     }
 
@@ -206,11 +233,11 @@ public class ShaderEditPanel extends JPanel {
 
         headerText.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         headerText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/fragment.png"))); // NOI18N
+        headerText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/fragment.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(headerText, org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.headerText.text")); // NOI18N
 
         closeButton.setFont(new java.awt.Font("Tahoma", 1, 8)); // NOI18N
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/icons/out.png"))); // NOI18N
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/out.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(closeButton, org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.closeButton.text")); // NOI18N
         closeButton.setToolTipText(org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.closeButton.toolTipText")); // NOI18N
         closeButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
