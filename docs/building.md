@@ -53,7 +53,7 @@ Now everything is happening in the background: Netbeans is being downloaded to `
 If you don't want to debug/code something in the SDK, skip to Deploying the SDK.  
 
 Fire up the freshly installed Netbeans:  
-Windows: `netbeans/bin/netbeans.exe`  
+Windows: `netbeans\bin\netbeans.exe`  
 Linux/Mac: `netbeans/bin/netbeans`  
 
 Now you click on "File->Open Project" and there just select the folder you downloaded the SDK to. It should show some orange patchwork. That's a Project Group.  
