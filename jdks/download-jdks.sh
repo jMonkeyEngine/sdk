@@ -143,6 +143,8 @@ function unpack_windows {
     #unzip -qq tools.zip -d .
     #rm tools.zip
 
+    find . -exec chmod u+w {} \; # Make all file writable to allow uninstaller's cleaner to remove file    
+    
     find . -type f \( -name "*.exe" -o -name "*.dll" \) -exec chmod u+rwx {} \; # Make them executable
 
     find . -type f -name "*.pack" | while read eachFile; do
