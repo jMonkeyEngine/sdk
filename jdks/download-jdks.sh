@@ -130,7 +130,7 @@ function build_mac_jdk {
     fi
 
     rm -rf ../../jdk-macosx.zip
-    ln -rs compiled/jdk-macosx.zip ../../
+    ln -s compiled/jdk-macosx.zip ../../
     echo "< OK!"
 }
 
@@ -248,7 +248,7 @@ function compile_other {
     fi
 
     unzipsfxname="../../unzipsfx/unzipsfx-$1-$3"
-    if [ ! -f "$unzipsfxname" ]; then
+    if ! [ -f "$unzipsfxname" ]; then
         echo "No unzipsfx for platform $1-$3 found at $unzipsfxname, cannot continue"
         exit 1
     fi
@@ -288,7 +288,7 @@ function build_other_jdk {
     fi
 
     rm -rf ../../$name
-    ln -rs compiled/$name ../../
+    ln -s compiled/$name ../../
     echo "< OK!"
 }
 
