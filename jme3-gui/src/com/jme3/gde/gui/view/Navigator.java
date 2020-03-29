@@ -7,7 +7,6 @@ package com.jme3.gde.gui.view;
 import com.jme3.gde.gui.nodes.GElementNode;
 import com.jme3.gde.gui.nodes.GUINode;
 import jada.ngeditor.controller.CommandProcessor;
-import jada.ngeditor.controller.GUIEditor;
 import jada.ngeditor.controller.commands.SelectCommand;
 import jada.ngeditor.listeners.events.SelectionChanged;
 import jada.ngeditor.model.GUI;
@@ -57,8 +56,8 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
                 Exceptions.printStackTrace(ex);
             }
         }
-        
-        
+
+
     }
 
     /**
@@ -101,7 +100,7 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
 
     @Override
     public void panelActivated(Lookup context) {
-        
+
     }
 
     @Override
@@ -131,7 +130,7 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
                Exceptions.printStackTrace(ex);
            }
        }
-       
+
        if(arg instanceof SelectionChanged){
            SelectionChanged event = (SelectionChanged) arg;
            if(event.getNewSelection().isEmpty()){
@@ -153,7 +152,7 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
                 if(result!=null){
                     mgr.setSelectedNodes(new Node[]{result});
                 }
-                
+
             } catch (PropertyVetoException ex) {
                 Exceptions.printStackTrace(ex);
             }
@@ -179,7 +178,7 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
                         Exceptions.printStackTrace(ex);
                     }
                      gui.getSelection().addObserver(this);
-                    
+
                 }
             }
         }
@@ -187,11 +186,11 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
 
 
     private void intNavigator(GUI gui) throws PropertyVetoException {
-        
-       
+
+
         ExplorerUtils.activateActions(mgr, true);
-       
-        
+
+
         AbstractNode guiRoot = new GUINode(gui);
         guiRoot.setName("Gui");
         this.mgr.setRootContext(guiRoot);
@@ -200,6 +199,6 @@ public class Navigator extends javax.swing.JPanel implements NavigatorPanel,Expl
         this.mgr.setSelectedNodes(new Node[]{guiRoot});
         Lookup lookup1 = ExplorerUtils.createLookup(mgr, getActionMap());
         lookup = new ProxyLookup(lookup1);
-        
+
     }
 }

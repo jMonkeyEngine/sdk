@@ -8,7 +8,6 @@ import com.jme3.asset.ModelKey;
 import com.jme3.gde.assetpack.actions.AddAssetAction;
 import com.jme3.gde.assetpack.project.wizards.FileDescription;
 import com.jme3.gde.core.assets.ProjectAssetManager;
-import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.material.Material;
 import com.jme3.material.MaterialList;
 import com.jme3.scene.Node;

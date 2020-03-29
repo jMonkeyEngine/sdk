@@ -13,8 +13,6 @@ import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import javax.swing.Action;
-import org.openide.actions.RenameAction;
 import org.openide.nodes.ChildFactory;
 import org.openide.nodes.Children;
 import org.openide.nodes.Node;
@@ -22,14 +20,13 @@ import org.openide.nodes.Sheet;
 import org.openide.util.Exceptions;
 import org.openide.util.Lookup;
 import org.openide.util.WeakListeners;
-import org.openide.util.actions.SystemAction;
 
 /**
  *
  * @author Nehon
  */
 public class MatDefNode extends AbstractMatDefNode implements Selectable, PropertyChangeListener {
-  
+
 
     public MatDefNode(final Lookup lookup) {
         super(Children.create(new ChildFactory<TechniqueBlock>() {
@@ -49,7 +46,7 @@ public class MatDefNode extends AbstractMatDefNode implements Selectable, Proper
 
     }
 
-  
+
 
     @Override
     protected Sheet createSheet() {
@@ -69,7 +66,7 @@ public class MatDefNode extends AbstractMatDefNode implements Selectable, Proper
         }
 
         def.addPropertyChangeListener(WeakListeners.propertyChange(this, def));
- 
+
 //        for (MatParam matParam : def.getMaterialParams()) {
 //            set.put(MatParamProperty.makeProperty(matParam, lookup));
 //        }

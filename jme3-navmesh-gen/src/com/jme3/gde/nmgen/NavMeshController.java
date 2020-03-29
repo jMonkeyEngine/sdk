@@ -16,7 +16,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
 import com.jme3.terrain.Terrain;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,31 +41,31 @@ public class NavMeshController {
         this.topComponent = topComponent;
         rootNode = this.jmeRootNode.getLookup().lookup(Node.class);
     }
-    
+
     protected void cleanup() {
-        
+
     }
-    
+
     public void setNeedsSave(boolean state) {
         currentFileObject.setModified(state);
     }
 
-    protected Mesh generateNavMesh(float cellSize, 
-            float cellHeight, 
-            float minTraversableHeight, 
-            float maxTraversableStep, 
-            float maxTraversableSlope, 
-            boolean clipLedges, 
-            float traversableAreaBorderSize, 
-            float smoothingThreshold, 
-            boolean useConservativeExpansion, 
-            float minUnconnectedRegionSize, 
-            float mergeRegionSize, 
-            float maxEdgeLength, 
-            float edgeMaxDeviation, 
-            float maxVertsPerPoly, 
-            float contourSampleDistance, 
-            float contourMaxDeviation) 
+    protected Mesh generateNavMesh(float cellSize,
+            float cellHeight,
+            float minTraversableHeight,
+            float maxTraversableStep,
+            float maxTraversableSlope,
+            boolean clipLedges,
+            float traversableAreaBorderSize,
+            float smoothingThreshold,
+            boolean useConservativeExpansion,
+            float minUnconnectedRegionSize,
+            float mergeRegionSize,
+            float maxEdgeLength,
+            float edgeMaxDeviation,
+            float maxVertsPerPoly,
+            float contourSampleDistance,
+            float contourMaxDeviation)
     {
         NavMeshGenerator generator = new NavMeshGenerator();
         generator.setCellSize(cellSize);
@@ -84,14 +83,14 @@ public class NavMeshController {
         generator.setMaxVertsPerPoly((int)maxVertsPerPoly);
         generator.setContourSampleDistance(contourSampleDistance);
         generator.setContourMaxDeviation(contourMaxDeviation);
-        
+
         IntermediateData id = new IntermediateData();
-        
+
         generator.setIntermediateData(null);
-        
+
         Mesh mesh = new Mesh();
         //NavMesh navMesh = new NavMesh();
-        
+
         GeometryBatchFactory.mergeGeometries(findGeometries(rootNode, new LinkedList<Geometry>(), generator), mesh);
         Mesh optiMesh = generator.optimize(mesh);
 
@@ -99,30 +98,30 @@ public class NavMeshController {
         navMesh.setMesh(optiMesh);
         navMesh.setCullHint(CullHint.Always);
         navMesh.setModelBound(new BoundingBox());
-        
+
         Spatial previous = rootNode.getChild("NavMesh");
         if (previous != null)
             previous.removeFromParent();
-        
+
         SceneApplication.getApplication().enqueue(new Callable<Void>() {
             public Void call() throws Exception {
                 rootNode.attachChild(navMesh);
                 return null;
             }
         });
-        
+
         jmeRootNode.refresh(true);
-        
+
         //navMesh.setUserData("NavMeshGenerator", generator);
-        
+
         //navMesh.loadFromMesh(optiMesh);
         //saveNavMesh(navMesh, generator);
-        
+
         setNeedsSave(true);
-        
+
         return optiMesh;
     }
-    
+
     /**
      * NavMesh saves as user data on the scene's root node
      */
@@ -131,22 +130,22 @@ public class NavMeshController {
         rootNode.setUserData("NavMeshGenerator", generator);
         this.navMesh = navMesh;
     }
-    
+
     protected NavMesh getNavMesh() {
         if (navMesh == null) {
             navMesh = findNavMesh();
         }
         return navMesh;
     }
-    
+
     protected NavMesh findNavMesh() {
         return rootNode.getUserData("NavMesh");
     }*/
-    
+
     protected NavMeshGenerator getNavMeshGenerator() {
         return rootNode.getUserData("NavMeshGenerator");
     }
-    
+
     private List<Geometry> findGeometries(Node node, List<Geometry> geoms, NavMeshGenerator generator) {
         for (Iterator<Spatial> it = node.getChildren().iterator(); it.hasNext();) {
             Spatial spatial = it.next();
@@ -158,7 +157,7 @@ public class NavMeshController {
                     Geometry g = new Geometry("mergedTerrain");
                     g.setMesh(merged);
                     geoms.add(g);
-                } else 
+                } else
                     findGeometries((Node) spatial, geoms, generator);
             }
         }
@@ -186,7 +185,7 @@ public class NavMeshController {
         }
         return null;
     }*/
-    
+
     private Material getNavMaterial() {
         if (navMaterial != null)
             return navMaterial;
@@ -195,5 +194,5 @@ public class NavMeshController {
         navMaterial.getAdditionalRenderState().setWireframe(true);
         return navMaterial;
     }
-    
+
 }

@@ -28,7 +28,7 @@ public class GUINode extends AbstractNode{
         super(Children.create(new ScreenChildFactory(gui),false));
         this.gui = gui;
         this.setIconBaseWithExtension(basePath+"/"+"game-monitor"+".png");
-        
+
     }
 
     /**
@@ -40,14 +40,11 @@ public class GUINode extends AbstractNode{
 
     @Override
     public Action[] getActions(boolean context) {
-        if(true){
-        return new Action[]{new AddStyleAction(),new AddControlAction()}; //To change body of generated methods, choose Tools | Templates.
-        }else
-            return super.getActions();
+        return new Action[]{new AddStyleAction(), new AddControlAction()};
    }
 
-    
-    
+
+
     @Override
     public String getName() {
         return super.getName()+" "+this.gui; //To change body of generated methods, choose Tools | Templates.
@@ -65,15 +62,15 @@ public class GUINode extends AbstractNode{
         int result = chooser.showSaveDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
             GUseStyle style = new GUseStyle();
-           
-       
+
+
                 style.setFilename(createReletive(chooser.getSelectedFile()));
                 gui.addLoadUseStyle(style);
-           
-            
+
+
         }
        }
-           
+
     }
      private class AddControlAction extends AbstractAction {
 
@@ -87,19 +84,19 @@ public class GUINode extends AbstractNode{
         int result = chooser.showSaveDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
              GUseControls controls = new GUseControls();
-           
-       
+
+
                 controls.setFilename(createReletive(chooser.getSelectedFile()));
                 gui.addLoadUseControls(controls);
-           
-            
+
+
         }
         }
-        
-      
-        
+
+
+
     }
-     
+
      private String createReletive(File selected) {
         File assets = gui.getAssetFolder();
         String res = "";
@@ -119,7 +116,7 @@ public class GUINode extends AbstractNode{
        } else {
            res = assets.toURI().relativize(selected.toURI()).getPath();
        }
-       return res;      
+       return res;
     }
-    
+
 }

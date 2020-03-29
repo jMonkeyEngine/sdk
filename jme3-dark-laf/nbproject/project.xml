@@ -20,15 +20,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>1.40.1</specification-version>
-                    </run-dependency>
-                </dependency>
-                <dependency>
-                    <code-name-base>org.openide.awt</code-name-base>
-                    <build-prerequisite/>
-                    <compile-dependency/>
-                    <run-dependency>
-                        <specification-version>7.62.1</specification-version>
+                        <specification-version>1.49</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -36,7 +28,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>7.43.1</specification-version>
+                        <specification-version>7.55</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -44,7 +36,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>8.39.1</specification-version>
+                        <specification-version>9.14</specification-version>
                     </run-dependency>
                 </dependency>
                 <dependency>
@@ -52,15 +44,7 @@
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>
-                        <specification-version>9.4.1</specification-version>
-                    </run-dependency>
-                </dependency>
-                <dependency>
-                    <code-name-base>org.openide.windows</code-name-base>
-                    <build-prerequisite/>
-                    <compile-dependency/>
-                    <run-dependency>
-                        <specification-version>6.71.1</specification-version>
+                        <specification-version>9.15</specification-version>
                     </run-dependency>
                 </dependency>
             </module-dependencies>

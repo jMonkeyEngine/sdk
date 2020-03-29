@@ -6,7 +6,6 @@ package com.jme3.gde.modelimporter;
 
 
 import com.jme3.asset.AssetKey;
-import com.jme3.gde.core.assets.AssetData;
 import com.jme3.gde.core.util.PropertyUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;

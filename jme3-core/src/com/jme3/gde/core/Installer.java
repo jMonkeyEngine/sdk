@@ -1,22 +1,22 @@
 /*
  *  Copyright (c) 2009-2010 jMonkeyEngine
  *  All rights reserved.
- * 
+ *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are
  *  met:
- * 
+ *
  *  * Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  *  * Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -40,12 +40,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileSystemView;
+import org.netbeans.core.startup.Splash;
 import org.openide.filesystems.FileChooserBuilder;
 import org.openide.modules.ModuleInstall;
 import org.openide.modules.Places;
 import org.openide.util.NbBundle;
 import org.openide.util.NbPreferences;
-import org.netbeans.core.startup.*;
 
 /**
  * Manages a module's lifecycle. Remember that an installer is optional and
@@ -71,7 +71,7 @@ public class Installer extends ModuleInstall {
     static {
         //set exception report levels
         System.setProperty("netbeans.exception.report.min.level", "99999");
-        System.setProperty("netbeans.exception.alert.min.level", "99999"); 
+        System.setProperty("netbeans.exception.alert.min.level", "99999");
         //set http agent
         System.setProperty("http.agent", NbBundle.getBundle("org.netbeans.core.windows.view.ui.Bundle").getString("CTL_MainWindow_Title")
                 + " (" + System.getProperty("os.name") + "/" + System.getProperty("os.version") + ")");
@@ -86,9 +86,9 @@ public class Installer extends ModuleInstall {
             builder.setApproveText("Set Project Folder");
             builder.setTitle("Please select folder for storing projects");
             builder.setDirectoriesOnly(true);
-            
+
             Splash s = Splash.getInstance();
-            
+
             Component comp = s.getComponent();
             while (!(comp instanceof Frame)) { // Loop through the Hierarchy until you have the parental Frame
                 if (comp.getParent() != null)
@@ -98,24 +98,24 @@ public class Installer extends ModuleInstall {
                     break;
                 }
             }
-            
+
             if (comp != null)
                 comp.setVisible(false);
             else
                 s.setRunning(false); // Workaround from the Workaround.
-           
+
             File file = builder.showOpenDialog(); //*/  chooser.getSelectedFile();
             if (file != null) {
                 projectDir = file.getAbsolutePath();
                 NbPreferences.forModule(Installer.class).put("projects_path", projectDir);
             }
-                
+
             if (comp != null)
                 comp.setVisible(true);
             else
                 s.setRunning(true); // Unfortunately this has no effect
         }
-        
+
         //netbeans.default_userdir_root
         logger.log(Level.INFO, "Set project dir {0}", projectDir);
         System.setProperty("netbeans.projects.dir", projectDir);
@@ -127,7 +127,7 @@ public class Installer extends ModuleInstall {
             logger.log(Level.INFO, "Create settings dir {0}", projectDir);
             file.mkdirs();
         }
-        
+
         com.jme3.system.NativeLibraryLoader.setCustomExtractionFolder(jmpDir);
         //avoid problems with lightweight popups
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);

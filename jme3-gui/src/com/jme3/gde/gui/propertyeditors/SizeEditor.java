@@ -8,9 +8,6 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import javax.swing.JLabel;
 import org.openide.explorer.propertysheet.ExPropertyEditor;
 import org.openide.explorer.propertysheet.PropertyEnv;
 
@@ -54,6 +51,6 @@ public class SizeEditor  extends PropertyEditorSupport implements ExPropertyEdit
        this.setValue(evt.getNewValue());
     }
 
-   
-    
+
+
 }

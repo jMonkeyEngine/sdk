@@ -7,11 +7,6 @@ package com.jme3.gde.assetpack.browser;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
-import org.openide.util.HelpCtx;
-import org.openide.util.NbBundle;
-import org.openide.windows.TopComponent;
-import org.openide.windows.WindowManager;
-//import org.openide.util.ImageUtilities;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.actions.CopyAction;
 import org.openide.awt.ActionID;
@@ -20,7 +15,11 @@ import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.explorer.view.BeanTreeView;
 import org.openide.nodes.Node;
+import org.openide.util.HelpCtx;
+import org.openide.util.NbBundle;
 import org.openide.util.actions.SystemAction;
+import org.openide.windows.TopComponent;
+import org.openide.windows.WindowManager;
 
 /**
  * Top component which displays something.
@@ -29,7 +28,7 @@ import org.openide.util.actions.SystemAction;
 autostore = false)
 @TopComponent.Description(
     preferredID = "AssetPackBrowserTopComponent",
-    iconBase="com/jme3/gde/assetpack/icons/assetpack.png", 
+    iconBase="com/jme3/gde/assetpack/icons/assetpack.png",
 persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @TopComponent.Registration(mode = "explorer", openAtStartup = true, position = 500)
 @ActionID(category = "Window", id = "com.jme3.gde.assetpack.browser.AssetPackBrowserTopComponent")
