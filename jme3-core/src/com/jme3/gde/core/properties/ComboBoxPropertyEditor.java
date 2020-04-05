@@ -1,22 +1,22 @@
 /*
  *  Copyright (c) 2009-2010 jMonkeyEngine
  *  All rights reserved.
- * 
+ *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are
  *  met:
- * 
+ *
  *  * Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  *  * Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -35,7 +35,6 @@ import com.jme3.gde.core.util.ComboInplaceEditor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import org.openide.explorer.propertysheet.ExPropertyEditor;
@@ -48,23 +47,24 @@ import org.openide.explorer.propertysheet.PropertyEnv;
  */
 public class ComboBoxPropertyEditor extends PropertyEditorSupport implements ExPropertyEditor, InplaceEditor.Factory {
 
-    private LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
-    PropertyEnv env;
-    private ComboInplaceEditor ed = null;
+    private final LinkedList<PropertyChangeListener> listeners = new LinkedList<>();
+    private PropertyEnv env;
+    private final ComboInplaceEditor ed;
 
     public ComboBoxPropertyEditor(List<String> list) {
         ed = new ComboInplaceEditor(list);
     }
 
+    @Override
     public void attachEnv(PropertyEnv env) {
         this.env = env;
         env.registerInplaceEditorFactory(this);
     }
-    
+
     public void setList(List<String> list){
         ed.setList(list);
     }
-   
+
     public int getNumElements(){
         return ed.getNumElements();
     }
@@ -77,11 +77,12 @@ public class ComboBoxPropertyEditor extends PropertyEditorSupport implements ExP
     @Override
     public void setAsText(String s) {
         Object o = ed.getValue();
-        ((ComboInplaceEditor) ed).setAsText(s);
+        ed.setAsText(s);
         notifyListeners(o, ed.getValue());
     }
- 
 
+
+    @Override
     public InplaceEditor getInplaceEditor() {
         return ed;
     }
@@ -112,8 +113,7 @@ public class ComboBoxPropertyEditor extends PropertyEditorSupport implements ExP
     }
 
     private void notifyListeners(Object before, Object after) {
-        for (Iterator<PropertyChangeListener> it = listeners.iterator(); it.hasNext();) {
-            PropertyChangeListener propertyChangeListener = it.next();
+        for (PropertyChangeListener propertyChangeListener : listeners) {
             //TODO: check what the "programmatic name" is supposed to be here.. for now its Quaternion
             propertyChangeListener.propertyChange(new PropertyChangeEvent(this, null, before, after));
         }

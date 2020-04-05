@@ -74,11 +74,11 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
         }
         return null;
     }
-    
+
     protected Spatial generateTerrain(Node parent, final WizardDescriptor wizardDescriptor) throws IOException {
         org.openide.nodes.Node selectedNode = (org.openide.nodes.Node) wizardDescriptor.getProperty("main_node");
         final Spatial spatial = selectedNode.getLookup().lookup(Spatial.class);
-        
+
 
         String sceneName = selectedNode.getLookup().lookup(DataObject.class).getName();
 
@@ -100,8 +100,8 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
 
         return doCreateTerrain(parent, totalSize, patchSize, alphaTextureSize, heightmapData, sceneName, selectedNode);
     }
-    
-    
+
+
     protected Spatial doCreateTerrain(Node parent,
                                     int totalSize,
                                     int patchSize,
@@ -111,7 +111,7 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
                                     org.openide.nodes.Node selectedNode) throws IOException
     {
         final ProjectAssetManager manager = selectedNode.getLookup().lookup(ProjectAssetManager.class);
-        
+
         Terrain terrain = new TerrainQuad("terrain-"+sceneName, patchSize, totalSize, heightmapData); //TODO make this pluggable for different Terrain implementations
         com.jme3.material.Material mat = new com.jme3.material.Material(manager, "Common/MatDefs/Terrain/TerrainLighting.j3md");
 
@@ -134,7 +134,7 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
                     throw new IOException("Could not create the Texture Folder (assets/Textures)!");
                 }
             }
-            
+
             File alphaFolder = new File(assetFolder + "/Textures/terrain-alpha/");
             if (!alphaFolder.exists()) {
                 if (!alphaFolder.mkdir()) {
@@ -159,9 +159,9 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
                     break;
             }
         }
-        
+
         Texture defaultTexture = manager.loadTexture(TerrainEditorController.DEFAULT_TERRAIN_TEXTURE);
-        
+
         // copy the default texture to the assets folder if it doesn't exist there yet
         String dirtTextureName = "/Textures/dirt.jpg";
         File dirtTextureFile = new File(assetFolder+dirtTextureName);
@@ -193,7 +193,7 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
         //setNeedsSave(true);
         //addSpatialUndo(parent, (Node)terrain, jmeNodeParent);
         }
-        
+
         return (Spatial)terrain;
     }
 
@@ -218,16 +218,15 @@ public class AddTerrainAction extends AbstractNewSpatialWizardAction {
                 if (c instanceof JComponent) { // assume Swing components
                     JComponent jc = (JComponent) c;
                     // Sets step number of a component
-                    // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
-                    jc.putClientProperty("WizardPanel_contentSelectedIndex", i);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                     // Sets steps names for a panel
-                    jc.putClientProperty("WizardPanel_contentData", steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty("WizardPanel_autoWizardStyle", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the background
-                    jc.putClientProperty("WizardPanel_contentDisplayed", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }

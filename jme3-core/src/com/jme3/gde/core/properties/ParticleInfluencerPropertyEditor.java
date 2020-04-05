@@ -1,22 +1,22 @@
 /*
  *  Copyright (c) 2009-2010 jMonkeyEngine
  *  All rights reserved.
- * 
+ *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are
  *  met:
- * 
+ *
  *  * Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  *  * Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -42,7 +42,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditor;
-import java.util.Iterator;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 import org.netbeans.api.project.Project;
@@ -57,7 +57,7 @@ import org.openide.util.Exceptions;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ParticleInfluencerPropertyEditor implements PropertyEditor {
 
-    private LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
+    private final LinkedList<PropertyChangeListener> listeners = new LinkedList<>();
     private JmeParticleEmitter jmePe;
     private ParticleInfluencer pi;
     private Project proj;
@@ -71,38 +71,45 @@ public class ParticleInfluencerPropertyEditor implements PropertyEditor {
         this.proj = project;
     }
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof ParticleInfluencer) {
             pi = (ParticleInfluencer) value;
         }
     }
 
+    @Override
     public Object getValue() {
         return pi;
     }
 
+    @Override
     public boolean isPaintable() {
         return false;
     }
 
+    @Override
     public void paintValue(Graphics gfx, Rectangle box) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public String getJavaInitializationString() {
         return null;
     }
 
+    @Override
     public String getAsText() {
         return pi.getClass().getSimpleName();
     }
 
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         if(pi.getClass().getName().equals(text)){
             return;
         }
         ParticleInfluencer old = pi;
-        ProjectAssetManager manager = (ProjectAssetManager) proj.getLookup().lookup(ProjectAssetManager.class);
+        ProjectAssetManager manager = proj.getLookup().lookup(ProjectAssetManager.class);
         List<ClassLoader> loaders = manager.getClassLoaders();
 
 
@@ -121,16 +128,13 @@ public class ParticleInfluencerPropertyEditor implements PropertyEditor {
         }
         if (clazz != null) {
             try {
-                Object obj = clazz.newInstance();
+                Object obj = clazz.getDeclaredConstructor().newInstance();
                 if (obj instanceof ParticleInfluencer) {
                     pi = (ParticleInfluencer) obj;
                 } else {
                     DialogDisplayer.getDefault().notifyLater(new NotifyDescriptor.Message("This is no ParticleInfluencer class!"));
                 }
-            } catch (InstantiationException ex) {
-                Exceptions.printStackTrace(ex);
-                DialogDisplayer.getDefault().notifyLater(new NotifyDescriptor.Message("Error instatiating class!"));
-            } catch (IllegalAccessException ex) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
                 Exceptions.printStackTrace(ex);
                 DialogDisplayer.getDefault().notifyLater(new NotifyDescriptor.Message("Error instatiating class!"));
             }
@@ -142,6 +146,7 @@ public class ParticleInfluencerPropertyEditor implements PropertyEditor {
         }
     }
 
+    @Override
     public String[] getTags() {
         return null;
 //        List<String> s = getSources();
@@ -207,25 +212,28 @@ public class ParticleInfluencerPropertyEditor implements PropertyEditor {
 //        }
 //        return list;
 //    }
+    @Override
     public Component getCustomEditor() {
         return new ParticleInfluencerPicker(null, true, this, jmePe);
     }
 
+    @Override
     public boolean supportsCustomEditor() {
         return true;
     }
 
+    @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         listeners.remove(listener);
     }
 
     private void notifyListeners(ParticleInfluencer before, ParticleInfluencer after) {
-        for (Iterator<PropertyChangeListener> it = listeners.iterator(); it.hasNext();) {
-            PropertyChangeListener propertyChangeListener = it.next();
+        for (PropertyChangeListener propertyChangeListener : listeners) {
             //TODO: check what the "programmatic name" is supposed to be here.. for now its Quaternion
             propertyChangeListener.propertyChange(new PropertyChangeEvent(this, null, before, after));
         }

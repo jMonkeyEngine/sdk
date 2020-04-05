@@ -46,7 +46,7 @@ import org.openide.util.actions.CallableSystemAction;
 public final class CreateTerrainWizardAction extends CallableSystemAction {
 
     private WizardDescriptor.Panel[] panels;
-    private TerrainEditorTopComponent controller;
+    private final TerrainEditorTopComponent controller;
 
     public CreateTerrainWizardAction(TerrainEditorTopComponent controller) {
         this.controller = controller;
@@ -67,7 +67,7 @@ public final class CreateTerrainWizardAction extends CallableSystemAction {
         }
     }
 
-    
+
 
     /**
      * Initialize panels representing individual wizard's steps and sets
@@ -90,16 +90,15 @@ public final class CreateTerrainWizardAction extends CallableSystemAction {
                 if (c instanceof JComponent) { // assume Swing components
                     JComponent jc = (JComponent) c;
                     // Sets step number of a component
-                    // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
-                    jc.putClientProperty("WizardPanel_contentSelectedIndex", i);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                     // Sets steps names for a panel
-                    jc.putClientProperty("WizardPanel_contentData", steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty("WizardPanel_autoWizardStyle", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the background
-                    jc.putClientProperty("WizardPanel_contentDisplayed", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }

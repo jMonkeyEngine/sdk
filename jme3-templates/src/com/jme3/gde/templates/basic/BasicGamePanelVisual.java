@@ -148,15 +148,14 @@ public class BasicGamePanelVisual extends JPanel implements DocumentListener {
     boolean valid(WizardDescriptor wizardDescriptor) {
 
         if (projectNameTextField.getText().length() == 0) {
-            // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_ERROR_MESSAGE:
-            wizardDescriptor.putProperty("WizardPanel_errorMessage",
+            wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     "Project Name is not a valid folder name.");
             return false; // Display name not specified
         }
         File f = FileUtil.normalizeFile(new File(projectLocationTextField.getText()).getAbsoluteFile());
         if (!f.isDirectory()) {
             String message = "Project Folder is not a valid path.";
-            wizardDescriptor.putProperty("WizardPanel_errorMessage", message);
+            wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, message);
             return false;
         }
         final File destFolder = FileUtil.normalizeFile(new File(createdFolderTextField.getText()).getAbsoluteFile());
@@ -166,25 +165,25 @@ public class BasicGamePanelVisual extends JPanel implements DocumentListener {
             projLoc = projLoc.getParentFile();
         }
         if (projLoc == null || !projLoc.canWrite()) {
-            wizardDescriptor.putProperty("WizardPanel_errorMessage",
+            wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     "Project Folder cannot be created.");
             return false;
         }
 
         if (FileUtil.toFileObject(projLoc) == null) {
             String message = "Project Folder is not a valid path.";
-            wizardDescriptor.putProperty("WizardPanel_errorMessage", message);
+            wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, message);
             return false;
         }
 
         File[] kids = destFolder.listFiles();
         if (destFolder.exists() && kids != null && kids.length > 0) {
             // Folder exists and is not empty
-            wizardDescriptor.putProperty("WizardPanel_errorMessage",
+            wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE,
                     "Project Folder already exists and is not empty.");
             return false;
         }
-        wizardDescriptor.putProperty("WizardPanel_errorMessage", "");
+        wizardDescriptor.putProperty(WizardDescriptor.PROP_ERROR_MESSAGE, "");
         return true;
     }
 

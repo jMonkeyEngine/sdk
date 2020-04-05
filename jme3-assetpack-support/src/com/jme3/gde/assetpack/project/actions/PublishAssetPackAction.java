@@ -76,10 +76,10 @@ public final class PublishAssetPackAction implements Action {
     private void packZip(WizardDescriptor wiz) {
         try {
             String outFilename = context.getProjectDirectory().getPath() + "/" + wiz.getProperty("filename");
-            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(new File(outFilename)));
-            out.setLevel(9);
-            zipDir(((AssetPackProject) context).getProjectDirectory(), out, (String) wiz.getProperty("filename"));
-            out.close();
+            try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(new File(outFilename)))) {
+                out.setLevel(9);
+                zipDir(((AssetPackProject) context).getProjectDirectory(), out, (String) wiz.getProperty("filename"));
+            }
         } catch (IOException e) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, "Error creating ZIP file!");
         }
@@ -162,16 +162,15 @@ public final class PublishAssetPackAction implements Action {
                 if (c instanceof JComponent) { // assume Swing components
                     JComponent jc = (JComponent) c;
                     // Sets step number of a component
-                    // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
-                    jc.putClientProperty("WizardPanel_contentSelectedIndex", i);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                     // Sets steps names for a panel
-                    jc.putClientProperty("WizardPanel_contentData", steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty("WizardPanel_autoWizardStyle", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the background
-                    jc.putClientProperty("WizardPanel_contentDisplayed", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }

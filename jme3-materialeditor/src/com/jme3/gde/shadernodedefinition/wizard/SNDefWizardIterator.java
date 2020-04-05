@@ -46,7 +46,7 @@ public final class SNDefWizardIterator implements WizardDescriptor.Instantiating
 
     private List<WizardDescriptor.Panel<WizardDescriptor>> getPanels() {
         if (panels == null) {
-            panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
+            panels = new ArrayList<>();
             // Change to default new file panel and add our panel at bottom
             Project p = Templates.getProject(wizard);
             SourceGroup[] groups = ProjectUtils.getSources(p).getSourceGroups(Sources.TYPE_GENERIC);
@@ -85,7 +85,7 @@ public final class SNDefWizardIterator implements WizardDescriptor.Instantiating
 
         FileObject createdFile = null;
 
-        // Read Title from wizard 
+        // Read Title from wizard
         // String HtmlTitle = (String) wizard.getProperty(SNDefWizardPanel1.TITLE);
         // FreeMarker Template will get its variables from HashMap.
         // HashMap key is the variable name.
@@ -204,7 +204,7 @@ public final class SNDefWizardIterator implements WizardDescriptor.Instantiating
     // by NetBeans Wizard API itself rather than needed to be implemented by a
     // client code.
     private String[] createSteps() {
-        String[] beforeSteps = (String[]) wizard.getProperty("WizardPanel_contentData");
+        String[] beforeSteps = (String[]) wizard.getProperty(WizardDescriptor.PROP_CONTENT_DATA);
         assert beforeSteps != null : "This wizard may only be used embedded in the template wizard";
         String[] res = new String[(beforeSteps.length - 1) + panels.size()];
         for (int i = 0; i < res.length; i++) {

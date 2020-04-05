@@ -4,7 +4,6 @@ import com.jme3.gde.core.util.SliderInplaceEditor;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
-import java.util.Iterator;
 import java.util.LinkedList;
 import org.openide.explorer.propertysheet.ExPropertyEditor;
 import org.openide.explorer.propertysheet.InplaceEditor;
@@ -16,13 +15,14 @@ import org.openide.explorer.propertysheet.PropertyEnv;
  */
 public class SliderPropertyEditor extends PropertyEditorSupport implements ExPropertyEditor, InplaceEditor.Factory {
 
-    private LinkedList<PropertyChangeListener> listeners = new LinkedList<PropertyChangeListener>();
+    private final LinkedList<PropertyChangeListener> listeners = new LinkedList<>();
     PropertyEnv env;
 
     public SliderPropertyEditor() {
         ed = new SliderInplaceEditor(0f, 100f);
     }
 
+    @Override
     public void attachEnv(PropertyEnv env) {
         this.env = env;
         env.registerInplaceEditorFactory(this);
@@ -52,11 +52,12 @@ public class SliderPropertyEditor extends PropertyEditorSupport implements ExPro
     @Override
     public void setAsText(String s) {
         Object o = ed.getValue();
-        ((SliderInplaceEditor) ed).setAsText(s);
+        ed.setAsText(s);
         notifyListeners(o, ed.getValue());
     }
     private SliderInplaceEditor ed = null;
 
+    @Override
     public InplaceEditor getInplaceEditor() {
         return ed;
     }
@@ -87,8 +88,7 @@ public class SliderPropertyEditor extends PropertyEditorSupport implements ExPro
     }
 
     private void notifyListeners(Object before, Object after) {
-        for (Iterator<PropertyChangeListener> it = listeners.iterator(); it.hasNext();) {
-            PropertyChangeListener propertyChangeListener = it.next();
+        for (PropertyChangeListener propertyChangeListener : listeners) {
             //TODO: check what the "programmatic name" is supposed to be here.. for now its Quaternion
             propertyChangeListener.propertyChange(new PropertyChangeEvent(this, null, before, after));
         }

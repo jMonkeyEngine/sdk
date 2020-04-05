@@ -1,22 +1,22 @@
 /*
  * Copyright (c) 2003-2012 jMonkeyEngine
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright
  *   notice, this list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
- * 
+ *
  * * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *   may be used to endorse or promote products derived from this software
  *   without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -71,7 +71,7 @@ import org.openide.util.NbBundle.Messages;
     category = "jMonkeyEngine",
 id = "com.jme3.gde.core.appstates.RunAppStateAction")
 @ActionRegistration(
-displayName = "#CTL_RunAppState")
+        displayName = "#CTL_RunAppState", lazy = true)
 @ActionReferences({
     @ActionReference(path = "Loaders/text/x-java/Actions", position = 1050),
     @ActionReference(path = "Editors/text/x-java/Popup", position = 1740)
@@ -128,7 +128,7 @@ public class RunAppStateAction implements ContextAwareAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //TODO: better way to access scene request        
+        //TODO: better way to access scene request
         if (config == null) {
             logger.log(Level.SEVERE, "Performing unconfigured RunAppState action");
             return;
@@ -179,7 +179,7 @@ public class RunAppStateAction implements ContextAwareAction {
                 logger.log(Level.FINE, "No DataObject");
                 return null;
             }
-            Project proj = FileOwnerQuery.getOwner(dObj.getPrimaryFile());;
+            Project proj = FileOwnerQuery.getOwner(dObj.getPrimaryFile());
             if (proj != null) {
                 ret.manager = proj.getLookup().lookup(ProjectAssetManager.class);
             } else {
@@ -235,7 +235,7 @@ public class RunAppStateAction implements ContextAwareAction {
                 @Override
                 public void cancel() {
                 }
-                
+
             };
             src.runUserActionTask(task, true);
             return ret;

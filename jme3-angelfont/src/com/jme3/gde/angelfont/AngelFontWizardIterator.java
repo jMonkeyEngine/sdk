@@ -1,22 +1,22 @@
 /*
  *  Copyright (c) 2009-2019 jMonkeyEngine
  *  All rights reserved.
- * 
+ *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are
  *  met:
- * 
+ *
  *  * Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  *  * Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *    may be used to endorse or promote products derived from this software
  *    without specific prior written permission.
- * 
+ *
  *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -82,16 +82,15 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
                 if (c instanceof JComponent) { // assume Swing components
                     JComponent jc = (JComponent) c;
                     // Sets step number of a component
-                    // TODO if using org.openide.dialogs >= 7.8, can use WizardDescriptor.PROP_*:
-                    jc.putClientProperty("WizardPanel_contentSelectedIndex", i);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
                     // Sets steps names for a panel
-                    jc.putClientProperty("WizardPanel_contentData", steps);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
                     // Turn on subtitle creation on each step
-                    jc.putClientProperty("WizardPanel_autoWizardStyle", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, Boolean.TRUE);
                     // Show steps on the left side with the image on the background
-                    jc.putClientProperty("WizardPanel_contentDisplayed", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, Boolean.TRUE);
                     // Turn on numbering of all steps
-                    jc.putClientProperty("WizardPanel_contentNumbered", Boolean.TRUE);
+                    jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, Boolean.TRUE);
                 }
             }
         }
@@ -104,6 +103,7 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
      * @throws IOException
      */
     @SuppressWarnings("unchecked")
+    @Override
     public Set<FileObject> instantiate() throws IOException {
 
         String fontName = (String) wizard.getProperty("font_name");
@@ -119,7 +119,7 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
         ProjectAssetManager pm = project.getLookup().lookup(ProjectAssetManager.class);
         if (pm == null) {
             Logger.getLogger(AngelFontWizardIterator.class.getName()).log(Level.WARNING, "No ProjectAssetManager found!");
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         AngelFont font = FontCreator.buildFont(fontName, fileName, imageSize, fontSize, style, paddingX, paddingY, letterSpacing, false);
         BufferedImage fontImage = font.getImage();
@@ -135,48 +135,55 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
         try {
             //create PNG file
             imageFile = FileUtil.createData(pm.getAssetFolder(), "Interface/Fonts/" + fileName + ".png");
-            OutputStream out = imageFile.getOutputStream();
-            ImageIO.write(fontImage, "PNG", out);
-            out.close();
+            try (OutputStream out = imageFile.getOutputStream()) {
+                ImageIO.write(fontImage, "PNG", out);
+            }
             //create fnt file
             descriptionFile = FileUtil.createData(pm.getAssetFolder(), "Interface/Fonts/" + fileName + ".fnt");
-            OutputStreamWriter out2 = new OutputStreamWriter(descriptionFile.getOutputStream());
-            out2.write(font.getDescription());
-            out2.close();
+            try (OutputStreamWriter out2 = new OutputStreamWriter(descriptionFile.getOutputStream())) {
+                out2.write(font.getDescription());
+            }
         } catch (Exception e) {
             Exceptions.printStackTrace(e);
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
-        Set<FileObject> set = new HashSet<FileObject>();
+        Set<FileObject> set = new HashSet<>();
         set.add(imageFile);
         set.add(descriptionFile);
         return set;
     }
 
+    @Override
     public void initialize(WizardDescriptor wizard) {
         this.wizard = wizard;
     }
 
+    @Override
     public void uninitialize(WizardDescriptor wizard) {
         panels = null;
     }
 
+    @Override
     public WizardDescriptor.Panel current() {
         return getPanels()[index];
     }
 
+    @Override
     public String name() {
         return index + 1 + ". from " + getPanels().length;
     }
 
+    @Override
     public boolean hasNext() {
         return index < getPanels().length - 1;
     }
 
+    @Override
     public boolean hasPrevious() {
         return index > 0;
     }
 
+    @Override
     public void nextPanel() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -184,6 +191,7 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
         index++;
     }
 
+    @Override
     public void previousPanel() {
         if (!hasPrevious()) {
             throw new NoSuchElementException();
@@ -192,9 +200,11 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
     }
 
     // If nothing unusual changes in the middle of the wizard, simply:
+    @Override
     public void addChangeListener(ChangeListener l) {
     }
 
+    @Override
     public void removeChangeListener(ChangeListener l) {
     }
 
@@ -230,7 +240,7 @@ public final class AngelFontWizardIterator implements WizardDescriptor.Instantia
     // client code.
     private String[] createSteps() {
         String[] beforeSteps = null;
-        Object prop = wizard.getProperty("WizardPanel_contentData");
+        Object prop = wizard.getProperty(WizardDescriptor.PROP_CONTENT_DATA);
         if (prop != null && prop instanceof String[]) {
             beforeSteps = (String[]) prop;
         }
