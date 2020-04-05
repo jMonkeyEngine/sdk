@@ -56,6 +56,7 @@ import com.jme3.texture.Image;
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
+import com.jme3.util.SkyFactory.EnvMapType;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.io.File;
@@ -82,12 +83,12 @@ import org.openide.util.Lookup;
 
 /**
  * Modifies the actual terrain in the scene.
- * 
+ *
  * @author normenhansen, bowens
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class TerrainEditorController implements NodeListener {
-    
+
     private final JmeSpatial jmeRootNode;
     private JmeSpatial selectedSpat;
     private Node terrainNode;
@@ -104,10 +105,10 @@ public class TerrainEditorController implements NodeListener {
 
     private boolean alphaLayersChanged = false;
     //private InstanceContent content;
-    
+
     class TerrainSaveCookie implements SaveCookie {
         JmeSpatial rootNode;
-        
+
         @Override
         public void save() throws IOException {
             if (alphaLayersChanged) {
@@ -131,10 +132,10 @@ public class TerrainEditorController implements NodeListener {
     }
     private final TerrainSaveCookie terrainSaveCookie = new TerrainSaveCookie();
 
-    
-    public TerrainEditorController(JmeSpatial jmeRootNode, 
-                                    AssetDataObject currentFileObject, 
-                                    TerrainEditorTopComponent topComponent) 
+
+    public TerrainEditorController(JmeSpatial jmeRootNode,
+                                    AssetDataObject currentFileObject,
+                                    TerrainEditorTopComponent topComponent)
     {
         this.jmeRootNode = jmeRootNode;
         rootNode = this.jmeRootNode.getLookup().lookup(Node.class);
@@ -160,9 +161,9 @@ public class TerrainEditorController implements NodeListener {
         else if (!state && currentFileObject.isModified())
             currentFileObject.setModified(state);
     }
-    
+
     protected void setSelectedSpat(JmeSpatial selectedSpat) {
-        
+
         if (this.selectedSpat == selectedSpat) {
             return;
         }
@@ -203,16 +204,16 @@ public class TerrainEditorController implements NodeListener {
 
         return terrainNode;
     }
-    
+
     public JmeNode findJmeTerrain(JmeNode root) {
         if (root == null)
             root = (JmeNode) jmeRootNode;
-        
+
         Node node = root.getLookup().lookup(Node.class);
         if (node != null && node instanceof Terrain && node instanceof Node) {
             return root;
         }
-        
+
         if (node != null) {
             if (root.getChildren() != null) {
                 for (org.openide.nodes.Node child : root.getChildren().getNodes() ) {
@@ -224,7 +225,7 @@ public class TerrainEditorController implements NodeListener {
                 }
             }
         }
-        
+
         return null;
     }
 
@@ -236,7 +237,7 @@ public class TerrainEditorController implements NodeListener {
         //    content.add(terrainSaveCookie);
         alphaLayersChanged = true;
     }
-    
+
     /**
      * Perform the actual height modification on the terrain.
      * @param worldLoc the location in the world where the tool was activated
@@ -281,7 +282,7 @@ public class TerrainEditorController implements NodeListener {
         terrain.adjustHeight(locs, heights);
 
         ((Node)terrain).updateModelBound(); // or else we won't collide with it where we just edited
-        
+
     }
 
     /**
@@ -367,12 +368,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Float scale =
                     SceneApplication.getApplication().enqueue(new Callable<Float>() {
-                        
+
                         @Override
                         public Float call() throws Exception {
                             return getTextureScale(layer);
                         }
-                        
+
                     }).get();
                     return scale;
             } catch (InterruptedException | ExecutionException ex) {
@@ -397,13 +398,13 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
-                    
+
                     @Override
                     public Object call() throws Exception {
                         setTextureScale(layer, scale);
                         return null;
                     }
-                    
+
                 }).get();
             } catch (InterruptedException | ExecutionException ex) {
                 Exceptions.printStackTrace(ex);
@@ -455,9 +456,9 @@ public class TerrainEditorController implements NodeListener {
         if (terrain == null) {
             return null;
         }
-        
+
         MatParam matParam = null;
-        
+
         switch (alphaLayer) {
             case 0:
                 matParam = terrain.getMaterial().getParam("AlphaMap");
@@ -471,7 +472,7 @@ public class TerrainEditorController implements NodeListener {
             default:
                 throw new IllegalArgumentException("Invalid AlphaLayer");
         }
-        
+
         if (matParam == null || matParam.getValue() == null) {
             return null;
         }
@@ -490,11 +491,11 @@ public class TerrainEditorController implements NodeListener {
         String path = texturePath;
         if (texturePath == null || texturePath.equals(""))
             path = DEFAULT_TERRAIN_TEXTURE;
-        
+
         Texture tex = SceneApplication.getApplication().getAssetManager().loadTexture(path);
         setDiffuseTexture(layer, tex);
     }
-    
+
     /**
      * Set the diffuse texture at the specified layer.
      * Blocks on the GL thread
@@ -564,7 +565,7 @@ public class TerrainEditorController implements NodeListener {
         setNeedsSave(true);
     }
 
-    
+
     private void doRemoveNormalMap(int layer) {
         Terrain terrain = (Terrain) getTerrain(null);
         if (terrain == null)
@@ -576,24 +577,24 @@ public class TerrainEditorController implements NodeListener {
 
         setNeedsSave(true);
     }
-    
+
     private void doClearAlphaMap(int selectedTextureIndex) {
         Terrain terrain = (Terrain) getTerrain(null);
         if (terrain == null)
             return;
-        
+
         int alphaIdx = selectedTextureIndex/4; // 4 = rgba = 4 textures
         int texIndex = selectedTextureIndex - ((selectedTextureIndex/4)*4); // selectedTextureIndex/4 is an int floor
         //selectedTextureIndex - (alphaIdx * 4)
         Texture tex = doGetAlphaTexture(terrain, alphaIdx);
         Image image = tex.getImage();
-        
+
         PaintTerrainToolAction paint = new PaintTerrainToolAction();
-        
+
         ColorRGBA color = ColorRGBA.Black;
         for (int y=0; y<image.getHeight(); y++) {
             for (int x=0; x<image.getWidth(); x++) {
-        
+
                 paint.manipulatePixel(image, x, y, color, false); // gets the color at that location (false means don't write to the buffer)
                 switch (texIndex) {
                     case 0:
@@ -632,7 +633,7 @@ public class TerrainEditorController implements NodeListener {
             } else {
                 matParam = terrain.getMaterial().getParam("NormalMap_"+layer);
             }
-            
+
             if (matParam == null || matParam.getValue() == null) {
                 return null;
             }
@@ -642,12 +643,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Texture tex =
                     SceneApplication.getApplication().enqueue(new Callable<Texture>() {
-                        
+
                         @Override
                         public Texture call() throws Exception {
                             return getNormalMap(layer);
                         }
-                        
+
                     }).get();
                     return tex;
             } catch (InterruptedException | ExecutionException ex) {
@@ -710,13 +711,13 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
-                    
+
                     @Override
                     public Object call() throws Exception {
                         setNormalMap(layer, texture);
                         return null;
                     }
-                    
+
                 }).get();
             } catch (InterruptedException | ExecutionException ex) {
                 Exceptions.printStackTrace(ex);
@@ -736,20 +737,20 @@ public class TerrainEditorController implements NodeListener {
         try {
             Terrain terrain =
             SceneApplication.getApplication().enqueue(new Callable<Terrain>() {
-                
+
                 @Override
                 public Terrain call() throws Exception {
                     //return doCreateTerrain(parent, totalSize, patchSize, alphaTextureSize, heightmapData, sceneName, jmeNodeParent);
                     AddTerrainAction a = new AddTerrainAction();
                     return (Terrain) a.doCreateTerrain(parent, totalSize, patchSize, alphaTextureSize, heightmapData, sceneName, jmeRootNode);
                 }
-                
+
             }).get();
             return terrain;
         } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
-        
+
         return null; // if failed
     }
 
@@ -797,16 +798,16 @@ public class TerrainEditorController implements NodeListener {
         terrainNode = null;
         // re-look it up
         Terrain terrain = (Terrain)getTerrain(rootNode);
-        
-        
+
+
         AssetManager manager = SceneApplication.getApplication().getAssetManager();
         String assetFolder = null;
         if (manager != null && manager instanceof ProjectAssetManager)
             assetFolder = ((ProjectAssetManager)manager).getAssetFolderName();
         if (assetFolder == null)
             throw new IllegalStateException("AssetManager was not a ProjectAssetManager. Could not locate image save directories.");
-        
-        
+
+
         Texture alpha1 = doGetAlphaTexture(terrain, 0);
         BufferedImage bi1 = ImageToAwt.convert(alpha1.getImage(), false, true, 0);
         File imageFile1 = new File(assetFolder+"/"+alpha1.getKey().getName());
@@ -816,7 +817,7 @@ public class TerrainEditorController implements NodeListener {
         Texture alpha3 = doGetAlphaTexture(terrain, 2);
         BufferedImage bi3 = ImageToAwt.convert(alpha3.getImage(), false, true, 0);
         File imageFile3 = new File(assetFolder+"/"+alpha3.getKey().getName());
-        
+
         ImageOutputStream ios1 = null;
         ImageOutputStream ios2 = null;
         ImageOutputStream ios3 = null;
@@ -853,7 +854,7 @@ public class TerrainEditorController implements NodeListener {
                 Exceptions.printStackTrace(ex);
             }
         }
-        
+
     }
 
     /**
@@ -872,12 +873,12 @@ public class TerrainEditorController implements NodeListener {
         try {
             Spatial sky =
             SceneApplication.getApplication().enqueue(new Callable<Spatial>() {
-                
+
                 @Override
                 public Spatial call() throws Exception {
                     return doCreateSky(parent, west, east, north, south, top, bottom, normalScale);
                 }
-                
+
             }).get();
             return sky;
         } catch (InterruptedException | ExecutionException ex) {
@@ -913,12 +914,12 @@ public class TerrainEditorController implements NodeListener {
         try {
             Spatial sky =
             SceneApplication.getApplication().enqueue(new Callable<Spatial>() {
-                
+
                 @Override
                 public Spatial call() throws Exception {
                     return doCreateSky(parent, texture, useSpheremap, normalScale);
                 }
-                
+
             }).get();
             return sky;
         } catch (InterruptedException | ExecutionException ex) {
@@ -933,7 +934,7 @@ public class TerrainEditorController implements NodeListener {
                                 Vector3f normalScale)
     {
         AssetManager manager = SceneApplication.getApplication().getAssetManager();
-        Spatial sky = SkyFactory.createSky(manager, texture, normalScale, useSpheremap);
+        Spatial sky = SkyFactory.createSky(manager, texture, normalScale, useSpheremap ? EnvMapType.SphereMap : EnvMapType.CubeMap);
         parent.attachChild(sky);
         return sky;
     }
@@ -950,12 +951,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Boolean result =
                     SceneApplication.getApplication().enqueue(new Callable<Boolean>() {
-                        
+
                         @Override
                         public Boolean call() throws Exception {
                             return hasTextureAt(i);
                         }
-                        
+
                     }).get();
                     return result;
             } catch (InterruptedException | ExecutionException ex) {
@@ -964,7 +965,7 @@ public class TerrainEditorController implements NodeListener {
             return false;
         }
     }
-    
+
     /**
      * Enable/disable the add and remove texture buttons based
      * on how many textures are currently being used.
@@ -977,7 +978,7 @@ public class TerrainEditorController implements NodeListener {
                 final boolean remove = getNumDiffuseTextures() > 1;
 
                 java.awt.EventQueue.invokeLater(new Runnable() {
-                    
+
                     @Override
                     public void run() {
                         topComponent.enableAddTextureButton(add);
@@ -985,14 +986,14 @@ public class TerrainEditorController implements NodeListener {
                         topComponent.updateTextureCountLabel(numAvailable);
                         topComponent.setAddNormalTextureEnabled(numAvailable>0);
                     }
-                    
+
                 });
         //        return null;
         //    }
         //});
-        
+
     }
-    
+
     /**
      * How many diffuse textures are being used.
      * Blocking call on GL thread
@@ -1015,12 +1016,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Integer count =
                   SceneApplication.getApplication().enqueue(new Callable<Integer>() {
-                      
+
                     @Override
                     public Integer call() throws Exception {
                         return getNumDiffuseTextures();
                     }
-                    
+
                 }).get();
                 return count;
             } catch (InterruptedException | ExecutionException ex) {
@@ -1029,7 +1030,7 @@ public class TerrainEditorController implements NodeListener {
             return -1;
         }
     }
-    
+
     /**
      * How many textures are currently being used.
      * Blocking call on GL thread
@@ -1055,7 +1056,7 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Integer count =
                   SceneApplication.getApplication().enqueue(new Callable<Integer>() {
-                      
+
                     @Override
                     public Integer call() throws Exception {
                         return getNumUsedTextures();
@@ -1083,12 +1084,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Boolean isEnabled =
                 SceneApplication.getApplication().enqueue(new Callable<Boolean>() {
-                    
+
                     @Override
                     public Boolean call() throws Exception {
                         return isTriPlanarEnabled();
                     }
-                    
+
                 }).get();
                 return isEnabled;
             } catch (InterruptedException | ExecutionException ex) {
@@ -1130,20 +1131,20 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
-                    
+
                     @Override
                     public Object call() throws Exception {
                         setTriPlanarEnabled(enabled);
                         return null;
                     }
-                    
+
                 }).get();
             } catch (InterruptedException | ExecutionException ex) {
                 Exceptions.printStackTrace(ex);
             }
         }
     }
-    
+
      protected void setShininess(final float shininess) {
         if (SceneApplication.getApplication().isOgl()) {
             Terrain terrain = (Terrain) getTerrain(null);
@@ -1151,7 +1152,7 @@ public class TerrainEditorController implements NodeListener {
                 return;
 
             terrain.getMaterial().setFloat("Shininess", shininess);
-            
+
             setNeedsSave(true);
         } else {
             SceneApplication.getApplication().enqueue(new Callable<Object>() {
@@ -1164,7 +1165,7 @@ public class TerrainEditorController implements NodeListener {
             });
         }
     }
-     
+
       protected float getShininess() {
         if (SceneApplication.getApplication().isOgl()) {
             Terrain terrain = (Terrain) getTerrain(null);
@@ -1174,7 +1175,7 @@ public class TerrainEditorController implements NodeListener {
             MatParam param = terrain.getMaterial().getParam("Shininess");
             if (param != null)
                 return (Float)param.getValue();
-            
+
             return 0;
         } else {
             try {
@@ -1192,7 +1193,7 @@ public class TerrainEditorController implements NodeListener {
             return 0;
         }
     }
-      
+
     protected void setWardIsoEnabled(final boolean enabled) {
         if (SceneApplication.getApplication().isOgl()) {
             Terrain terrain = (Terrain) getTerrain(null);
@@ -1204,20 +1205,20 @@ public class TerrainEditorController implements NodeListener {
         } else {
             try {
                 SceneApplication.getApplication().enqueue(new Callable() {
-                    
+
                     @Override
                     public Object call() throws Exception {
                         setWardIsoEnabled(enabled);
                         return null;
                     }
-                    
+
                 }).get();
             } catch (InterruptedException | ExecutionException ex) {
                 Exceptions.printStackTrace(ex);
             }
         }
     }
-    
+
     protected boolean isWardIsoEnabled() {
         if (SceneApplication.getApplication().isOgl()) {
             Terrain terrain = (Terrain) getTerrain(null);
@@ -1232,12 +1233,12 @@ public class TerrainEditorController implements NodeListener {
             try {
                 Boolean isEnabled =
                 SceneApplication.getApplication().enqueue(new Callable<Boolean>() {
-                    
+
                     @Override
                     public Boolean call() throws Exception {
                         return isWardIsoEnabled();
                     }
-                    
+
                 }).get();
                 return isEnabled;
             } catch (InterruptedException | ExecutionException ex) {
@@ -1246,7 +1247,7 @@ public class TerrainEditorController implements NodeListener {
             return false;
         }
     }
-    
+
 
     @Override
     public void propertyChange(PropertyChangeEvent ev) {
@@ -1255,7 +1256,7 @@ public class TerrainEditorController implements NodeListener {
             terrainNode = null;
         }
     }
-    
+
     @Override
     public void childrenAdded(NodeMemberEvent ev) {
         boolean isTerrain = false;
@@ -1272,7 +1273,7 @@ public class TerrainEditorController implements NodeListener {
 
     @Override
     public void childrenRemoved(NodeMemberEvent ev) {
-        
+
     }
 
     @Override
@@ -1281,9 +1282,9 @@ public class TerrainEditorController implements NodeListener {
 
     @Override
     public void nodeDestroyed(NodeEvent ev) {
-        
+
     }
-    
+
     /**
      * Re-attach the camera to the LOD control.
      * Called when the scene is opened and will only
@@ -1296,6 +1297,6 @@ public class TerrainEditorController implements NodeListener {
         TerrainUtils.enableLodControl(camera, root);
     }
 
-    
+
 
 }
