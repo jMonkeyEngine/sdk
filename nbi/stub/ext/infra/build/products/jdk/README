@@ -1,0 +1,4 @@
+In case you are wondering:
+The JDK is packaged for all platforms, only on OS it has to be a special installer item instead of a "bundled JDK", which works on all other platforms. This is (was?) a quirk in the NBI installer. 
+
+See #150

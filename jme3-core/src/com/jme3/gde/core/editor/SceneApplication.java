@@ -24,6 +24,10 @@ public class SceneApplication extends SimpleApplication {
         super(new StatsAppState());
         AppSettings newSetting = new AppSettings(true);
         newSetting.setFrameRate(30);
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            // On Mac we need to enforce the 3.2 core profile or we have 2.0 only
+            newSetting.setRenderer(AppSettings.LWJGL_OPENGL32);
+        }
         newSetting.setCustomRenderer(AwtPanelsContext.class);
         setSettings(newSetting);
         setPauseOnLostFocus(false);
@@ -41,6 +45,7 @@ public class SceneApplication extends SimpleApplication {
 
     private void attachPanel() {
         enqueue(new Callable() {
+            @Override
             public Object call() throws Exception {
                 panel.attachTo(true, viewPort, /*overlayView, */guiViewPort);
                 return null;

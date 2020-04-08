@@ -273,15 +273,18 @@ getEnv(JavaVM* vm)
     NSLog(@"touchesBegan");
     JNIEnv* e = getEnv(self.vm);
     if (e) {
-    	UITouch *touch = [touches anyObject];
-    	CGPoint position = [touch locationInView: nil];
-        float scale = _glview.contentScaleFactor;
-        // NOTE: cast to jlong is required, otherwise JmeAppHarness receives non-sense values
-        (*e)->CallVoidMethod(e, self.harness, self.injectTouchBegin, 0, (jlong) touch.timestamp, position.x * scale, position.y * scale);
-        if ((*e)->ExceptionCheck(e)) {
-            NSLog(@"Could not invoke iOS Harness injectTouchBegin");
-            (*e)->ExceptionDescribe(e);
-            (*e)->ExceptionClear(e);
+        NSEnumerator *enumerator = [touches objectEnumerator];
+        UITouch *touch;
+        while (touch = [enumerator nextObject]) {
+            CGPoint position = [touch locationInView: nil];
+            float scale = _glview.contentScaleFactor;
+            // NOTE: cast to jlong is required, otherwise JmeAppHarness receives non-sense values
+            (*e)->CallVoidMethod(e, self.harness, self.injectTouchBegin, (jint) touch.hash, (jlong) touch.timestamp, position.x * scale, position.y * scale);
+            if ((*e)->ExceptionCheck(e)) {
+                NSLog(@"Could not invoke iOS Harness injectTouchBegin");
+                (*e)->ExceptionDescribe(e);
+                (*e)->ExceptionClear(e);
+            }
         }
     }
 }
@@ -290,14 +293,18 @@ getEnv(JavaVM* vm)
     NSLog(@"touchesMoved");
     JNIEnv* e = getEnv(self.vm);
     if (e) {
-    	UITouch *touch = [touches anyObject];
-    	CGPoint position = [touch locationInView: nil];
-        float scale = _glview.contentScaleFactor;
-        (*e)->CallVoidMethod(e, self.harness, self.injectTouchMove, 0, (jlong) touch.timestamp, position.x * scale, position.y * scale);
-        if ((*e)->ExceptionCheck(e)) {
-            NSLog(@"Could not invoke iOS Harness injectTouchMove");
-            (*e)->ExceptionDescribe(e);
-            (*e)->ExceptionClear(e);
+        NSEnumerator *enumerator = [touches objectEnumerator];
+        UITouch *touch;
+        while (touch = [enumerator nextObject]) {
+            CGPoint position = [touch locationInView: nil];
+            float scale = _glview.contentScaleFactor;
+            // NOTE: cast to jlong is required, otherwise JmeAppHarness receives non-sense values
+            (*e)->CallVoidMethod(e, self.harness, self.injectTouchMove, (jint) touch.hash, (jlong) touch.timestamp, position.x * scale, position.y * scale);
+            if ((*e)->ExceptionCheck(e)) {
+                NSLog(@"Could not invoke iOS Harness injectTouchMove");
+                (*e)->ExceptionDescribe(e);
+                (*e)->ExceptionClear(e);
+            }
         }
     }
 }
@@ -306,14 +313,18 @@ getEnv(JavaVM* vm)
     NSLog(@"touchesEnded");
     JNIEnv* e = getEnv(self.vm);
     if (e) {
-    	UITouch *touch = [touches anyObject];
-    	CGPoint position = [touch locationInView: nil];
-        float scale = _glview.contentScaleFactor;
-        (*e)->CallVoidMethod(e, self.harness, self.injectTouchEnd, 0, (jlong) touch.timestamp, position.x * scale, position.y * scale);
-        if ((*e)->ExceptionCheck(e)) {
-            NSLog(@"Could not invoke iOS Harness injectTouchEnd");
-            (*e)->ExceptionDescribe(e);
-            (*e)->ExceptionClear(e);
+        NSEnumerator *enumerator = [touches objectEnumerator];
+        UITouch *touch;
+        while (touch = [enumerator nextObject]) {
+            CGPoint position = [touch locationInView: nil];
+            float scale = _glview.contentScaleFactor;
+            // NOTE: cast to jlong is required, otherwise JmeAppHarness receives non-sense values
+            (*e)->CallVoidMethod(e, self.harness, self.injectTouchEnd, (jint) touch.hash, (jlong) touch.timestamp, position.x * scale, position.y * scale);
+            if ((*e)->ExceptionCheck(e)) {
+                NSLog(@"Could not invoke iOS Harness injectTouchEnd");
+                (*e)->ExceptionDescribe(e);
+                (*e)->ExceptionClear(e);
+            }
         }
     }
 }

@@ -149,8 +149,16 @@ public class ShortcutCreationPanel extends ErrorMessagePanel {
     }
     /////////////////////////////////////////////////////////////////////////////////
     // Constants
+    
+    /* @TODO: "ResourceUtils.getString("data","product.display.name")" is broken
+     * It should fetch the properties from the data folder and then we should
+     * also do the same for the description. For some reason the Resource "data"
+     * is not found (See #227). I've integrated everything within P.title and
+     * P.description, doesn't matter for now since we have no i18n anyway.
+     * - MeFisto94
+    */
     public static final String DEFAULT_TITLE =
-            ResourceUtils.getString("data","product.display.name") + ResourceUtils.getString(ShortcutCreationPanel.class,
+            ResourceUtils.getString(ShortcutCreationPanel.class,
             "P.title"); // NOI18N
     public static final String DEFAULT_DESCRIPTION =
             ResourceUtils.getString(ShortcutCreationPanel.class,
