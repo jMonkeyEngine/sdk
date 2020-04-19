@@ -717,7 +717,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL("https://wiki.jmonkeyengine.org/sdk/troubleshooting.html#troubleshooting-jmonkeyengine3-sdk"));
+                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL("https://wiki.jmonkeyengine.org/sdk/troubleshooting.html"));
             } catch (MalformedURLException ex) {
                 Exceptions.printStackTrace(ex);
             }
