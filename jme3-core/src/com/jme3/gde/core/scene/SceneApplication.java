@@ -2,7 +2,7 @@
  * Copyright (c) 2009-2010 jMonkeyEngine All rights reserved. <p/>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice,
  * this list of conditions and the following disclaimer. <p/> * Redistributions
  * in binary form must reproduce the above copyright notice, this list of
@@ -29,7 +29,6 @@ import com.jme3.app.StatsView;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.environment.EnvironmentCamera;
-import com.jme3.environment.util.LightsDebugState;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.gde.core.Installer;
@@ -53,7 +52,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.Spatial.CullHint;
@@ -69,7 +67,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -225,11 +222,11 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                 super.initialize();
                 thread = Thread.currentThread();
                 fakeApp.setAudioRenderer(audioRenderer);
-                fakeApp.startFakeApp();                
+                fakeApp.startFakeApp();
                 {
                     overlayView = getRenderManager().createMainView("Overlay", cam);
                     overlayView.setClearFlags(false, true, false);
-                    guiViewPort.setClearFlags(false, false, false);                    
+                    guiViewPort.setClearFlags(false, false, false);
                 }
                 ColorRGBA color = new ColorRGBA();
                 color.setAsSrgb(0.25f, 0.25f, 0.25f, 1.0f);
@@ -253,7 +250,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                 guiViewPort.attachScene(guiNode);
                 cam.setLocation(new Vector3f(0, 0, 10));
                 getStateManager().attach(new EnvironmentCamera());
-                
+
                 wireProcessor = new WireProcessor(assetManager);
 
                 inputManager.addMapping("MouseAxisX", new MouseAxisTrigger(MouseInput.AXIS_X, false));
@@ -284,7 +281,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
         super.destroy();
     }
 
-    @Override    
+    @Override
     public void update() {
         if (!started) {
             try {
@@ -308,7 +305,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                     fpsText.setText("Frames per second: " + fps);
                     secondCounter = 0.0f;
                 }
-                getStateManager().update(tpf);                
+                getStateManager().update(tpf);
                 toolsNode.updateLogicalState(tpf);
                 if (fakap != null) {
                     fakap.updateFake(tpf);
@@ -597,7 +594,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
             }
         });
     }
-    
+
     public void enablePBRProbe(final boolean selected) {
         if (pbrLightProbe == null) {
             new Thread() {
@@ -606,7 +603,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                     Spatial s = assetManager.loadModel("com/jme3/gde/core/sceneviewer/pbrenv.j3o");
                     pbrLightProbe = (LightProbe)s.getLocalLightList().get(0);
                     s.getLocalLightList().clear();
-                    
+
                     enqueue(new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
@@ -615,7 +612,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                         }
                     });
                 }
-                
+
             }.start();
         } else {
             enqueue(new Callable<Void>() {
@@ -631,14 +628,14 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
             });
         }
     }
-    
+
     public void enablePBRSkybox(final boolean selected) {
         if (pbrSky == null) {
             new Thread() {
                 @Override
                 public void run() {
                     pbrSky = SkyFactory.createSky(assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
-                    
+
                     enqueue(new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
@@ -647,7 +644,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
                         }
                     });
                 }
-                
+
             }.start();
         } else {
             enqueue(new Callable<Void>() {
@@ -715,12 +712,12 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
         NotifyUtil.show("Error starting OpenGL context!", "Click here to go to troubleshooting web page.", MessageType.EXCEPTION, lst, 0);
         logger.log(Level.INFO, exception.getMessage(), exception);
     }
-    
+
     private static final ActionListener lst = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL("http://jmonkeyengine.org/wiki/doku.php/sdk:troubleshooting"));
+                HtmlBrowser.URLDisplayer.getDefault().showURL(new URL("https://wiki.jmonkeyengine.org/sdk/troubleshooting.html#troubleshooting-jmonkeyengine3-sdk"));
             } catch (MalformedURLException ex) {
                 Exceptions.printStackTrace(ex);
             }
@@ -745,13 +742,13 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
     public Node getGuiNode() {
         return guiNode;
     }
-    
+
     /**
      * Gets the RootNode of this Application.
      * Warning: With great Power comes great responsibility ;)
      * You shouldn't use this unless you exactly know about it's implications.
      * Adding Spatials here won't make them Serialize into the .j3o file...
-     * @return 
+     * @return
      */
     public Node getRootNode() {
         return rootNode;
