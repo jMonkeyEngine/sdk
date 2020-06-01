@@ -107,9 +107,9 @@ dependencies {
     optlibs dep("org.jmonkeyengine:jme3-android-native", false, false)
     optlibs dep("org.jmonkeyengine:jme3-bullet-native-android", false, false)
     optlibs dep("org.jmonkeyengine:jme3-lwjgl3", false, false)
-    optlibs dep("com.github.stephengold:Heart:5.2.1", false, false)
-    optlibs dep("com.github.stephengold:Minie:1.6.0", false, false)
-    optlibs dep("com.github.stephengold:Wes:0.4.9", false, false)
+    optlibs dep("com.github.stephengold:Heart:5.5.0", false, false)
+    optlibs dep("com.github.stephengold:Minie:1.7.0", false, false)
+    optlibs dep("com.github.stephengold:Wes:0.5.0", false, false)
     testdatalibs dep("org.jmonkeyengine:jme3-testdata", false, false)
 
     examplelibs dep("org.jmonkeyengine:jme3-examples", false, false)
