@@ -6,15 +6,15 @@
 package org.jme3.netbeans.plaf.darkmonkey;
 
 import com.nilo.plaf.nimrod.NimRODTheme;
-import java.awt.Color;
-import java.awt.Font;
+import org.openide.util.NbPreferences;
+
+import javax.swing.*;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.prefs.Preferences;
-import javax.swing.UIDefaults;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
-import org.openide.util.NbPreferences;
 
 /**
  * The DarkMonkey look and feel class Extends the Nimrod LAF, which in turn,
@@ -29,12 +29,22 @@ import org.openide.util.NbPreferences;
 public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFeel{
     
     public static final String dmLAFDefault = "DarkMonkey.theme";
+    public static final String DEJA_VU_SANS_CONDENSED_PLAIN_12 = "DejaVu Sans Condensed-PLAIN-12";
+
     protected static NimRODTheme nrTheme = new NimRODTheme();
-    
-    private HashMap<String, Properties> propertiesMap = new HashMap<String, Properties>();
-    
+    private final HashMap<String, Properties> propertiesMap = new HashMap<String, Properties>();
+    private final Properties fontProperties = new Properties();
+
     public DarkMonkeyLookAndFeel(){
         super();
+
+        try {
+            fontProperties.load(this.getClass()
+                    .getResourceAsStream("/src/org/jme3/netbeans/plaf/darkmonkey/fonts/lang.propeties"));
+        } catch (Exception e) {
+            // NOP
+        }
+
         // Todo: replace following code with proper loading
         //  From DarkMonkey.theme
         // This replaces getXYZTheme(), they will be seperate Files
@@ -106,7 +116,8 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
                         nt.setSecondary3(Color.decode(pref.get("darkmonkey.color.secondary3", "#515151")));
                         nt.setFrameOpacity(180);
                         nt.setMenuOpacity(219);
-                        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
+                        // apply DejaVu font if supported
+                        applyDejaVuFontIfSupported(nt);
                         setCurrentTheme(nt);
                         
                         prop = new Properties();
@@ -248,8 +259,8 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#515151"));
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
-        
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
         return nt;
     }
         
@@ -270,8 +281,8 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#515151"));
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
-        
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
         return nt;
     }
     
@@ -288,8 +299,9 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#323232")); // Unselected Frames (and general background color)
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
-        
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
+
         return nt;
     }
     
@@ -311,8 +323,9 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#515151"));
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
-        
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
+
         return nt;
     }
         
@@ -333,7 +346,8 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#00FFFF")); // Unselected Frames
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
         
         return nt;
     }
@@ -352,7 +366,8 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
         nt.setSecondary3(Color.decode("#333333"));
         nt.setFrameOpacity(180);
         nt.setMenuOpacity(219);
-        nt.setFont(Font.decode("DejaVu Sans Condensed-PLAIN-12"));
+        // apply DejaVu font if supported
+        applyDejaVuFontIfSupported(nt);
         
         return nt;
     }
@@ -394,5 +409,22 @@ public class DarkMonkeyLookAndFeel extends com.nilo.plaf.nimrod.NimRODLookAndFee
     
     public String getDefaultThemeProperty(String name, String defaultValue) {
         return propertiesMap.get("blue").getProperty(name, defaultValue);
+    }
+
+    private void applyDejaVuFontIfSupported(NimRODTheme theme) {
+        if (dejaVuFontIsSupported()) {
+            theme.setFont(Font.decode(DEJA_VU_SANS_CONDENSED_PLAIN_12));
+        }
+    }
+
+    /**
+     * @return true if DejaVu fonts support glyphs for user's locale
+     */
+    private Boolean dejaVuFontIsSupported() {
+        String lang = System.getProperty("user.language").toLowerCase();
+        String country = System.getProperty("user.country").toLowerCase();
+        Boolean langCdMatch = fontProperties.containsKey(lang);
+        Boolean langCountryCdMatch = fontProperties.containsKey(String.format("%s-%s", lang, country));
+        return langCdMatch || langCountryCdMatch;
     }
 }

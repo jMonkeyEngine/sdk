@@ -1,9 +1,12 @@
 //ant.importBuild 'build.xml'
+
+import groovy.io.FileType
 import groovy.xml.MarkupBuilder
 import java.util.zip.ZipFile
 
 plugins {
     id "de.undercouch.download" version "3.4.3"
+    id "com.dorongold.task-tree" version "1.5"
 }
 
 apply from: 'gradle/libs/digest.gradle'
@@ -15,14 +18,12 @@ if (!hasProperty('mainClass')) {
 
 repositories {
     mavenLocal()
-    jcenter {
-        url "http://jcenter.bintray.com/"
-    }
+    jcenter()
     maven {
         url "http://updates.jmonkeyengine.org/maven/"
     }
     maven {
-        url 'http://nifty-gui.sourceforge.net/nifty-maven-repo/'
+        url "http://nifty-gui.sourceforge.net/nifty-maven-repo/"
     }
     maven { url "https://jitpack.io" }
 
@@ -61,6 +62,7 @@ dependencies {
 
     corelibs dep("com.github.xbuf:jme3_xbuf:0.9.1", false, false)
     corelibs dep("com.badlogicgames.gdx:gdx-ai:1.8.1", true, true)
+    corelibs dep("com.github.nifty-gui:nifty:1.4.2", false, false)
 
     corelibs dep("org.jmonkeyengine:jme3-core:$jmeEngineVersion", true, true)
     corelibs dep("org.jmonkeyengine:jme3-desktop:$jmeEngineVersion", true, true)
@@ -138,7 +140,59 @@ task checkPlatformConfig {
     }
 }
 
-task copyBaseLibs(dependsOn:configurations.corelibs) {
+task copyEngineLibs() {
+    description = "Copy libraries from engine directory before configuring gradle"
+
+    doFirst {
+        // Collect dependencies in corelibs, optlibs, testdatalibs...
+        def allDependencies = project.configurations.collect { conf -> conf.incoming.dependencies }.flatten()
+        allDependencies.each { file -> copyEngineJarsToLib(file) }
+    }
+}
+
+def copyEngineJarsToLib(file, extraJars=["nifty"]) {
+
+    // copy built jme3 jar files to jme3-core-baselibs
+    new File("./engine").traverse(
+            type: FileType.FILES,
+            nameFilter: ~/\.*${file.name}.*\.jar/
+    ) { jarFile ->
+
+        if (isJmeDep(file.name)) {
+            // Copy jar files with removing version and SNAPSHOT string
+            // File name example:
+            //   jme3-blender.jar
+            //   jme3-blender-javadoc.jar
+            //   jme3-blender-sources.jar
+            def jarSuffix = isSourceOrJavadoc(jarFile.name) ? "-" + jarFile.name.split("-").last() : ".jar"
+
+            copy {
+                from jarFile
+                into "lib/"
+                rename { _ -> file.name + jarSuffix }
+            }
+        }
+    }
+
+    if (extraJars.any{ file.name.contains(it) }) {
+        // Copy extra jar files
+        new File(".").traverse(
+                type: FileType.FILES,
+                nameFilter: ~/\.*${file.name}-${file.version}.jar/
+        ) { jarFile ->
+            copy {
+                from jarFile
+                into "lib/"
+            }
+        }
+    }
+}
+
+task copyBaseLibs(dependsOn: [copyEngineLibs, configurations.corelibs]) {
+
+    outputs.dir "jme3-core-baselibs/release/modules/ext/"
+    outputs.dir "jme3-core-libraries/release/modules/ext/"
+
     doLast {
         description "Copies the library files needed to run the SDK to "+
                     "jme3-core-baselibs and jme3-core-libraries"
@@ -147,14 +201,14 @@ task copyBaseLibs(dependsOn:configurations.corelibs) {
         //project.configurations.corelibs.dependencies.each {dep ->
         //println(project.configurations.corelibs.dependencies)
 
-        project.configurations.corelibs.collect {file ->
+        project.configurations.corelibs.collect { file ->
             // copy built jme3 jar files to jme3-core-baselibs
             if (file.name.startsWith("jme3") && !isSourceOrJavadoc(file.name)){
                 copy {
                     from file
                     into "jme3-core-baselibs/release/modules/ext/"
                 }
-            }else if( !isSourceOrJavadoc(file.name)){
+            } else if( !isSourceOrJavadoc(file.name)){
                 copy {
                     from file
                     into "jme3-core-libraries/release/modules/ext/"
@@ -164,9 +218,6 @@ task copyBaseLibs(dependsOn:configurations.corelibs) {
     }
 }
 
-copyBaseLibs.inputs.files configurations.corelibs.resolve()
-copyBaseLibs.outputs.dir "jme3-core-baselibs/release/modules/ext/"
-copyBaseLibs.outputs.dir "jme3-core-libraries/release/modules/ext/"
 
 def isSourceOrJavadoc(dep){
     return isSource(dep) || isJavadoc(dep)
@@ -183,7 +234,11 @@ def isJmeDep(dep) {
     return dep.startsWith("jme3")
 }
 
-task createBaseXml(dependsOn: configurations.corelibs) {
+task createBaseXml(dependsOn: [copyEngineLibs, configurations.corelibs]) {
+
+    outputs.file "jme3-core-baselibs/nbproject/project.xml"
+    outputs.file "jme3-core-libraries/nbproject/project.xml"
+
     doLast {
         description "Creates the project.xml files for "+
                     "jme3-core-baselibs and jme3-core-libraries"
@@ -210,7 +265,7 @@ task createBaseXml(dependsOn: configurations.corelibs) {
 
         // collect base packages
         def packages = []
-        jmeJarFiles.each{jarFile ->
+        jmeJarFiles.each{ jarFile ->
             ZipFile file = new ZipFile(jarFile)
             file.entries().each { entry ->
                 if(entry.name.endsWith('.class')){
@@ -226,7 +281,7 @@ task createBaseXml(dependsOn: configurations.corelibs) {
 
         // collect library packages
         def extPackages = []
-        externalJarFiles.each{jarFile ->
+        externalJarFiles.each{ jarFile ->
             ZipFile file = new ZipFile(jarFile)
             file.entries().each { entry ->
                 if(entry.name.endsWith('.class')){
@@ -307,11 +362,14 @@ task createBaseXml(dependsOn: configurations.corelibs) {
         librariesProjectFile.write(extWriter.toString())
     }
 }
-createBaseXml.inputs.files configurations.corelibs.resolve()
-createBaseXml.outputs.file "jme3-core-baselibs/nbproject/project.xml"
-createBaseXml.outputs.file "jme3-core-libraries/nbproject/project.xml"
 
-task copyProjectLibs(dependsOn: [configurations.corelibs, configurations.testdatalibs]) {
+
+task copyProjectLibs(dependsOn: [copyEngineLibs, configurations.corelibs, configurations.testdatalibs]) {
+
+    outputs.dir "jme3-project-baselibs/release/libs/"
+    outputs.dir "jme3-project-libraries/release/libs/"
+    outputs.dir "jme3-project-testdata/release/libs/"
+    
     doLast {
         description "Copies the jar files needed to supply the J2SE Libraries in the "+
                     "SDK to jme3-project-baselibs and jme3-project-libraries"
@@ -359,18 +417,16 @@ task copyProjectLibs(dependsOn: [configurations.corelibs, configurations.testdat
         }
     }
 }
-copyProjectLibs.inputs.files configurations.corelibs.resolve()
-copyProjectLibs.inputs.files configurations.optlibs.resolve()
-copyProjectLibs.inputs.files configurations.testdatalibs.resolve()
-copyProjectLibs.outputs.dir "jme3-project-baselibs/release/libs/"
-copyProjectLibs.outputs.dir "jme3-project-libraries/release/libs/"
-copyProjectLibs.outputs.dir "jme3-project-testdata/release/libs/"
+
 
 // workaround method to add a tag with the name "name" and "file" to an XML MarkupBuilder
 def makeName(builder, nameR) { builder.name nameR }
 def makeFile(builder, nameR) { builder.file(name:nameR, url:nameR) }
 
-task createProjectXml(dependsOn: configurations.corelibs) {
+task createProjectXml(dependsOn: [copyEngineLibs, configurations.corelibs]) {
+
+    outputs.dir "jme3-project-baselibs/src/com/jme3/gde/project/baselibs/"
+
     doLast {
         description "Creates needed J2SE library and layer XML files in jme3-project-baselibs"
 
@@ -514,11 +570,9 @@ task createProjectXml(dependsOn: configurations.corelibs) {
         layerXmlFile.write(layerWriter.toString())
     }
 }
-createProjectXml.inputs.files configurations.corelibs.resolve()
-createProjectXml.inputs.files configurations.optlibs.resolve()
-createProjectXml.outputs.dir "jme3-project-baselibs/src/com/jme3/gde/project/baselibs/"
 
-task copyTestSources {
+
+task copyTestSources(dependsOn: [copyEngineLibs]) {
     doLast {
         project.configurations.examplelibs.files.each{dep ->
             if(isSource(dep.name)){
@@ -602,6 +656,14 @@ task downloadAvian() {
 }
 
 task buildSdk(dependsOn: [copyBaseLibs, copyProjectLibs, createProjectXml, createBaseXml, copyTestSources, overrideHarness, downloadAvian]) {
+
+    outputs.dir "build"
+    file('.').eachDir{
+        if(it.name.startsWith("jme3-") && it.isDirectory()){
+            buildSdk.inputs.dir it
+        }
+    }
+
     doLast {
         ant.propertyfile(file: "nbproject/project.properties") {
             entry( key: "plugins.version", value: "${jmeVersion}")
@@ -611,14 +673,6 @@ task buildSdk(dependsOn: [copyBaseLibs, copyProjectLibs, createProjectXml, creat
         ant.ant(dir: ".", antfile: "build.xml", target: "build")
     }
 }
-buildSdk.inputs.files configurations.corelibs.resolve()
-buildSdk.inputs.files configurations.optlibs.resolve()
-file('.').eachDir{
-    if(it.name.startsWith("jme3-") && it.isDirectory()){
-        buildSdk.inputs.dir it
-    }
-}
-buildSdk.outputs.dir "build"
 
 task run(dependsOn: buildSdk) {
     doLast {
