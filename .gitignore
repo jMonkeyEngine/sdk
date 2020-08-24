@@ -29,3 +29,4 @@ jdks/*.bin
 jdks/*.exe
 jdks/*.zip
 dist/
+lib/jme3-*.jar
