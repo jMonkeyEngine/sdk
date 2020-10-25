@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
@@ -32,7 +31,7 @@ class CodelessProject implements Project {
     LogicalViewProvider logicalView = new CodelessProjectLogicalView(this);
     private final ProjectState state;
     private Lookup lkp;
-    private ProjectAssetManager projectAssetManager;
+    private final ProjectAssetManager projectAssetManager;
 
     public CodelessProject(FileObject projectDir, ProjectState state) {
         this.projectDir = projectDir;
@@ -122,7 +121,7 @@ class CodelessProject implements Project {
 
     private final class ActionProviderImpl implements ActionProvider {
 
-        private String[] supported = new String[]{
+        private final String[] supported = new String[]{
             ActionProvider.COMMAND_DELETE,
             ActionProvider.COMMAND_COPY,
         };
@@ -156,19 +155,23 @@ class CodelessProject implements Project {
 
     private final class DemoDeleteOperation implements DeleteOperationImplementation {
 
+        @Override
         public void notifyDeleting() throws IOException {
         }
 
+        @Override
         public void notifyDeleted() throws IOException {
         }
 
+        @Override
         public List<FileObject> getMetadataFiles() {
-            List<FileObject> dataFiles = new ArrayList<FileObject>();
+            List<FileObject> dataFiles = new ArrayList<>();
             return dataFiles;
         }
 
+        @Override
         public List<FileObject> getDataFiles() {
-            List<FileObject> dataFiles = new ArrayList<FileObject>();
+            List<FileObject> dataFiles = new ArrayList<>();
             return dataFiles;
         }
     }
@@ -183,17 +186,21 @@ class CodelessProject implements Project {
             this.projectDir = project.getProjectDirectory();
         }
 
+        @Override
         public List<FileObject> getMetadataFiles() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
+        @Override
         public List<FileObject> getDataFiles() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
+        @Override
         public void notifyCopying() throws IOException {
         }
 
+        @Override
         public void notifyCopied(Project arg0, File arg1, String arg2) throws IOException {
         }
     }
