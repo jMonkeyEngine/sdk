@@ -1,10 +1,10 @@
 package com.jme3.gde.assetpack.project;
 
-import com.jme3.gde.assetpack.project.actions.PublishAssetPackAction;
 import com.jme3.gde.assetpack.browser.nodes.AssetPackBrowserFolder;
 import com.jme3.gde.assetpack.project.actions.CleanupProjectAction;
 import com.jme3.gde.assetpack.project.actions.ConvertOgreBinaryMeshesAction;
 import com.jme3.gde.assetpack.project.actions.ImportWorldForgeAction;
+import com.jme3.gde.assetpack.project.actions.PublishAssetPackAction;
 import java.awt.Image;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +45,7 @@ class AssetPackProjectLogicalView implements LogicalViewProvider {
     /** This is the node you actually see in the project tab for the project */
     private static final class ProjectNode extends AbstractNode {
 
-        private InstanceContent instanceContent;
+        private final InstanceContent instanceContent;
         final AssetPackProject project;
 
         public ProjectNode(AssetPackProject project) throws DataObjectNotFoundException {
@@ -91,7 +91,7 @@ class AssetPackProjectLogicalView implements LogicalViewProvider {
     public static final class ProjectLookup extends AbstractLookup {
 
         private static final long serialVersionUID = 1214314412L;
-        private InstanceContent instanceContent;
+        private final InstanceContent instanceContent;
 
         public ProjectLookup(InstanceContent instanceContent) {
             super(instanceContent);
@@ -121,7 +121,7 @@ class AssetPackProjectLogicalView implements LogicalViewProvider {
         }
 
         protected List<Object> createKeys() {
-            LinkedList<Object> ret = new LinkedList<Object>();
+            LinkedList<Object> ret = new LinkedList<>();
             ret.add(new Object());
             return ret;
         }

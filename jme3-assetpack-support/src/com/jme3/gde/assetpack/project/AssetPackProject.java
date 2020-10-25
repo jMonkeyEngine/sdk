@@ -22,8 +22,8 @@ import javax.swing.JPanel;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectInformation;
 import org.netbeans.spi.project.ActionProvider;
-import org.netbeans.spi.project.DeleteOperationImplementation;
 import org.netbeans.spi.project.CopyOperationImplementation;
+import org.netbeans.spi.project.DeleteOperationImplementation;
 import org.netbeans.spi.project.ProjectState;
 import org.netbeans.spi.project.ui.CustomizerProvider;
 import org.netbeans.spi.project.ui.LogicalViewProvider;
@@ -45,14 +45,16 @@ import org.xml.sax.InputSource;
 @SuppressWarnings("unchecked")
 public class AssetPackProject implements Project {
 
+    public static final ImageIcon assetPackIcon = ImageUtilities.loadImageIcon("com/jme3/gde/assetpack/icons/assetpack.png", false);
+
     private final FileObject projectDir;
-    private LogicalViewProvider logicalView = new AssetPackProjectLogicalView(this);
-    private String assetsFolder = "assets";
+    private final LogicalViewProvider logicalView = new AssetPackProjectLogicalView(this);
+    private final String assetsFolder = "assets";
     private final ProjectState state;
     private Lookup lkp;
-    private ProjectAssetManager projectAssetManager;
+    private final ProjectAssetManager projectAssetManager;
     private Document configuration;
-    private AssetPackProjectCustomizer projectCustomizer;
+    private final AssetPackProjectCustomizer projectCustomizer;
     private AssetPackBrowserFolder assetPackFolder;
 
     public AssetPackProject(FileObject projectDir, ProjectState state) {
@@ -247,7 +249,7 @@ public class AssetPackProject implements Project {
 //    }
     private final class ActionProviderImpl implements ActionProvider {
 
-        private String[] supported = new String[]{
+        private final String[] supported = new String[]{
             ActionProvider.COMMAND_DELETE,
             ActionProvider.COMMAND_COPY,};
 
@@ -280,19 +282,23 @@ public class AssetPackProject implements Project {
 
     private final class DemoDeleteOperation implements DeleteOperationImplementation {
 
+        @Override
         public void notifyDeleting() throws IOException {
         }
 
+        @Override
         public void notifyDeleted() throws IOException {
         }
 
+        @Override
         public List<FileObject> getMetadataFiles() {
-            List<FileObject> dataFiles = new ArrayList<FileObject>();
+            List<FileObject> dataFiles = new ArrayList<>();
             return dataFiles;
         }
 
+        @Override
         public List<FileObject> getDataFiles() {
-            List<FileObject> dataFiles = new ArrayList<FileObject>();
+            List<FileObject> dataFiles = new ArrayList<>();
             return dataFiles;
         }
     }
@@ -307,24 +313,28 @@ public class AssetPackProject implements Project {
             this.projectDir = project.getProjectDirectory();
         }
 
+        @Override
         public List<FileObject> getMetadataFiles() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
+        @Override
         public List<FileObject> getDataFiles() {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
 
+        @Override
         public void notifyCopying() throws IOException {
         }
 
+        @Override
         public void notifyCopied(Project arg0, File arg1, String arg2) throws IOException {
         }
     }
 
     private final class AssetPackProjectCustomizer implements CustomizerProvider, ProjectCustomizer.CategoryComponentProvider, ActionListener {
 
-        private Category[] propertyCategories = new Category[]{
+        private final Category[] propertyCategories = new Category[]{
             Category.create("General", "General", null),
             Category.create("License", "License", null),};
         AssetPackProject project;
@@ -335,10 +345,12 @@ public class AssetPackProject implements Project {
             this.project = project;
         }
 
+        @Override
         public void showCustomizer() {
             ProjectCustomizer.createCustomizerDialog(propertyCategories, this, "General", this, new HelpCtx("sdk.asset_packs")).setVisible(true);
         }
 
+        @Override
         public JComponent create(Category category) {
             if (category.getName().equals("General")) {
                 panel1 =
@@ -354,6 +366,7 @@ public class AssetPackProject implements Project {
 
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             panel1.actionPerformed(null);
             panel2.actionPerformed(null);
@@ -366,8 +379,7 @@ public class AssetPackProject implements Project {
 
         @Override
         public Icon getIcon() {
-            return new ImageIcon(ImageUtilities.loadImage(
-                    "com/jme3/gde/assetpack/icons/assetpack.png"));
+            return assetPackIcon;
         }
 
         @Override

@@ -2,21 +2,22 @@ package com.jme3.gde.assetpack.project;
 
 import java.io.IOException;
 import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectManager;
 import org.netbeans.spi.project.ProjectFactory;
+import org.netbeans.spi.project.ProjectFactory2;
 import org.netbeans.spi.project.ProjectState;
 import org.openide.filesystems.FileObject;
+import org.openide.util.lookup.ServiceProvider;
 
-public class AssetPackProjectFactory implements ProjectFactory {
+@ServiceProvider(service = ProjectFactory.class)
+public class AssetPackProjectFactory implements ProjectFactory2 {
 
     public static final String CONFIG_NAME = "assetpack.xml";
 
     //Specifies when a project is a project, i.e. properties file exists
     @Override
     public boolean isProject(FileObject projectDirectory) {
-        if (projectDirectory.getFileObject(CONFIG_NAME) != null) {
-            return true;
-        }
-        return false;
+        return projectDirectory.getFileObject(CONFIG_NAME) != null;
     }
 
     //Specifies when the project will be opened, i.e.,
@@ -35,5 +36,14 @@ public class AssetPackProjectFactory implements ProjectFactory {
                     + " cannot save project");
         }
         ((AssetPackProject)project).saveSettings();
+    }
+
+    @Override
+    public ProjectManager.Result isProject2(FileObject fo) {
+        if (!isProject(fo)) {
+            return null;
+        }
+
+        return new ProjectManager.Result(AssetPackProject.assetPackIcon);
     }
 }
