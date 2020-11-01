@@ -1,22 +1,22 @@
 /*
  * Copyright (c) 2003-2012 jMonkeyEngine
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright
  *   notice, this list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright
  *   notice, this list of conditions and the following disclaimer in the
  *   documentation and/or other materials provided with the distribution.
- * 
+ *
  * * Neither the name of 'jMonkeyEngine' nor the names of its contributors
  *   may be used to endorse or promote products derived from this software
  *   without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
  * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -63,8 +63,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.openide.DialogDisplayer;
@@ -80,10 +82,10 @@ public class FakeApplication extends SimpleApplication {
 //    private Lookup lookup;
 
     private Node rootNode;
-    private Node guiNode;
+    private final Node guiNode;
     private AssetManager assetManager;
-    private Camera cam;
-    private FakeAppStateManager appStateManager;
+    private final Camera cam;
+    private final FakeAppStateManager appStateManager;
     private FakeRenderManager renderManager;
 
     public FakeApplication(Node guiNode, AssetManager assetManager, Camera cam) {
@@ -100,7 +102,7 @@ public class FakeApplication extends SimpleApplication {
         this.cam = cam;
         this.appStateManager = new FakeAppStateManager(this);
     }
-    
+
     public void setAudioRenderer(AudioRenderer audioRenderer){
         this.audioRenderer = audioRenderer;
     }
@@ -398,10 +400,10 @@ public class FakeApplication extends SimpleApplication {
     /*
      * Internal
      */
-    private ScheduledThreadPoolExecutor fakeAppThread = new ScheduledThreadPoolExecutor(1);
+    private ExecutorService fakeAppThread;
 
     public void removeCurrentStates() {
-        for (AppState appState : new ArrayList<AppState>(appStateManager.getAddedStates())) {
+        for (AppState appState : new ArrayList<>(appStateManager.getAddedStates())) {
             try {
                 appStateManager.detach(appState);
             } catch (Exception e) {
@@ -421,12 +423,26 @@ public class FakeApplication extends SimpleApplication {
     }
 
     public void startFakeApp() {
-        fakeAppThread = new ScheduledThreadPoolExecutor(1);
+        fakeAppThread = Executors.newSingleThreadExecutor(new ThreadFactory() {
+
+            @Override
+            public Thread newThread(Runnable r) {
+                return new Thread(r, "jME3 Application Update Queue");
+            }
+        });
     }
 
     public void stopFakeApp() {
         cleanupFakeApp();
-        fakeAppThread.shutdown();
+        if (fakeAppThread != null) {
+            fakeAppThread.shutdownNow();
+            try {
+                fakeAppThread.awaitTermination(1, TimeUnit.MINUTES);
+            } catch (InterruptedException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+            fakeAppThread = null;
+        }
     }
 
     public void newAssetManager(AssetManager manager) {
@@ -466,13 +482,13 @@ public class FakeApplication extends SimpleApplication {
 
     public boolean runQueuedFake() {
         Future<Void> fut = fakeAppThread.submit(new Callable<Void>() {
-            
+
             @Override
             public Void call() throws Exception {
                 runQueuedTasks();
                 return null;
             }
-            
+
         });
         try {
             fut.get(1, TimeUnit.MINUTES);
@@ -491,14 +507,14 @@ public class FakeApplication extends SimpleApplication {
 
     public boolean updateFake(final float tpf) {
         Future<Void> fut = fakeAppThread.submit(new Callable<Void>() {
-            
+
             @Override
             public Void call() throws Exception {
                 AudioContext.setAudioRenderer(audioRenderer);
                 appStateManager.update(tpf);
                 return null;
             }
-            
+
         });
         try {
             fut.get(1, TimeUnit.MINUTES);
@@ -519,13 +535,13 @@ public class FakeApplication extends SimpleApplication {
 
     public boolean renderFake() {
         Future<Void> fut = fakeAppThread.submit(new Callable<Void>() {
-            
+
             @Override
             public Void call() throws Exception {
                 appStateManager.render(renderManager);
                 return null;
             }
-            
+
         });
         try {
             fut.get(1, TimeUnit.MINUTES);
@@ -546,13 +562,13 @@ public class FakeApplication extends SimpleApplication {
 
     public boolean updateExternalLogicalState(final Node externalNode, final float tpf) {
         Future<Void> fut = fakeAppThread.submit(new Callable<Void>() {
-            
+
             @Override
-            public Void call() throws Exception {               
+            public Void call() throws Exception {
                 externalNode.updateLogicalState(tpf);
                 return null;
             }
-            
+
         });
         try {
             fut.get(1, TimeUnit.MINUTES);
@@ -573,13 +589,13 @@ public class FakeApplication extends SimpleApplication {
 
     public boolean updateExternalGeometricState(final Node externalNode) {
         Future<Void> fut = fakeAppThread.submit(new Callable<Void>() {
-            
+
             @Override
             public Void call() throws Exception {
                 externalNode.updateGeometricState();
                 return null;
             }
-            
+
         });
         try {
             fut.get(1, TimeUnit.MINUTES);
