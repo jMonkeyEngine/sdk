@@ -88,6 +88,11 @@ public class FakeApplication extends SimpleApplication {
     private final FakeAppStateManager appStateManager;
     private FakeRenderManager renderManager;
 
+    /*
+     * Internal
+     */
+    private ExecutorService fakeAppThread;
+
     public FakeApplication(Node guiNode, AssetManager assetManager, Camera cam) {
         this.guiNode = guiNode;
         this.assetManager = assetManager;
@@ -397,10 +402,6 @@ public class FakeApplication extends SimpleApplication {
             this.node = node;
         }
     }
-    /*
-     * Internal
-     */
-    private ExecutorService fakeAppThread;
 
     public void removeCurrentStates() {
         for (AppState appState : new ArrayList<>(appStateManager.getAddedStates())) {
