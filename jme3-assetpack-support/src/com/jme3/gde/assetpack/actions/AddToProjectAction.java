@@ -18,7 +18,7 @@ import javax.swing.Action;
 import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 import org.w3c.dom.Element;
-import com.jme3.gde.scenecomposer.SceneComposerTopComponent;
+import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
@@ -54,9 +54,10 @@ public final class AddToProjectAction implements Action {
                         }
                         if (modelFolder.isFolder()) {
                             AssetPackLoader.addModelFiles(pm, mgr, conf);
-                            OutputStream out = modelFolder.createAndOpen(conf.getAssetElement().getAttribute("name") + ".j3o");
-                            BinaryExporter.getInstance().save(model, out);
-                            out.close();
+                            try (OutputStream out = modelFolder.createAndOpen(conf.getAssetElement().getAttribute("name") + ".j3o");
+                                    BufferedOutputStream bout = new BufferedOutputStream(out)) {
+                                BinaryExporter.getInstance().save(model, bout);
+                            }
                             modelFolder.refresh();
                         } else {
                             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, "Cannot copy, file 'Models' exists");
