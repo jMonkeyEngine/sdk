@@ -3,9 +3,11 @@
 #import <jni.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
+#import <OpenGLES/ES3/gl.h>
+#import <OpenGLES/ES3/glext.h>
 
 /**
- * Author: Kostyantyn Hushchyn
+ * Author: Kostyantyn Hushchyn, Jesus Oliver
  */
 
 #ifndef JNIEXPORT
@@ -1743,6 +1745,396 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glViewport(JNIEnv* e, jobject c, jint x, j
         (GLsizei)height
     );
 }
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glBeginQuery(JNIEnv* e, jobject c, jint target, jint query) {
+    glBeginQuery(
+        (GLint) target,
+        (GLint) query
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glEndQuery(JNIEnv* e, jobject c, jint target)
+{
+    glEndQuery((GLint)target);
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glGenQueries(JNIEnv* e, jobject c, jint count, jobject v_buf)
+{
+    jint _exception = 0;
+    const char * _exceptionType = NULL;
+    const char * _exceptionMessage = NULL;
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLint *v = (GLint *) 0;
+
+    v = (GLint *)getPointer(e, v_buf, &_array, &_remaining, &_bufferOffset);
+    if (_remaining < count) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "remaining() < count < needed";
+        goto exit;
+    }
+    if (v == NULL) {
+        char * _vBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        v = (GLint *) (_vBase + _bufferOffset);
+    }
+    glGenQueries(
+        (GLsizei)count,
+        (GLint *)v
+    );
+
+exit:
+    if (_array) {
+        releasePointer(e, _array, v, JNI_FALSE);
+    }
+    if (_exception) {
+        jniThrowException(e, _exceptionType, _exceptionMessage);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glGetQueryObjectuiv(JNIEnv* e, jobject c, jint query, jint pname, jintArray params_ref)
+{
+    jint _exception = 0;
+    const char * _exceptionType;
+    const char * _exceptionMessage;
+    GLint *params_base = (GLint *) 0;
+    jint _remaining;
+    GLint *params = (GLint *) 0;
+    int _needed = 0;
+
+    if (!params_ref) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "params == null";
+        goto exit;
+    }
+
+    _remaining = (*e)->GetArrayLength(e, params_ref);
+    _needed = getNeededCount(pname);
+    // if we didn't find this pname, we just assume the user passed
+    // an array of the right size -- this might happen with extensions
+    // or if we forget an enum here.
+    if (_remaining < _needed) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "length < needed";
+        goto exit;
+    }
+    params_base = (GLint *)
+        (*e)->GetPrimitiveArrayCritical(e, params_ref, (jboolean *)0);
+    params = params_base;
+
+    glGetQueryObjectuiv(
+        (GLint)query,
+        (GLenum)pname,
+        (GLint *)params
+    );
+
+exit:
+    if (params_base) {
+        (*e)->ReleasePrimitiveArrayCritical(e, params_ref, params_base,
+            _exception ? JNI_ABORT: 0);
+    }
+    if (_exception) {
+        jniThrowException(e, _exceptionType, _exceptionMessage);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glGetQueryiv(JNIEnv* e, jobject c, jint target, jint pname, jintArray params_ref)
+{
+    jint _exception = 0;
+    const char * _exceptionType;
+    const char * _exceptionMessage;
+    GLint *params_base = (GLint *) 0;
+    jint _remaining;
+    GLint *params = (GLint *) 0;
+    int _needed = 0;
+
+    if (!params_ref) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "params == null";
+        goto exit;
+    }
+
+    _remaining = (*e)->GetArrayLength(e, params_ref);
+    _needed = getNeededCount(pname);
+    // if we didn't find this pname, we just assume the user passed
+    // an array of the right size -- this might happen with extensions
+    // or if we forget an enum here.
+    if (_remaining < _needed) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "length < needed";
+        goto exit;
+    }
+    params_base = (GLint *)
+        (*e)->GetPrimitiveArrayCritical(e, params_ref, (jboolean *)0);
+    params = params_base;
+
+    glGetQueryiv(
+        (GLenum)target,
+        (GLenum)pname,
+        (GLint *)params
+    );
+
+exit:
+    if (params_base) {
+        (*e)->ReleasePrimitiveArrayCritical(e, params_ref, params_base,
+            _exception ? JNI_ABORT: 0);
+    }
+    if (_exception) {
+        jniThrowException(e, _exceptionType, _exceptionMessage);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glBlitFramebuffer(JNIEnv* e, jobject c, jint srcX0, jint srcY0, jint srcX1, jint srcY1, jint dstX0, jint dstY0, jint dstX1, jint dstY1, jint mask, jint filter)
+{
+    glBlitFramebuffer( 	
+        (GLint) srcX0,
+        (GLint) srcY0,
+        (GLint) srcX1,
+        (GLint) srcY1,
+        (GLint) dstX0,
+        (GLint) dstY0,
+        (GLint) dstX1,
+        (GLint) dstY1,
+        (GLbitfield) mask,
+        (GLenum) filter
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glDrawArraysInstanced(JNIEnv* e, jobject c, jint mode, jint first, jint count, jint primcount)
+{
+    glDrawArraysInstanced(
+        (GLenum) mode,
+        (GLint) first,
+        (GLsizei) count,
+        (GLsizei) primcount
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glDrawBuffers(JNIEnv* e, jobject c, jint count, jobject v_buf)
+{
+    jint _exception = 0;
+    const char * _exceptionType = NULL;
+    const char * _exceptionMessage = NULL;
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLint *v = (GLint *) 0;
+
+    v = (GLint *)getPointer(e, v_buf, &_array, &_remaining, &_bufferOffset);
+    if (_remaining < count) {
+        _exception = 1;
+        _exceptionType = "java/lang/IllegalArgumentException";
+        _exceptionMessage = "remaining() < count < needed";
+        goto exit;
+    }
+    if (v == NULL) {
+        char * _vBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        v = (GLint *) (_vBase + _bufferOffset);
+    }
+    glDrawBuffers(
+        (GLsizei)count,
+        (GLint *)v
+    );
+
+exit:
+    if (_array) {
+        releasePointer(e, _array, v, JNI_FALSE);
+    }
+    if (_exception) {
+        jniThrowException(e, _exceptionType, _exceptionMessage);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glDrawElementsInstanced(JNIEnv* e, jobject c, jint mode, jint count, jint type, jlong indices, jint primcount)
+{
+    intptr_t
+    glDrawElementsInstanced(
+        (GLenum) mode,
+        (GLsizei) count,
+        (GLenum) type,
+        (const void *) indices, // TODO: lwjgl uses intptr_t insead, double check it works properly
+        (GLsizei) instancecount
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glVertexAttribDivisor(JNIEnv* e, jobject c, jint index, jint divisor)
+{
+    glVertexAttribDivisor(
+        (GLint) index,
+        (GLint) divisor
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glFramebufferTextureLayer(JNIEnv* e, jobject c, jint target, jint attachment, jint texture, jint level, jint layer)
+{
+    glFramebufferTextureLayer(
+        (GLenum) target,
+        (GLenum) attachment,
+        (GLuint) texture,
+        (GLint) level,
+        (GLint) layer
+    );
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glReadBuffer(JNIEnv* e, jobject c, jint src)
+{
+    glReadBuffer((GLenum) src);
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glCompressedTexImage3D(JNIEnv* e, jobject c, jint target, jint level, jint internalFormat, jint width, jint height, jint depth, jint border, jint imageSize, jobject pixels_buf)
+{
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLvoid *pixels = (GLvoid *) 0;
+
+    if (pixels_buf) {
+        pixels = (GLvoid *)getPointer(e, pixels_buf, &_array, &_remaining, &_bufferOffset);
+    }
+    if (pixels_buf && pixels == NULL) {
+        char * _pixelsBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        pixels = (GLvoid *) (_pixelsBase + _bufferOffset);
+    }
+        
+    glCompressedTexImage3D(
+        (GLenum) target,
+        (GLint) level,
+        (GLenum) internalformat,
+        (GLsizei) width,
+        (GLsizei) height,
+        (GLsizei) depth,
+        (GLint) border,
+        (GLsizei) imageSize,
+        (GLvoid *)pixels
+    );
+
+    if (_array) {
+        releasePointer(e, _array, pixels, JNI_FALSE);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glCompressedTexSubImage3D(JNIEnv* e, jobject c, jint target, jint level, jint xoffset, jint yoffset, jint zoffset, jint width, jint height, jint depth, jint format, jint imageSize, jobject pixels_buf)
+{
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLvoid *pixels = (GLvoid *) 0;
+
+    if (pixels_buf) {
+        pixels = (GLvoid *)getPointer(e, pixels_buf, &_array, &_remaining, &_bufferOffset);
+    }
+    if (pixels_buf && pixels == NULL) {
+        char * _pixelsBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        pixels = (GLvoid *) (_pixelsBase + _bufferOffset);
+    }
+        
+    glCompressedTexImage3D(
+        (GLenum) target,
+        (GLint) level,
+        (GLint) xoffset,
+        (GLint) yoffset,
+        (GLint) zoffset,
+        (GLsizei) width,
+        (GLsizei) height,
+        (GLsizei) depth,
+        (GLenum) format,
+        (GLsizei) imageSize,
+        (GLvoid *)pixels
+    );
+
+    if (_array) {
+        releasePointer(e, _array, pixels, JNI_FALSE);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glTexImage3D(JNIEnv* e, jobject c, jint target, jint level, jint internalFormat, jint width, jint height, jint depth, jint border, jint format, jint type, jobject pixels_buf)
+{
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLvoid *pixels = (GLvoid *) 0;
+
+    if (pixels_buf) {
+        pixels = (GLvoid *)getPointer(e, pixels_buf, &_array, &_remaining, &_bufferOffset);
+    }
+    if (pixels_buf && pixels == NULL) {
+        char * _pixelsBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        pixels = (GLvoid *) (_pixelsBase + _bufferOffset);
+    }
+        
+    glTexImage3D(
+        (GLenum) target,
+        (GLint) level,
+        (GLint) internalFormat,
+        (GLsizei) width,
+        (GLsizei) height,
+        (GLsizei) depth,
+        (GLint) border,
+        (GLenum) format,
+        (GLenum) type,
+        (GLvoid *)pixels
+    );
+
+    if (_array) {
+        releasePointer(e, _array, pixels, JNI_FALSE);
+    }
+}
+
+JNIEXPORT void JNICALL 
+Java_com_jme3_renderer_ios_JmeIosGLES_glTexSubImage3D(JNIEnv* e, jobject c, jint target, jint level, jint xoffset, jint yoffset, jint zoffset, jint width, jint height, jint depth, jint format, jint type, jobject pixels_buf)
+{
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLvoid *pixels = (GLvoid *) 0;
+
+    if (pixels_buf) {
+        pixels = (GLvoid *)getPointer(e, pixels_buf, &_array, &_remaining, &_bufferOffset);
+    }
+    if (pixels_buf && pixels == NULL) {
+        char * _pixelsBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        pixels = (GLvoid *) (_pixelsBase + _bufferOffset);
+    }
+        
+    glTexSubImage3D(
+        (GLenum) target,
+        (GLint) level,
+        (GLint) xoffset,
+        (GLint) yoffset,
+        (GLint) zoffset,
+        (GLsizei) width,
+        (GLsizei) height,
+        (GLsizei) depth,
+        (GLenum) format,
+        (GLenum) type,
+        (GLvoid *)pixels
+    );
+
+    if (_array) {
+        releasePointer(e, _array, pixels, JNI_FALSE);
+    }
+}
+
 
 static int
 allowIndirectBuffers(JNIEnv *e) {

@@ -37,7 +37,10 @@ getEnv(JavaVM* vm)
     /**
      * GLES Context initialization
      **/
-    _ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    _ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+    if (_ctx == nil) {
+        _ctx = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    }
     _glview.context = _ctx;
     _glview.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     _glview.delegate = self;

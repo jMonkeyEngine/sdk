@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES3/gl.h>
 #import <GLKit/GLKit.h>
 #define __LP64__ 1
 #include <jni.h>
