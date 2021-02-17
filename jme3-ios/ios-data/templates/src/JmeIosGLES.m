@@ -1967,7 +1967,7 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glDrawElementsInstanced(JNIEnv* e, jobject
         (GLsizei) count,
         (GLenum) type,
         (const void *) indices, // TODO: lwjgl uses intptr_t insead, double check it works properly
-        (GLsizei) instancecount
+        (GLsizei) primcount
     );
 }
 
@@ -2017,7 +2017,7 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glCompressedTexImage3D(JNIEnv* e, jobject 
     glCompressedTexImage3D(
         (GLenum) target,
         (GLint) level,
-        (GLenum) internalformat,
+        (GLenum) internalFormat,
         (GLsizei) width,
         (GLsizei) height,
         (GLsizei) depth,
@@ -2047,7 +2047,7 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glCompressedTexSubImage3D(JNIEnv* e, jobje
         pixels = (GLvoid *) (_pixelsBase + _bufferOffset);
     }
         
-    glCompressedTexImage3D(
+    glCompressedTexSubImage3D(
         (GLenum) target,
         (GLint) level,
         (GLint) xoffset,
