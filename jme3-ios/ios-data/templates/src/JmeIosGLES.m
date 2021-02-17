@@ -1961,7 +1961,6 @@ exit:
 JNIEXPORT void JNICALL 
 Java_com_jme3_renderer_ios_JmeIosGLES_glDrawElementsInstanced(JNIEnv* e, jobject c, jint mode, jint count, jint type, jlong indices, jint primcount)
 {
-    intptr_t
     glDrawElementsInstanced(
         (GLenum) mode,
         (GLsizei) count,
