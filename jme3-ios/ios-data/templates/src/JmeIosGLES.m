@@ -1332,7 +1332,7 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glTexParameterf(JNIEnv* e, jobject c, jint
     );
 }
 
-JJNIEXPORT void JNICALL
+JNIEXPORT void JNICALL
 Java_com_jme3_renderer_ios_JmeIosGLES_glTexSubImage2D(JNIEnv* e, jobject c, jint target, jint level, jint xoffset, jint yoffset, jint width, jint height, jint format, jint type, jobject pixels_buf) {
     jarray _array = (jarray) 0;
     jint _bufferOffset = (jint) 0;
