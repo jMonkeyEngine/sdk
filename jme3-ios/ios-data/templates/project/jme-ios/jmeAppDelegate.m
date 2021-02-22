@@ -184,6 +184,18 @@ getEnv(JavaVM* vm)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    CGRect originalFrame = [[UIScreen mainScreen] bounds];
+    CGRect frame = [self.glview convertRect:originalFrame fromView:nil];
+    JNIEnv* e = getEnv(self.vm);
+    if (e) {
+        float scale = _glview.contentScaleFactor;
+        (*e)->CallVoidMethod(e, self.harness, self.reshapeMethod, (int)(frame.size.width * scale), (int)(frame.size.height * scale));
+        if ((*e)->ExceptionCheck(e)) {
+            NSLog(@"Could not invoke iOS Harness reshape");
+            (*e)->ExceptionDescribe(e);
+            (*e)->ExceptionClear(e);
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
