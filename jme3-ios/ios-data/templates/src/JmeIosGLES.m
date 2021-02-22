@@ -820,6 +820,28 @@ exit:
     return (jint)_returnValue;
 }
 
+JNIEXPORT void JNICALL
+Java_com_jme3_renderer_ios_JmeIosGLES_glGetBoolean(JNIEnv* e, jobject c, jint pname, jobject params_buf) {
+    jarray _array = (jarray) 0;
+    jint _bufferOffset = (jint) 0;
+    jint _remaining;
+    GLvoid *params = (GLvoid *) 0;
+
+    if (params_buf) {
+        params = (GLvoid *)getPointer(e, params_buf, &_array, &_remaining, &_bufferOffset);
+    }
+    if (params_buf && params == NULL) {
+        char * _paramsBase = (char *)(*e)->GetPrimitiveArrayCritical(e, _array, (jboolean *) 0);
+        params = (GLvoid *) (_paramsBase + _bufferOffset);
+    }
+      
+    glGetBooleanv(
+        (GLenum) pname,
+        (GLboolean *) params
+    );
+}
+
+
 JNIEXPORT jint JNICALL
 Java_com_jme3_renderer_ios_JmeIosGLES_glGetError(JNIEnv* e, jobject c) {
     GLenum _returnValue;
@@ -1106,6 +1128,15 @@ exit:
 }
 
 JNIEXPORT jboolean JNICALL
+Java_com_jme3_renderer_ios_JmeIosGLES_glIsEnabled(JNIEnv* e, jobject c, jint cap) {
+    GLboolean _returnValue;
+    _returnValue = glIsEnabled(
+        (GLenum)cap
+    );
+    return (jboolean)_returnValue;
+}
+
+JNIEXPORT jboolean JNICALL
 Java_com_jme3_renderer_ios_JmeIosGLES_glIsFramebuffer(JNIEnv* e, jobject c, jint framebuffer) {
     GLboolean _returnValue;
     _returnValue = glIsFramebuffer(
@@ -1231,6 +1262,26 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glShaderSource(JNIEnv* e, jobject c, jint 
 	//glShaderSource(shader, 1, code, length);
 	
 	(*e)->ReleaseStringUTFChars(e, string, stringNative);
+}
+
+JNIEXPORT void JNICALL
+Java_com_jme3_renderer_ios_JmeIosGLES_glStencilFuncSeparate(JNIEnv* e, jobject c, jint face, jint func, jint ref, jint mask) {
+    glStencilFuncSeparate(
+        (GLenum) face,
+        (GLenum) func,
+        (GLint) ref,
+        (GLuint) mask
+    );
+}
+
+JNIEXPORT void JNICALL
+Java_com_jme3_renderer_ios_JmeIosGLES_glStencilOpSeparate(JNIEnv* e, jobject c, jint face, jint sfail, jint dpfail, jint dppass) {
+    glStencilOpSeparate(
+        (GLenum) face,
+        (GLenum) sfail,
+        (GLenum) dpfail,
+        (GLenum) dppass
+    );
 }
 
 JNIEXPORT void JNICALL
