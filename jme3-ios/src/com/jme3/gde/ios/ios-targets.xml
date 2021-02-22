@@ -90,6 +90,7 @@
     <target name="-compile-ios-java" description="Compiles the java classes for iOS">
         <mkdir dir="${ios.java.classes.dir}"/>
         <javac
+            source="1.8"
             target="1.8"
             destdir="${ios.java.classes.dir}"
             srcdir="${ios.cc.source.dir}"
