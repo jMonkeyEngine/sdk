@@ -17,6 +17,7 @@
 		08914C20142A826B00991C80 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08914C1E142A826B00991C80 /* MainWindow_iPhone.xib */; };
 		08914C24142A826B00991C80 /* jmeAppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 08914C23142A826B00991C80 /* jmeAppDelegate_iPad.m */; };
 		08914C27142A826B00991C80 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08914C25142A826B00991C80 /* MainWindow_iPad.xib */; };
+		BBE3F3AD25E54070009CA0E9 /* Dummy.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE3F3AC25E54070009CA0E9 /* Dummy.storyboard */; };
 		CC69FB0F16374681009585B5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC69FB0E16374681009585B5 /* OpenGLES.framework */; };
 		CCD3ADB518AC38BE00FE8DC5 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCD3ADB418AC38BE00FE8DC5 /* OpenAL.framework */; };
 		CCFD653F163755D80020EFDD /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFD653E163755D80020EFDD /* GLKit.framework */; };
@@ -40,6 +41,7 @@
 		08914C22142A826B00991C80 /* jmeAppDelegate_iPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = jmeAppDelegate_iPad.h; path = iPad/jmeAppDelegate_iPad.h; sourceTree = "<group>"; };
 		08914C23142A826B00991C80 /* jmeAppDelegate_iPad.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = jmeAppDelegate_iPad.m; path = iPad/jmeAppDelegate_iPad.m; sourceTree = "<group>"; };
 		08914C26142A826B00991C80 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = iPad/en.lproj/MainWindow_iPad.xib; sourceTree = "<group>"; };
+		BBE3F3AC25E54070009CA0E9 /* Dummy.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dummy.storyboard; sourceTree = "<group>"; };
 		CC69FB0E16374681009585B5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CCD3ADB418AC38BE00FE8DC5 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		CCFD653E163755D80020EFDD /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -101,6 +103,7 @@
 				08914C1A142A826B00991C80 /* iPhone */,
 				08914C21142A826B00991C80 /* iPad */,
 				08914C0F142A826B00991C80 /* Supporting Files */,
+				BBE3F3AC25E54070009CA0E9 /* Dummy.storyboard */,
 			);
 			path = "jme-ios";
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBE3F3AD25E54070009CA0E9 /* Dummy.storyboard in Resources */,
 				E9E6261018A052130084FC12 /* logging.properties in Resources */,
 				08914C13142A826B00991C80 /* InfoPlist.strings in Resources */,
 				08914C20142A826B00991C80 /* MainWindow_iPhone.xib in Resources */,
@@ -292,7 +296,7 @@
 					/System/Library/Frameworks/JavaVM.framework/Headers,
 					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-filelist",
@@ -350,7 +354,7 @@
 					/System/Library/Frameworks/JavaVM.framework/Headers,
 					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-filelist",
@@ -386,7 +390,8 @@
 					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/,
 				);
 				INFOPLIST_FILE = "jme-ios/jme-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = (
 					"-filelist",
 					"../../build/ios-arm/libs.list",
@@ -422,7 +427,7 @@
 					/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/JavaVM.framework/Headers/,
 				);
 				INFOPLIST_FILE = "jme-ios/jme-ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_LDFLAGS = (
 					"-filelist",
 					"../../build/ios-arm/libs.list",
