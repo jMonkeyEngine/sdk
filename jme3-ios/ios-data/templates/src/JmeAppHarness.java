@@ -81,12 +81,14 @@ public class JmeAppHarness extends IosHarness{
         logger.log(Level.FINE, "JmeAppHarness reshape");
         AppSettings settings = app.getContext().getSettings();
         settings.setResolution(width, height);
-        if (renderer != null) {
-    		app.reshape(width, height);
-    	}
-    	if (input != null) {
-    		input.loadSettings(settings);
-    	}
+        if (renderer == null) {
+            renderer = (GLRenderer)app.getContext().getRenderer();
+        }
+        app.reshape(width, height);
+        if (input == null) {
+            input = (IosInputHandler)app.getContext().getTouchInput();
+        }
+        input.loadSettings(settings);
     }
     
     public void injectTouchBegin(int pointerId, long time, float x, float y) {
