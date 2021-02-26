@@ -1,5 +1,6 @@
 import com.jme3.system.ios.IosHarness;
 import com.jme3.input.ios.IosInputHandler;
+import com.jme3.math.Vector2f;
 import com.jme3.renderer.opengl.GLRenderer;
 import com.jme3.system.JmeContext;
 import com.jme3.system.AppSettings;
@@ -18,6 +19,7 @@ public class JmeAppHarness extends IosHarness{
 	protected GLRenderer renderer;
 	protected IosInputHandler input;
 	protected boolean autoFlush = true;
+	protected Vector2f resizePending = null;
 
 
     /**
@@ -62,17 +64,21 @@ public class JmeAppHarness extends IosHarness{
     @Override
     public void appDraw() {
         logger.log(Level.FINE, "JmeAppHarness appDraw");
-		if (renderer == null) {
-			JmeContext iosContext = app.getContext();
-			renderer = (GLRenderer)iosContext.getRenderer();
-			renderer.initialize();
-			input = (IosInputHandler)iosContext.getTouchInput();
-			input.initialize();
-		} else {
-			app.update();
+        if (renderer == null) {
+            JmeContext iosContext = app.getContext();
+            renderer = (GLRenderer)iosContext.getRenderer();
+            renderer.initialize();
+            input = (IosInputHandler)iosContext.getTouchInput();
+            input.initialize();
+        } else {
+            if(resizePending != null) {
+                appReshape((int)resizePending.x, (int)resizePending.y);
+                resizePending = null;
+            }
+            app.update();
     	    if (autoFlush) {
-        	    renderer.postFrame();
-        	}
+                renderer.postFrame();
+            }
         }
     }
     
@@ -81,14 +87,16 @@ public class JmeAppHarness extends IosHarness{
         logger.log(Level.FINE, "JmeAppHarness reshape");
         AppSettings settings = app.getContext().getSettings();
         settings.setResolution(width, height);
-        if (renderer == null) {
-            renderer = (GLRenderer)app.getContext().getRenderer();
+        if (renderer != null) {
+            app.reshape(width, height);
+            resizePending = null;
+        } else {
+            resizePending = new Vector2f(width, height);
         }
-        app.reshape(width, height);
-        if (input == null) {
-            input = (IosInputHandler)app.getContext().getTouchInput();
+
+        if (input != null) {
+            input.loadSettings(settings);
         }
-        input.loadSettings(settings);
     }
     
     public void injectTouchBegin(int pointerId, long time, float x, float y) {
