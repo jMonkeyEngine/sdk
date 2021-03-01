@@ -2025,7 +2025,7 @@ Java_com_jme3_renderer_ios_JmeIosGLES_glDrawElementsInstanced(JNIEnv* e, jobject
         (GLenum) mode,
         (GLsizei) count,
         (GLenum) type,
-        (const void *) indices, // TODO: lwjgl uses intptr_t insead, double check it works properly
+        (const void *) indices,
         (GLsizei) primcount
     );
 }
