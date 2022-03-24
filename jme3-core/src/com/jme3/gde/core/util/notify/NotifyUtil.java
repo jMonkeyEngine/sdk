@@ -46,6 +46,8 @@ import org.openide.util.RequestProcessor;
  * @author qbeukes.blogspot.com, used by metalklesk
  */
 public class NotifyUtil {
+    
+    private static final RequestProcessor requestProcessor = new RequestProcessor("Notification processor", 1);
 
     private NotifyUtil() {
     }
@@ -62,7 +64,7 @@ public class NotifyUtil {
         }
         final Notification n = NotificationDisplayer.getDefault().notify(title, type.getIcon(), message, actionListener);
         if (timeout > 0) {
-            RequestProcessor.getDefault().post(new Runnable() {
+            requestProcessor.post(new Runnable() {
                 @Override
                 public void run() {
                     n.clear();
