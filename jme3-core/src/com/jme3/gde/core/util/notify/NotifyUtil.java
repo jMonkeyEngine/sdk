@@ -67,8 +67,8 @@ public class NotifyUtil {
         if (title == null) {
             title = "null";
         }
-        final Notification n = NotificationDisplayer.getDefault()
-                .notify(title, type.getIcon(), message, actionListener);
+        final Notification n = NotificationDisplayer.getDefault().
+                notify(title, type.getIcon(), message, actionListener);
         if (timeout > 0) {
             REQUEST_PROCESSOR.post(new Runnable() {
                 @Override
