@@ -47,7 +47,12 @@ import org.openide.util.RequestProcessor;
  */
 public class NotifyUtil {
     
-    private static final RequestProcessor requestProcessor = new RequestProcessor("Notification processor", 1);
+    /**
+     * Own request processor (thread pool) for NotifyUtil handling
+     * background tasks
+     */
+    private static final RequestProcessor REQUEST_PROCESSOR =
+            new RequestProcessor("Notification processor", 1);
 
     private NotifyUtil() {
     }
@@ -65,7 +70,7 @@ public class NotifyUtil {
         final Notification n = NotificationDisplayer.getDefault()
                 .notify(title, type.getIcon(), message, actionListener);
         if (timeout > 0) {
-            requestProcessor.post(new Runnable() {
+            REQUEST_PROCESSOR.post(new Runnable() {
                 @Override
                 public void run() {
                     n.clear();
