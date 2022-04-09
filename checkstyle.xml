@@ -68,11 +68,6 @@
     <property name="fileExtensions" value="java, g4"/>
   </module>
 
-  <!-- Javadoc Comments -->
-  <module name="JavadocPackage">
-    <property name="allowLegacy" value="false"/>
-  </module>
-
   <!-- Miscellaneous -->
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation">
@@ -408,7 +403,6 @@
                        java.lang.StringBuffer, StringBuffer"/>
     </module>
     <module name="InnerAssignment"/>
-    <module name="MagicNumber"/>
     <module name="MatchXpath">
       <property name="query" value="//CLASS_DEF[@text!='Checker' and @text!='Main']
       //LITERAL_CATCH//METHOD_CALL[.//IDENT[@text = 'printStackTrace']]/.."/>
