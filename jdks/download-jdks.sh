@@ -72,7 +72,7 @@ function download_jdk {
     then
         echo "<<< Already existing, SKIPPING."
     else
-		curl -s -o downloads/jdk-$1$2 -L https://github.com/adoptium/temurin$jdk_major_version-binaries/releases/download/jdk-$jdk_major_version.$jdk_version+$jdk_build_version/OpenJDK$jdk_major_versionU-jdk_$1\_hotspot_$jdk_major_version.$jdk_version\_$jdk_build_version$2
+        curl -s -o downloads/jdk-$1$2 -L https://github.com/adoptium/temurin$jdk_major_version-binaries/releases/download/jdk-$jdk_major_version.$jdk_version+$jdk_build_version/OpenJDK${jdk_major_version}U-jdk_$1_hotspot_$jdk_major_version.${jdk_version}_$jdk_build_version$2
         echo "<<< OK!"
     fi
 }
