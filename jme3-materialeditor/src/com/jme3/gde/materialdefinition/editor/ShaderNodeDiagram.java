@@ -107,7 +107,6 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
                     return;
                 }
             }
-
             dispatchToOutBuses(e);
         } else {
             super.mouseReleased(e); // Handle all the UI Stuff
@@ -132,6 +131,9 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
                         bus.dispatchEvent(me);
                     }
                 }
+//                if (!e.isConsumed()){
+//                    setLocation(e.getX(), e.getY());
+//                }
             }
         } else {
             super.mouseDragged(e); // Handle all the UI Stuff

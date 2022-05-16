@@ -321,7 +321,7 @@ public final class MatDefEditorlElement extends JPanel implements
         Lookup.Result<Material> resMat = obj.getLookup().lookupResult(Material.class);
         Collection<? extends Material> col = (Collection<? extends Material>) resMat.allInstances();
         if (!col.isEmpty()) {
-            Material material = col.iterator().next();            
+            Material material = col.iterator().next();     
             diagram1.refreshPreviews(material,obj.getEditableFile().getCurrentTechnique().getName());
         }
 
@@ -642,6 +642,13 @@ public final class MatDefEditorlElement extends JPanel implements
             }
         }
     }
+    
+    @Override
+    public void notifyDefaultValueUpdated(String matParamName, String value){
+        MatDefBlock matDef = obj.getLookup().lookup(MatDefBlock.class);
+        matDef.getMatParam(matParamName).setDefaultValue(value);
+        refresh();
+    }
 
     private ConnectionEndpoint findConnectPoint(String nameSpace, String name, boolean isInput) {
 
@@ -721,6 +728,9 @@ public final class MatDefEditorlElement extends JPanel implements
 
         for (MatParamBlock matParamBlock : matDef.getMatParams()) {
             ShaderNodeVariable var = new ShaderNodeVariable("", "MatParam", matParamBlock.getName());
+            if(matParamBlock.getDefaultValue() != null){
+                var.setDefaultValue(matParamBlock.getDefaultValue());
+            }
             var.setType(MaterialUtils.getMatParamType(matParamBlock));
             uniforms.add(var);
         }

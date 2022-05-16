@@ -1,0 +1,73 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.jme3.gde.materialdefinition.editor.previews;
+
+import com.jme3.gde.materials.multiview.widgets.ColorRGBADialog;
+import com.jme3.shader.ShaderNodeVariable;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.JFrame;
+
+/**
+ * Component for previewing and changing a default Color value for a MatParam.
+ *
+ * @author rickard
+ */
+public class ColorPreview extends BasePreview implements MouseListener{
+    
+    private float[] rgba = new float[4];
+
+    public ColorPreview(ShaderNodeVariable output){
+        super(output);
+        String color = output.getDefaultValue();
+        populateRGBA(color);
+        
+        setBackground(new Color(rgba[0], rgba[1], rgba[2], rgba[3]));
+        addMouseListener(this);
+    }
+    
+    private void populateRGBA(String colorString){
+        String[] split = colorString.split(" ");
+        rgba[0] = Float.parseFloat(split[0]);
+        rgba[1] = Float.parseFloat(split[1]);
+        rgba[2] = Float.parseFloat(split[2]);
+        rgba[3] = Float.parseFloat(split[3]);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        showDialog();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+    
+    private void showDialog(){
+        ColorRGBADialog dialog = new ColorRGBADialog(new JFrame(), true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setColor(new Color(rgba[0], rgba[1], rgba[2], rgba[3]));
+        dialog.setVisible(true);
+        if (dialog.getColorAsText() != null) {
+            setBackground(dialog.getColor());
+            populateRGBA(dialog.getColorAsText());
+            onDefaultValueChanged(dialog.getColorAsText());
+        }
+    }
+
+}

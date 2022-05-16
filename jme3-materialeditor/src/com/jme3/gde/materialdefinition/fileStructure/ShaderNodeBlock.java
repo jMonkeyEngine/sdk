@@ -26,6 +26,7 @@ public class ShaderNodeBlock extends UberStatement implements Comparable<ShaderN
     public final static String OUTPUT = "output";
     public static final String ADD_MAPPING = "addMapping";
     public static final String REMOVE_MAPPING = "removeMapping";
+    public static final String VALUE = "defaultValue";
     protected String name;
     //built up data for fast sorting 
     protected int spatialOrder;

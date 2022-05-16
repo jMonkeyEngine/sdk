@@ -38,15 +38,25 @@ import com.jme3.gde.materialdefinition.fileStructure.leaves.DefinitionBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
 import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.previews.BasePreview;
+import com.jme3.gde.materialdefinition.editor.previews.BoolPreview;
+import com.jme3.gde.materialdefinition.editor.previews.ColorPreview;
+import com.jme3.gde.materialdefinition.editor.previews.FloatPreview;
+import com.jme3.gde.materialdefinition.editor.previews.TexturePreview;
+import com.jme3.gde.materialdefinition.editor.previews.Vec2Preview;
+import com.jme3.gde.materialdefinition.editor.previews.Vec3Preview;
+import com.jme3.gde.materialdefinition.editor.previews.Vec4Preview;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.openide.util.WeakListeners;
 
@@ -93,7 +103,6 @@ public class ShaderNodePanel extends NodePanel implements InOut,
         } else {
             type = NodeType.Fragment;
         }
-        
         node.addPropertyChangeListener(WeakListeners.propertyChange(this, node));
         this.addPropertyChangeListener(WeakListeners.propertyChange(node, this));
         
@@ -130,8 +139,22 @@ public class ShaderNodePanel extends NodePanel implements InOut,
             JLabel label = createLabel(output.getType(), outName, ConnectionEndpoint.ParamType.Output);
             ConnectionEndpoint dot = createConnectionEndpoint(output.getType(), ConnectionEndpoint.ParamType.Output, outName);
             dot.setIndex(index++);
+            
             outputLabels.add(label);
             outputDots.add(dot);
+            if(type == NodeType.MatParam){
+                BasePreview c = getPreviewComponent(output);
+                if(c != null){
+                    c.setOnDefaultValueChangeListener(new BasePreview.OnDefaultValueChangedListener() {
+                        @Override
+                        public void onDefaultValueChanged(String value) {
+                            getDiagram().updateDefaultValue(output.getName(), output.getDefaultValue());
+                        }
+                    });
+                    previews.add(c);
+                }
+            }
+            
         }
 
         initComponents();
@@ -194,15 +217,18 @@ public class ShaderNodePanel extends NodePanel implements InOut,
                 break;
             case Attribute:
                 header.setIcon(Icons.attrib);
-                setNameAndTitle("Attribute"); // sets text _and_ tooltip the same
+                name = "Attribute";
+                setTitle(outputLabels.get(0).getText() ); // sets text _and_ tooltip the same
                 break;
             case WorldParam:
                 header.setIcon(Icons.world);
-                setNameAndTitle("WorldParam");
+                name = "WorldParam";
+                setTitle(outputLabels.get(0).getText());
                 break;
             case MatParam:
                 header.setIcon(Icons.mat);
-                setNameAndTitle("MatParam");
+                name = "MatParam";
+                setTitle(outputLabels.get(0).getText());
                 break;
         }
         color = type.getColor();
@@ -231,7 +257,7 @@ public class ShaderNodePanel extends NodePanel implements InOut,
      */
     protected JLabel createLabel(String glslType, String txt, ConnectionEndpoint.ParamType type) {
         JLabel label = super.createLabel(txt, type);
-        label.setToolTipText(glslType + " " + txt);
+        label.setToolTipText(type + " " + glslType + " " + txt);
         return label;
     }
     
@@ -266,5 +292,28 @@ public class ShaderNodePanel extends NodePanel implements InOut,
     @Override
     public void removeOutputMapping(OutputMappingBlock block) {
         firePropertyChange(ShaderNodeBlock.OUTPUT, block, null);
+    }
+    
+    private BasePreview getPreviewComponent(ShaderNodeVariable output){
+        switch (output.getType()) {
+            case "bool":
+                return new BoolPreview(output);
+            case "vec4":
+                if(output.getName().toLowerCase().contains("color")){
+                    return new ColorPreview(output);
+                } else {
+                    return new Vec4Preview(output);
+                }
+            case "vec3":
+                return new Vec3Preview(output);
+            case "vec2":
+                return new Vec2Preview(output);
+            case "float":
+                return new FloatPreview(output);
+            case "sampler2D|sampler2DShadow":
+                return new TexturePreview(output);
+            default:
+                return null;
+        }
     }
 }

@@ -110,7 +110,7 @@ public class MatDefBlock extends UberStatement {
         }
         fire(REMOVE_MAT_PARAM, matParam, null);
     }
-
+    
     public List<TechniqueBlock> getTechniques() {
         return getBlocks(TechniqueBlock.class);
     }
@@ -118,5 +118,23 @@ public class MatDefBlock extends UberStatement {
     public void addTechnique(TechniqueBlock techniqueBlock) {
         addStatement(techniqueBlock);
         fire("technique", null, techniqueBlock);
+    }
+    
+    
+    public MatParamBlock getMatParam(String name){
+        for(MatParamBlock block:  getMaterialParameters().getMatParams()){
+            if(block.getName().equals(name)){
+                return block;
+            }
+        }
+        return null;
+    }
+    
+    public void updateMatParam(MatParamBlock matParam, String value){
+        for(MatParamBlock block:  getMaterialParameters().getMatParams()){
+            if(block.getName().equals(matParam.getName())){
+                block.setDefaultValue(value);
+            }
+        }
     }
 }

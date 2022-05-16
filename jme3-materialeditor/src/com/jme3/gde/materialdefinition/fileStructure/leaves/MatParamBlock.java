@@ -74,8 +74,12 @@ public class MatParamBlock extends LeafStatement {
     }
 
     public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
-        updateLine();
+        if(!defaultValue.equals(this.defaultValue)){
+            String oldValue = this.defaultValue;
+            this.defaultValue = defaultValue;
+            updateLine();
+            fire("defaultValue", oldValue, defaultValue);
+        }
     }
 
     @Override
