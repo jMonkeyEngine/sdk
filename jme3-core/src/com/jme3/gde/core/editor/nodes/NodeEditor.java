@@ -85,4 +85,11 @@ public interface NodeEditor {
      * @param selectable The selected item
      */
     void selectionChanged(Selectable selectable);
+    
+    /**
+     * Called when a default value of a MatParam is updated
+     * @param name name of the MatParam
+     * @param value the new default value
+     */
+    void notifyDefaultValueUpdated(String name, String value);
 }

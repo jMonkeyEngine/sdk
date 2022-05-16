@@ -46,7 +46,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
@@ -58,12 +62,13 @@ import javax.swing.SwingUtilities;
  * @author Nehon
  */
 public abstract class NodePanel extends DraggablePanel implements Selectable, KeyListener {
-    protected List<JLabel> inputLabels = new ArrayList<JLabel>();
-    protected List<JLabel> outputLabels = new ArrayList<JLabel>();
-    protected List<ConnectionEndpoint> inputDots = new ArrayList<ConnectionEndpoint>();
-    protected List<ConnectionEndpoint> outputDots = new ArrayList<ConnectionEndpoint>();
+    protected List<JLabel> inputLabels = new ArrayList<>();
+    protected List<JLabel> outputLabels = new ArrayList<>();
+    protected List<ConnectionEndpoint> inputDots = new ArrayList<>();
+    protected List<ConnectionEndpoint> outputDots = new ArrayList<>();
     protected JPanel content;
     protected JLabel header;
+    protected List<JComponent> previews = new ArrayList<>();
     protected Color color;
     protected Color backgroundColor = new Color(170, 170, 170, 120);
     protected String name;
@@ -86,7 +91,7 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
     public void setToolbar(NodeToolBar toolBar) {
         this.toolBar = toolBar;
     }
-
+    
     /**
      * Set this node's name, title and tooltipText
      * Note: This name is different from AWTs setName()
@@ -94,9 +99,9 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
      */
     public void setNameAndTitle(String s) {
         name = s;
-        setTitle(name);
+        setTitle(s);
     }
-
+    
     public void setTitle(String s) {
         header.setText(s);
         header.setToolTipText(s);
@@ -235,7 +240,7 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
         header.addMouseListener(labelMouseMotionListener);
         header.addMouseMotionListener(labelMouseMotionListener);
         header.setHorizontalAlignment(SwingConstants.LEFT);
-        header.setFont(new Font("Tahoma", Font.BOLD, 11));
+        header.setFont(new Font("Tahoma", Font.BOLD, 10));
         
         if (getLayout() instanceof GroupLayout) {
             header.setText(oldHeaderText);
@@ -248,14 +253,25 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
         content.setLayout(contentLayout);
         int txtLength = 100;
         GroupLayout.ParallelGroup grpHoriz = contentLayout.createParallelGroup(GroupLayout.Alignment.LEADING);
-
         for (int i = 0; i < outputDots.size(); i++) {
-            grpHoriz.addGroup(GroupLayout.Alignment.TRAILING, contentLayout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(outputLabels.get(i), GroupLayout.PREFERRED_SIZE, txtLength, GroupLayout.PREFERRED_SIZE)
-                    .addGap(2, 2, 2)
-                    .addComponent(outputDots.get(i), GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE));
+            SequentialGroup group = contentLayout.createSequentialGroup();
+            
+            group.addGap(0, 0, Short.MAX_VALUE);
+            if(outputDots.size() > 1){
+                group.addComponent(outputLabels.get(i), 0, txtLength, GroupLayout.PREFERRED_SIZE);
+                group.addGap(2, 2, 2);
+            }
+            if(i == 0 && !previews.isEmpty()){
+                JComponent preview = previews.get(0);
+                group.addComponent(preview, preview.getWidth(), preview.getWidth(), GroupLayout.PREFERRED_SIZE);
+                group.addGap(2, 2, 2);
+            }
+            group.addComponent(outputDots.get(i), GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE);
+
+            grpHoriz.addGroup(GroupLayout.Alignment.TRAILING, group);
         }
+        
+        
         for (int i = 0; i < inputDots.size(); i++) {
             grpHoriz.addGroup(GroupLayout.Alignment.LEADING, contentLayout.createSequentialGroup()
                     .addComponent(inputDots.get(i), GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
@@ -274,9 +290,18 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
                     .addComponent(inputLabels.get(i))).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
         }
         for (int i = 0; i < outputDots.size(); i++) {
-            grp.addGroup(contentLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                    .addComponent(outputDots.get(i), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(outputLabels.get(i))).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
+            ParallelGroup group = contentLayout.createParallelGroup(GroupLayout.Alignment.LEADING);
+            
+            group.addComponent(outputDots.get(i), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE);
+            if(outputDots.size() > 1){
+                group.addComponent(outputLabels.get(i));
+            }
+            if(i == 0 && !previews.isEmpty()){
+                JComponent preview = previews.get(0);
+                group.addComponent(preview, preview.getHeight(), preview.getHeight(), GroupLayout.PREFERRED_SIZE);
+            }
+            grp.addGroup(group);
+            grp.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED);
         }
 
         grpVert.addGroup(GroupLayout.Alignment.TRAILING, grp);
@@ -297,9 +322,9 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                         .addComponent(header, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addGap(6, 6, 6)
                         .addComponent(content, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10));
+                .addGap(12, 12, 12));
     }
     
     @Override
