@@ -14,9 +14,6 @@ if (!hasProperty('mainClass')) {
 }
 
 repositories {
-    maven {
-        url "http://nifty-gui.sourceforge.net/nifty-maven-repo/"
-    }
     maven { url "https://jitpack.io" }
     maven {
         url "https://maven.google.com/"
@@ -631,8 +628,8 @@ task fixPlatformIndependent(dependsOn: patchPlatformIndependent, type: Zip) {
     description = "We compile our installers with the bundled jdk, but the platform independent zip doesn't have the jdk. For this we need to change the jmonkeyplatform.zip after building the installers to not have a jdk bundled"
 
     from 'dist/temp'
-    archiveName = 'jmonkeyplatform.zip'
-    destinationDir = file('dist')
+    archiveFileName = 'jmonkeyplatform.zip'
+    destinationDirectory = file('dist')
 
     doLast {
         delete("dist/temp")
@@ -640,7 +637,7 @@ task fixPlatformIndependent(dependsOn: patchPlatformIndependent, type: Zip) {
 }
 
 wrapper {
-    gradleVersion = '5.6.4'
+    gradleVersion = '6.9.2'
 }
 
 //jar.dependsOn(buildSdk)

@@ -214,7 +214,7 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
     public abstract String getKey(); // satisfy Selectable interface
     
     public void cleanup(){
-        if (toolBar != null) {
+        if (toolBar != null && toolBar.getParent() != null) {
             toolBar.getParent().remove(toolBar);
         }
     }
