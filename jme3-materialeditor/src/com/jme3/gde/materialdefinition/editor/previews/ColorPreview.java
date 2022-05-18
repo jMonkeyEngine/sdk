@@ -10,26 +10,30 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
+import javax.swing.border.LineBorder;
 
 /**
  * Component for previewing and changing a default Color value for a MatParam.
  *
  * @author rickard
  */
-public class ColorPreview extends BasePreview implements MouseListener{
-    
-    private float[] rgba = new float[4];
+public class ColorPreview extends BasePreview implements MouseListener {
 
-    public ColorPreview(ShaderNodeVariable output){
+    private float[] rgba = new float[4];
+    private String colorString;
+
+    public ColorPreview(ShaderNodeVariable output) {
         super(output);
         String color = output.getDefaultValue();
         populateRGBA(color);
-        
         setBackground(new Color(rgba[0], rgba[1], rgba[2], rgba[3]));
         addMouseListener(this);
+        setBorder(new LineBorder(Color.DARK_GRAY));
+        setSize(20, 20);
     }
-    
-    private void populateRGBA(String colorString){
+
+    private void populateRGBA(String colorString) {
+        this.colorString = colorString;
         String[] split = colorString.split(" ");
         rgba[0] = Float.parseFloat(split[0]);
         rgba[1] = Float.parseFloat(split[1]);
@@ -39,7 +43,15 @@ public class ColorPreview extends BasePreview implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        showDialog();
+        ColorRGBADialog dialog = new ColorRGBADialog(new JFrame(), true);
+        dialog.setLocationRelativeTo(null);
+        dialog.setColor(new Color(rgba[0], rgba[1], rgba[2], rgba[3]));
+        dialog.setVisible(true);
+        if (dialog.getColorAsText() != null) {
+            setBackground(dialog.getColor());
+            populateRGBA(dialog.getColorAsText());
+            onDefaultValueChanged(dialog.getColorAsText());
+        }
     }
 
     @Override
@@ -56,18 +68,6 @@ public class ColorPreview extends BasePreview implements MouseListener{
 
     @Override
     public void mouseExited(MouseEvent e) {
-    }
-    
-    private void showDialog(){
-        ColorRGBADialog dialog = new ColorRGBADialog(new JFrame(), true);
-        dialog.setLocationRelativeTo(null);
-        dialog.setColor(new Color(rgba[0], rgba[1], rgba[2], rgba[3]));
-        dialog.setVisible(true);
-        if (dialog.getColorAsText() != null) {
-            setBackground(dialog.getColor());
-            populateRGBA(dialog.getColorAsText());
-            onDefaultValueChanged(dialog.getColorAsText());
-        }
     }
 
 }

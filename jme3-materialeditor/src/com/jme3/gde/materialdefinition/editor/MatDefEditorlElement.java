@@ -37,12 +37,12 @@ import com.jme3.gde.core.editor.nodes.NodeEditor;
 import com.jme3.gde.core.editor.nodes.Diagram;
 import com.jme3.gde.core.editor.nodes.NodePanel;
 import com.jme3.gde.core.editor.nodes.Selectable;
-import com.jme3.asset.ShaderNodeDefinitionKey;
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.materialdefinition.EditableMatDefFile;
 import com.jme3.gde.materialdefinition.MatDefDataObject;
 import com.jme3.gde.materialdefinition.MatDefMetaData;
 import com.jme3.gde.materialdefinition.editor.ShaderNodePanel.NodeType;
+import com.jme3.gde.materialdefinition.editor.util.MatDefEditorUtil;
 import com.jme3.gde.materialdefinition.fileStructure.MatDefBlock;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;
 import com.jme3.gde.materialdefinition.fileStructure.TechniqueBlock;
@@ -57,7 +57,6 @@ import com.jme3.material.Material;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
-import com.jme3.shader.ShaderUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -162,6 +161,7 @@ public final class MatDefEditorlElement extends JPanel implements
         initData(technique, manager, vertexGlobals, fragmentGlobals, attributes, matDef, uniforms);
 
         int i = 0;
+        
         for (ShaderNodeBlock sn : technique.getShaderNodes()) {
             ShaderNodeDefinition def = MaterialUtils.loadShaderNodeDefinition(sn, manager);
             NodePanel np = new ShaderNodePanel(sn, def);
@@ -273,7 +273,7 @@ public final class MatDefEditorlElement extends JPanel implements
             });
         }
     }
-
+    
     public void switchTechnique(TechniqueBlock tech) {
         obj.getEditableFile().setCurrentTechnique(tech);        
         reload(obj.getEditableFile(), obj.getLookup());
@@ -525,31 +525,7 @@ public final class MatDefEditorlElement extends JPanel implements
 
     @Override
     public void makeMapping(Connection conn) {
-        InOut startNode = (InOut) conn.getStart().getNode();
-        InOut endNode = (InOut) conn.getEnd().getNode();
-        String leftVarName = conn.getEnd().getText();
-        String rightVarName = conn.getStart().getText();
-        String leftVarSwizzle = null;
-        String rightVarSwizzle = null;
-
-        int endCard = ShaderUtils.getCardinality(conn.getEnd().getType(), "");
-        int startCard = ShaderUtils.getCardinality(conn.getStart().getType(), "");
-        String swizzle = "xyzw";
-        if (startCard > endCard) {
-            rightVarSwizzle = swizzle.substring(0, endCard);
-        } else if (endCard > startCard) {
-            leftVarSwizzle = swizzle.substring(0, startCard);
-        }
-
-        if (endNode instanceof ShaderOutBusPanel) {
-            OutputMappingBlock mapping = new OutputMappingBlock(leftVarName, rightVarName, leftVarSwizzle, rightVarSwizzle, endNode.getName(), startNode.getName(), null);
-            startNode.addOutputMapping(mapping);
-            conn.makeKey(mapping, diagram1.getCurrentTechniqueName());
-        } else {
-            InputMappingBlock mapping = new InputMappingBlock(leftVarName, rightVarName, leftVarSwizzle, rightVarSwizzle, endNode.getName(), startNode.getName(), null);
-            endNode.addInputMapping(mapping);
-            conn.makeKey(mapping, diagram1.getCurrentTechniqueName());
-        }
+        MatDefEditorUtil.makeMapping(conn, diagram1.getCurrentTechniqueName());
     }
 
     @Override
@@ -573,28 +549,7 @@ public final class MatDefEditorlElement extends JPanel implements
     }
 
     public void notifyAddTechnique(TechniqueBlock tech) {
-        String path = "Common/MatDefs/ShaderNodes/Common/Unshaded.j3sn";
-        ShaderNodeDefinitionKey key =  new ShaderNodeDefinitionKey(path);
-        List<ShaderNodeDefinition> defs = getAssetManager().loadAsset(key);
-        ShaderNodeBlock node = new ShaderNodeBlock(defs.get(0), path);
-        tech.addFragmentShaderNode(node);
-        node.addOutputMapping(new OutputMappingBlock("color", "color", "", "", "Global", "Unshaded", null));
-        
-        path = "Common/MatDefs/ShaderNodes/Common/CommonVert.j3sn";
-        key =  new ShaderNodeDefinitionKey(path);
-        defs = getAssetManager().loadAsset(key);
-        node = new ShaderNodeBlock(defs.get(0), path);
-        tech.addVertexShaderNode(node);
-        
-        node.addInputMapping(new InputMappingBlock("worldViewProjectionMatrix", "WorldViewProjectionMatrix", "", "", "CommonVert", "WorldParam", null));
-        node.addInputMapping(new InputMappingBlock("modelPosition", "position", "", "xyz", "CommonVert", "Global", null));        
-        
-        node.addOutputMapping(new OutputMappingBlock("position", "projPosition", "", "", "Global", "CommonVert", null));
-        
-        
-        WorldParamBlock param = new WorldParamBlock("WorldViewProjectionMatrix");
-        tech.addWorldParam(param);
-        
+        MatDefEditorUtil.notifyAddTechnique(getAssetManager(), tech);
         obj.getEditableFile().getMatDefStructure().addTechnique(tech);     
         
     }

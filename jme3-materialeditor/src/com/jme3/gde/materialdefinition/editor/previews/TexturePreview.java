@@ -9,6 +9,8 @@ import com.jme3.shader.ShaderNodeVariable;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -20,20 +22,21 @@ import javax.swing.JLabel;
 import org.openide.util.Exceptions;
 
 /**
- * Component for previewing and changing a default Texture2D value for a MatParam.
+ * Component for previewing and changing a default Texture2D value for a
+ * MatParam.
  *
  * @author rickard
  */
-public class TexturePreview extends BasePreview {
+public class TexturePreview extends BasePreview implements MouseListener {
 
-    public TexturePreview(ShaderNodeVariable output){
+    public TexturePreview(ShaderNodeVariable output) {
         super(output);
         String texture = output.getDefaultValue();
-        if(texture != null){
+        if (texture != null) {
             try {
                 texture = texture.replace("\"", "");
                 String path = EditableMatDefFile.getAssetManager().getAbsoluteAssetPath(texture);
-                if(path != null){
+                if (path != null) {
                     BufferedImage image = ImageIO.read(new File(path));
                     image = resize(image, 20, 20);
                     Icon icon = new ImageIcon(image);
@@ -59,5 +62,25 @@ public class TexturePreview extends BasePreview {
         g2d.drawImage(image, 0, 0, width, height, null);
         g2d.dispose();
         return bi;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

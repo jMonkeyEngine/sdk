@@ -42,10 +42,8 @@ import com.jme3.gde.materialdefinition.editor.previews.BasePreview;
 import com.jme3.gde.materialdefinition.editor.previews.BoolPreview;
 import com.jme3.gde.materialdefinition.editor.previews.ColorPreview;
 import com.jme3.gde.materialdefinition.editor.previews.FloatPreview;
-import com.jme3.gde.materialdefinition.editor.previews.TexturePreview;
-import com.jme3.gde.materialdefinition.editor.previews.Vec2Preview;
-import com.jme3.gde.materialdefinition.editor.previews.Vec3Preview;
-import com.jme3.gde.materialdefinition.editor.previews.Vec4Preview;
+import com.jme3.gde.materialdefinition.editor.previews.TexturePreviewSquare;
+import com.jme3.gde.materialdefinition.editor.previews.VecPreview;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
@@ -125,7 +123,12 @@ public class ShaderNodePanel extends NodePanel implements InOut,
     }
     
     private void init(List<ShaderNodeVariable> inputs, List<ShaderNodeVariable> outputs) {
-        setBounds(0, 0, 120, 30 + inputs.size() * 20 + outputs.size() * 20);
+        if(outputs.size() == 1 && outputs.get(0).getType().startsWith("sampler")){
+            setBounds(0, 0, 120, 80);
+        } else {
+            setBounds(0, 0, 120, 40 + inputs.size() * 20 + outputs.size() * 20);
+        }
+        
 
         for (ShaderNodeVariable input : inputs) {
             JLabel label = createLabel(input.getType(), input.getName(), ConnectionEndpoint.ParamType.Input);
@@ -144,22 +147,17 @@ public class ShaderNodePanel extends NodePanel implements InOut,
             outputDots.add(dot);
             if(type == NodeType.MatParam){
                 BasePreview c = getPreviewComponent(output);
+                
                 if(c != null){
-                    c.setOnDefaultValueChangeListener(new BasePreview.OnDefaultValueChangedListener() {
-                        @Override
-                        public void onDefaultValueChanged(String value) {
-                            getDiagram().updateDefaultValue(output.getName(), output.getDefaultValue());
-                        }
-                    });
+                    c.addPropertyChangeListener(this);
                     previews.add(c);
                 }
             }
             
         }
-
         initComponents();
         updateType();
-        setOpaque(false);
+        setOpaque(true);
     }
 
     @Override
@@ -172,7 +170,9 @@ public class ShaderNodePanel extends NodePanel implements InOut,
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("name")) {
+        if(evt.getSource() instanceof BasePreview && evt.getNewValue() instanceof String){
+            diagram.updateDefaultValue(evt.getPropertyName(), (String) evt.getNewValue());
+        } else if (evt.getPropertyName().equals("name")) {
             refresh((ShaderNodeBlock) evt.getSource());
         }
     }
@@ -302,16 +302,16 @@ public class ShaderNodePanel extends NodePanel implements InOut,
                 if(output.getName().toLowerCase().contains("color")){
                     return new ColorPreview(output);
                 } else {
-                    return new Vec4Preview(output);
+                    return new VecPreview(output, 4);
                 }
             case "vec3":
-                return new Vec3Preview(output);
+                return new VecPreview(output, 3);
             case "vec2":
-                return new Vec2Preview(output);
+                return new VecPreview(output, 2);
             case "float":
                 return new FloatPreview(output);
             case "sampler2D|sampler2DShadow":
-                return new TexturePreview(output);
+                return new TexturePreviewSquare(output);
             default:
                 return null;
         }

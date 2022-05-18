@@ -4,56 +4,45 @@
  */
 package com.jme3.gde.materialdefinition.editor.previews;
 
+import com.jme3.gde.materials.MaterialProperty;
+import com.jme3.gde.materials.multiview.widgets.MaterialWidgetListener;
 import com.jme3.shader.ShaderNodeVariable;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
 /**
  * Base component for all previews.
+ *
  * @author rickard
  */
-public class BasePreview extends JPanel implements ActionListener{
-    
+public abstract class BasePreview extends JPanel implements MaterialWidgetListener {
+
     private ShaderNodeVariable output;
-    private OnDefaultValueChangedListener listener;
-    
     protected Logger logger = Logger.getLogger(BasePreview.class.getName());
-    
-    public interface OnDefaultValueChangedListener{
-        
+
+    public interface OnDefaultValueChangedListener {
+
         void onDefaultValueChanged(String value);
     }
-    
-    public BasePreview(ShaderNodeVariable output){
+
+    public BasePreview(ShaderNodeVariable output) {
         this.output = output;
-        setSize(20, 20);
-        setBorder(new EmptyBorder(0,0,0,0));
-        ((FlowLayout)getLayout()).setVgap(0);
-        
+        setBorder(new EmptyBorder(0, 0, 0, 0));
+        setBackground(new Color(170, 170, 170));
+        ((FlowLayout) getLayout()).setVgap(0);
+    }
+
+    protected void onDefaultValueChanged(String value) {
+        output.setDefaultValue(value);
+        firePropertyChange(output.getName(), "", value);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        
+    public void propertyChanged(MaterialProperty property) {
+        onDefaultValueChanged(property.getValue());
     }
-    
-    protected void onDefaultValueChanged(String value){
-        output.setDefaultValue(value);
-        if(listener != null){
-            listener.onDefaultValueChanged(value);
-        }
-    }
-    
-    public void setOnDefaultValueChangeListener(OnDefaultValueChangedListener listener){
-        this.listener = listener;
-    }
-    
+
 }

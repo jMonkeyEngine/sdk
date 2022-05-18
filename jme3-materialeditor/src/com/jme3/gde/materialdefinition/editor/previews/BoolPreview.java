@@ -10,26 +10,28 @@ import javax.swing.JCheckBox;
 
 /**
  * A component for displaying and editing a Bool MatParam
+ *
  * @author rickard
  */
-public class BoolPreview extends BasePreview{
-    
-    public BoolPreview(ShaderNodeVariable output){
+public class BoolPreview extends BasePreview {
+
+    private final JCheckBox checkbox;
+
+    public BoolPreview(ShaderNodeVariable output) {
         super(output);
         boolean checked = false;
         String value = output.getDefaultValue();
-        if(value != null && value.isEmpty()){
+        if (value != null && value.isEmpty()) {
             checked = Boolean.parseBoolean(value);
         }
-        JCheckBox checkbox = new JCheckBox("", checked);
-        
+        checkbox = new JCheckBox("", checked);
+
         checkbox.setSize(20, 20);
         checkbox.addActionListener((ActionEvent e) -> {
-            onDefaultValueChanged(((JCheckBox)e.getSource()).isSelected() ? "true" : "false");
+            onDefaultValueChanged(((JCheckBox) e.getSource()).isSelected() ? "true" : "false");
         });
-        
+
         add(checkbox);
-        setSize(20, 20);
     }
-    
+
 }

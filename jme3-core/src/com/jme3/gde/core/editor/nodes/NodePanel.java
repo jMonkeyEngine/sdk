@@ -70,9 +70,10 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
     protected JLabel header;
     protected List<JComponent> previews = new ArrayList<>();
     protected Color color;
-    protected Color backgroundColor = new Color(170, 170, 170, 120);
+    protected Color backgroundColor = new Color(170, 170, 170);
     protected String name;
     protected NodeToolBar toolBar = null;
+    
 
     /**
      * Creates new form NodePanel
@@ -358,7 +359,7 @@ public abstract class NodePanel extends DraggablePanel implements Selectable, Ke
         g.setColor(borderColor);
 
         g.drawRoundRect(4, 0, getWidth() - 9, getHeight() - 6, 15, 15);
-        g.setColor(new Color(170, 170, 170, 120));
+        g.setColor(backgroundColor);
         g.fillRect(4, 1, 10, 10);
         g.setColor(borderColor);
         g.drawLine(4, 0, 14, 0);
