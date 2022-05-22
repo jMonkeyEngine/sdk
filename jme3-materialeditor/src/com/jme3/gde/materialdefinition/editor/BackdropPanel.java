@@ -528,5 +528,14 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
             ((MouseMotionListener) c).mouseMoved(SwingUtilities.convertMouseEvent(this, e, c));
         }
     }
+    
+    public MaterialPreviewRenderer getRenderer(){
+        return renderer;
+    }
 
+    public void refreshOnly() {
+        if (mat != null) {
+            renderer.refreshOnly();
+        }
+    }
 }

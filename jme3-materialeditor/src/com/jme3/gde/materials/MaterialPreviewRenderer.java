@@ -42,8 +42,9 @@ public class MaterialPreviewRenderer implements SceneListener {
     private Geometry currentGeom;
     private Material currentMaterial;
     private boolean init = false;
-    private final JLabel label;
+    final JLabel label;
     private final ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(5);
+    private boolean previewRequested;
 
     public enum DisplayType {
 
@@ -58,9 +59,9 @@ public class MaterialPreviewRenderer implements SceneListener {
 
     private void init() {
         SceneApplication.getApplication().addSceneListener(this);
-        Sphere sphMesh = new Sphere(32, 32, 2.5f);
-        sphMesh.setTextureMode(Sphere.TextureMode.Projected);
-        sphMesh.updateGeometry(32, 32, 2.5f, false, false);
+        Sphere sphMesh = new Sphere(64, 64, 2.5f);
+        sphMesh.setTextureMode(Sphere.TextureMode.Polar);
+        sphMesh.updateGeometry(64, 64, 2.5f, false, false);
         Logger log = Logger.getLogger(TangentBinormalGenerator.class.getName());
         log.setLevel(Level.SEVERE);
         TangentBinormalGenerator.generate(sphMesh);
@@ -246,6 +247,7 @@ public class MaterialPreviewRenderer implements SceneListener {
                     label.setIcon(icon);
                 }
             });
+            previewRequested = false;
         }
     }
 
@@ -253,4 +255,22 @@ public class MaterialPreviewRenderer implements SceneListener {
         SceneApplication.getApplication().removeSceneListener(this);
         exec.shutdownNow();
     }
+    
+    public boolean isPreviewRequested(){
+        return previewRequested;
+    }
+    
+    public void refreshOnly(){
+        previewRequested = true;
+        SceneApplication.getApplication().enqueue((Callable<Object>) () -> {
+            if (currentGeom.getMaterial() != null) {
+                PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentGeom, label.getWidth(), label.getHeight());
+                request.getCameraRequest().setLocation(new Vector3f(0, 0, 7));
+                request.getCameraRequest().setLookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
+                SceneApplication.getApplication().createPreview(request);
+            }
+            return null;
+        });
+    }
+    
 }

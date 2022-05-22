@@ -38,6 +38,7 @@ import com.jme3.gde.core.editor.nodes.Diagram;
 import com.jme3.gde.core.editor.nodes.NodePanel;
 import com.jme3.gde.core.editor.nodes.Selectable;
 import com.jme3.gde.core.assets.ProjectAssetManager;
+import com.jme3.gde.core.errorreport.ExceptionPanel;
 import com.jme3.gde.materialdefinition.EditableMatDefFile;
 import com.jme3.gde.materialdefinition.MatDefDataObject;
 import com.jme3.gde.materialdefinition.MatDefMetaData;
@@ -80,6 +81,8 @@ import org.netbeans.core.spi.multiview.CloseOperationState;
 import org.netbeans.core.spi.multiview.MultiViewElement;
 import org.netbeans.core.spi.multiview.MultiViewElementCallback;
 import org.netbeans.core.spi.multiview.text.MultiViewEditorElement;
+import org.openide.DialogDescriptor;
+import org.openide.DialogDisplayer;
 import org.openide.awt.UndoRedo;
 import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
@@ -734,15 +737,10 @@ public final class MatDefEditorlElement extends JPanel implements
             }
         } else {
             diagram1.clear();
-            JLabel error = new JLabel("<html><center>Cannot load material definition.<br>Please see the error log and fix it in the text editor</center></html>");
-            error.setForeground(Color.ORANGE);
-            error.setFont(new Font("Arial", Font.BOLD, 24));
-            error.setBounds(0, 0, 400, 100);
-            jScrollPane1.getHorizontalScrollBar().setValue(0);
-            error.setLocation(jScrollPane1.getViewport().getWidth() / 2 - 200, jScrollPane1.getViewport().getHeight() / 2 - 50);
-            diagram1.add(error);
-            diagram1.repaint();
-
+            ExceptionPanel ep = new ExceptionPanel("Please see the error log and fix it in the text editor", false);
+            DialogDescriptor d = new DialogDescriptor(ep, "Cannot load material definition", true, new Object[] { DialogDescriptor.OK_OPTION }, DialogDescriptor.DEFAULT_OPTION, DialogDescriptor.DEFAULT_ALIGN, null, null);
+            DialogDisplayer.getDefault().notifyLater(d);
+            
         }
     }
 }

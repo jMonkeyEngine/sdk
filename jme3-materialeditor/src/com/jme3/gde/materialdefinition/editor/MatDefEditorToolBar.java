@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.ListCellRenderer;
 
 /**
@@ -101,6 +102,7 @@ public class MatDefEditorToolBar extends JPanel {
         jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jButton2 = new javax.swing.JButton();
+        jToggleButton2 = new javax.swing.JToggleButton();
 
         setPreferredSize(new java.awt.Dimension(474, 20));
 
@@ -133,6 +135,17 @@ public class MatDefEditorToolBar extends JPanel {
             }
         });
 
+        org.openide.awt.Mnemonics.setLocalizedText(jToggleButton2, org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.text")); // NOI18N
+        jToggleButton2.setToolTipText(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.toolTipText")); // NOI18N
+        jToggleButton2.setActionCommand(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.actionCommand")); // NOI18N
+        jToggleButton2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jToggleButton2.setPreferredSize(new java.awt.Dimension(99, 24));
+        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -147,7 +160,9 @@ public class MatDefEditorToolBar extends JPanel {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(0, 103, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(99, 99, 99))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,7 +170,8 @@ public class MatDefEditorToolBar extends JPanel {
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(techniqueComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton2))
+                .addComponent(jButton2)
+                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator1)
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -187,16 +203,28 @@ public class MatDefEditorToolBar extends JPanel {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Autolayout button
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        parent.getDiagram().autoLayout();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Toggle continuous updates thread 
+     * @param evt 
+     */
+    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
+        parent.getDiagram().toggleUpdateThread(((JToggleButton)evt.getSource()).isSelected());
+    }//GEN-LAST:event_jToggleButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JComboBox<TechniqueBlock> techniqueComboBox;
     // End of variables declaration//GEN-END:variables
 }

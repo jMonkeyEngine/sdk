@@ -562,6 +562,12 @@ public abstract class Diagram extends JPanel implements MouseListener,
      */
     public abstract void autoLayout();
     
+    /**
+     * This toggles continuous updates for material previews
+     * @param on
+     */
+    public abstract void toggleUpdateThread(boolean on);
+    
     @Override
     public void componentResized(ComponentEvent e) {
         minWidth = e.getComponent().getWidth() - 2;

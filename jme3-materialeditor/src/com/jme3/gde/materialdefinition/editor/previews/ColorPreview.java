@@ -19,8 +19,7 @@ import javax.swing.border.LineBorder;
  */
 public class ColorPreview extends BasePreview implements MouseListener {
 
-    private float[] rgba = new float[4];
-    private String colorString;
+    private final float[] rgba = new float[]{0f, 0f, 0f, 1f};
 
     public ColorPreview(ShaderNodeVariable output) {
         super(output);
@@ -33,12 +32,13 @@ public class ColorPreview extends BasePreview implements MouseListener {
     }
 
     private void populateRGBA(String colorString) {
-        this.colorString = colorString;
-        String[] split = colorString.split(" ");
-        rgba[0] = Float.parseFloat(split[0]);
-        rgba[1] = Float.parseFloat(split[1]);
-        rgba[2] = Float.parseFloat(split[2]);
-        rgba[3] = Float.parseFloat(split[3]);
+        if(colorString != null && !colorString.isEmpty()){
+            String[] split = colorString.split(" ");
+            rgba[0] = Float.parseFloat(split[0]);
+            rgba[1] = Float.parseFloat(split[1]);
+            rgba[2] = Float.parseFloat(split[2]);
+            rgba[3] = Float.parseFloat(split[3]);
+        }
     }
 
     @Override

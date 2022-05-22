@@ -48,13 +48,11 @@ import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.openide.util.WeakListeners;
 
@@ -116,9 +114,9 @@ public class ShaderNodePanel extends NodePanel implements InOut,
     public ShaderNodePanel(ShaderNodeVariable singleOut, NodeType type) {
         super();
         this.type = type;
-        List<ShaderNodeVariable> outputs = new ArrayList<ShaderNodeVariable>();
+        List<ShaderNodeVariable> outputs = new ArrayList<>();
         outputs.add(singleOut);
-        init(new ArrayList<ShaderNodeVariable>(), outputs);
+        init(new ArrayList<>(), outputs);
         setToolbar(new ShaderNodeToolBar(this));
     }
     
