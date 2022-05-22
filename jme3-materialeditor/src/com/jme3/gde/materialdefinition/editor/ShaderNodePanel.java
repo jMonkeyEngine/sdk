@@ -39,11 +39,7 @@ import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
 import com.jme3.gde.core.editor.icons.Icons;
 import com.jme3.gde.materialdefinition.editor.previews.BasePreview;
-import com.jme3.gde.materialdefinition.editor.previews.BoolPreview;
-import com.jme3.gde.materialdefinition.editor.previews.ColorPreview;
-import com.jme3.gde.materialdefinition.editor.previews.FloatPreview;
-import com.jme3.gde.materialdefinition.editor.previews.TexturePreviewSquare;
-import com.jme3.gde.materialdefinition.editor.previews.VecPreview;
+import com.jme3.gde.materialdefinition.editor.previews.PreviewFactory;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
@@ -123,6 +119,8 @@ public class ShaderNodePanel extends NodePanel implements InOut,
     private void init(List<ShaderNodeVariable> inputs, List<ShaderNodeVariable> outputs) {
         if(outputs.size() == 1 && outputs.get(0).getType().startsWith("sampler")){
             setBounds(0, 0, 120, 80);
+        } else if(type == NodeType.WorldParam || type == NodeType.Attribute){
+            setBounds(0, 0, 120, 45);
         } else {
             setBounds(0, 0, 120, 40 + inputs.size() * 20 + outputs.size() * 20);
         }
@@ -144,7 +142,7 @@ public class ShaderNodePanel extends NodePanel implements InOut,
             outputLabels.add(label);
             outputDots.add(dot);
             if(type == NodeType.MatParam){
-                BasePreview c = getPreviewComponent(output);
+                BasePreview c = PreviewFactory.createPreviewComponent(output);
                 
                 if(c != null){
                     c.addPropertyChangeListener(this);
@@ -292,26 +290,4 @@ public class ShaderNodePanel extends NodePanel implements InOut,
         firePropertyChange(ShaderNodeBlock.OUTPUT, block, null);
     }
     
-    private BasePreview getPreviewComponent(ShaderNodeVariable output){
-        switch (output.getType()) {
-            case "bool":
-                return new BoolPreview(output);
-            case "vec4":
-                if(output.getName().toLowerCase().contains("color")){
-                    return new ColorPreview(output);
-                } else {
-                    return new VecPreview(output, 4);
-                }
-            case "vec3":
-                return new VecPreview(output, 3);
-            case "vec2":
-                return new VecPreview(output, 2);
-            case "float":
-                return new FloatPreview(output);
-            case "sampler2D|sampler2DShadow":
-                return new TexturePreviewSquare(output);
-            default:
-                return null;
-        }
-    }
 }

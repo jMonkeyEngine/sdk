@@ -13,7 +13,7 @@ import java.util.List;
 import org.openide.util.WeakListeners;
 
 /**
- *
+ * A ShaderNodeBlock is a shader node in the MatDef file.
  * @author Nehon
  */
 public class ShaderNodesBlock extends UberStatement implements PropertyChangeListener {
@@ -44,6 +44,7 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
         return contents.remove(shaderNodeBlock);
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("order")) {
             sort();
@@ -58,6 +59,9 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
         fire("reorder", null, null);
     }
     
+    /**
+     * Sorts nodes so that they are initialized after their input dependencies.
+     */
     private class NodeComparator implements Comparator<ShaderNodeBlock>{
 
         @Override
