@@ -8,6 +8,7 @@ import com.jme3.util.blockparser.Statement;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import org.openide.util.WeakListeners;
 
@@ -51,9 +52,31 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
     
     public void sort() {
         List<ShaderNodeBlock> list = getShaderNodes();
-        Collections.sort(list);        
+        Collections.sort(list, new NodeComparator());        
         contents.clear();
         contents.addAll(list);
         fire("reorder", null, null);
+    }
+    
+    private class NodeComparator implements Comparator<ShaderNodeBlock>{
+
+        @Override
+        public int compare(ShaderNodeBlock o1, ShaderNodeBlock o2) {
+            if(o1.name.equals(o2.name)){
+                return 0;
+            }
+            for(String s : o1.inputNodes){
+                if(s.contains(o2.name)){
+                    return 1;
+                }
+            }
+            for(String s : o2.inputNodes){
+                if(s.contains(o1.name)){
+                    return -1;
+                }
+            }
+            return 0;
+        }
+        
     }
 }
