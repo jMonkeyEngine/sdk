@@ -213,7 +213,7 @@ public class ShaderNodePanel extends NodePanel implements InOut,
                 break;
             case Attribute:
                 header.setIcon(Icons.attrib);
-                name = "Attribute";
+                name = "Attr";
                 setTitle(outputLabels.get(0).getText() ); // sets text _and_ tooltip the same
                 break;
             case WorldParam:
