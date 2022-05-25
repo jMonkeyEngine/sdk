@@ -68,6 +68,22 @@ public class SceneToolController extends AbstractAppState {
     protected Material blueMat;
     protected AbstractCameraController camController;
 
+    private SceneToolControllerListener toolListener;
+    
+    /**
+     * Expandable interface to send callbacks to (primarily) gui. 
+     */
+    public interface SceneToolControllerListener {
+        
+        /**
+         * Called when cursor's location changes.
+         *
+         * @param location location for cursor
+         */
+        public void onSetCursorLocation(Vector3f location);
+    }
+    
+
     @SuppressWarnings("LeakingThisInConstructor")
     public SceneToolController(AssetManager manager) {
         this.toolsNode = new Node("ToolsNode");
@@ -193,6 +209,9 @@ public class SceneToolController extends AbstractAppState {
         if (camController != null) {
             camController.doSetCamFocus(location);
         }
+        if (toolListener != null) {
+            toolListener.onSetCursorLocation(location);
+    }
     }
 
     public void snapCursorToSelection() {
@@ -427,5 +446,14 @@ public class SceneToolController extends AbstractAppState {
 
     public Spatial getSelectionShape() {
         return selectionShape;
+    }
+    
+    /**
+     * Set the listener to receive callbacks from this class.
+     * 
+     * @param listener listener
+     */
+    public void setToolListener(final SceneToolControllerListener listener) {
+        this.toolListener = listener;
     }
 }

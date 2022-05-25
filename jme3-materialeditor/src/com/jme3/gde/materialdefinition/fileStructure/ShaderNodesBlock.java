@@ -103,7 +103,7 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
 
         private ShaderNodeBlock findAncestorNode(String name) {
             for (ShaderNodeBlock node : list) {
-                if (node.name.contains(name)) {
+                if (node.name.equals(name)) {
                     return node;
                 }
             }

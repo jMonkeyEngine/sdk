@@ -133,9 +133,6 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
                         bus.dispatchEvent(me);
                     }
                 }
-//                if (!e.isConsumed()){
-//                    setLocation(e.getX(), e.getY());
-//                }
             }
         } else {
             super.mouseDragged(e); // Handle all the UI Stuff
@@ -505,6 +502,10 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
         }
     }
 
+    /**
+     * Class to request updates for backdrop panel from SceneApplication.
+     * It will only send request if the previous request has been handled.
+     */
     private final class UpdateBackgroundRunnable implements Runnable{
 
         private boolean running;

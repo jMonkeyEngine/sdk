@@ -11,7 +11,6 @@
 package com.jme3.gde.materials.multiview.widgets;
 
 import com.jme3.gde.materials.MaterialProperty;
-import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -22,7 +21,6 @@ public class FloatPanel extends MaterialPropertyWidget {
     /** Creates new form NumberPanel */
     public FloatPanel() {
         initComponents();
-        setBorder(new EmptyBorder(0,0,0,0));
         jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(0.1f)));
     }
 
