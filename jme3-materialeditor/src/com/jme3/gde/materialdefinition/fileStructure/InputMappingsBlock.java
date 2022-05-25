@@ -4,10 +4,7 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure;
 
-import com.jme3.gde.materialdefinition.fileStructure.*;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
-import com.jme3.gde.materialdefinition.fileStructure.leaves.MatParamBlock;
-import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
 import com.jme3.util.blockparser.Statement;
 import java.util.List;
 
