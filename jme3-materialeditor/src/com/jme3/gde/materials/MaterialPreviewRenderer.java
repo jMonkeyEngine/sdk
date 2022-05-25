@@ -42,7 +42,7 @@ public class MaterialPreviewRenderer implements SceneListener {
     private Geometry currentGeom;
     private Material currentMaterial;
     private boolean init = false;
-    final JLabel label;
+    private final JLabel label;
     private final ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(5);
     private boolean previewRequested;
 

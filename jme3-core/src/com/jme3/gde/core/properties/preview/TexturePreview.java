@@ -57,7 +57,7 @@ import javax.swing.JLabel;
  */
 public class TexturePreview implements SceneListener {
 
-    final ProjectAssetManager assetManager;
+    private final ProjectAssetManager assetManager;
     private JComponent picPreview;
     private final Geometry quad;
     private final Geometry quad3D;
@@ -176,5 +176,4 @@ public class TexturePreview implements SceneListener {
             }
         });
     }
-
 }
