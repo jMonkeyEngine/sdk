@@ -4,7 +4,6 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure;
 
-import com.jme3.gde.materialdefinition.fileStructure.leaves.DefineBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.FragmentShaderFileBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.LightModeBlock;
@@ -114,7 +113,7 @@ public class TechniqueBlock extends UberStatement {
             return getWorldParameters().getWorldParams();
         else {
             logger.log(Level.WARNING, "Unable to build ShaderNodes: Could not find any WorldParameters. Most likely the technique {0} is broken.", line);
-            return new ArrayList<WorldParamBlock>();
+            return new ArrayList<>();
         }
     }
 
@@ -192,7 +191,7 @@ public class TechniqueBlock extends UberStatement {
     }
 
     public List<ShaderNodeBlock> getShaderNodes() {
-        List<ShaderNodeBlock> list = new ArrayList<ShaderNodeBlock>();
+        List<ShaderNodeBlock> list = new ArrayList<>();
         
         VertexShaderNodesBlock vert_block = getBlock(VertexShaderNodesBlock.class);
         if (vert_block == null)

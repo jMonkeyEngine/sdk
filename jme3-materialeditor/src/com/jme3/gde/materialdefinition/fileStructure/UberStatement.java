@@ -13,7 +13,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A statement that will be enclosed with curly braces
+ * A statement that will be enclosed with curly braces.
+ * 
  * @author Nehon
  */
 @SuppressWarnings({"unchecked", "rawtypes"})

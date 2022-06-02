@@ -12,13 +12,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A statement that will not be decorated
+ * A statement that will not be decorated.
+ * 
  * @author Nehon
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class LeafStatement extends Statement {
 
-    private List listeners = Collections.synchronizedList(new LinkedList());
+    private final List listeners = Collections.synchronizedList(new LinkedList());
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
         listeners.add(pcl);
@@ -31,8 +32,8 @@ public class LeafStatement extends Statement {
     protected void fire(String propertyName, Object old, Object nue) {
         //Passing 0 below on purpose, so you only synchronize for one atomic call:
         PropertyChangeListener[] pcls = (PropertyChangeListener[]) listeners.toArray(new PropertyChangeListener[0]);
-        for (int i = 0; i < pcls.length; i++) {
-            pcls[i].propertyChange(new PropertyChangeEvent(this, propertyName, old, nue));
+        for (PropertyChangeListener pcl : pcls) {
+            pcl.propertyChange(new PropertyChangeEvent(this, propertyName, old, nue));
         }
     }
 
