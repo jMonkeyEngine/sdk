@@ -58,6 +58,7 @@ import com.jme3.material.Material;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;
 import com.jme3.shader.ShaderNodeVariable;
+import com.jme3.shader.ShaderUtils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -135,7 +136,6 @@ public final class MatDefEditorlElement extends JPanel implements
         if (!file.isLoaded()) {
             throw new IllegalArgumentException("Cannot build MatDefEditorlElement: Failed at loading the EditableMatDefFile");
         }
-        
         reload(file, lkp);        
         toolbar.setParent(this);
         toolbar.addTechnique(lkp.lookup(MatDefBlock.class).getTechniques());
@@ -164,7 +164,6 @@ public final class MatDefEditorlElement extends JPanel implements
         initData(technique, manager, vertexGlobals, fragmentGlobals, attributes, matDef, uniforms);
 
         int i = 0;
-        
         for (ShaderNodeBlock sn : technique.getShaderNodes()) {
             ShaderNodeDefinition def = MaterialUtils.loadShaderNodeDefinition(sn, manager);
             NodePanel np = new ShaderNodePanel(sn, def);

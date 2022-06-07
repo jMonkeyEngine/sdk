@@ -62,6 +62,7 @@ import javax.swing.border.TitledBorder;
 /**
  * The Diagram is the main canvas where all nodes {@link NodePanel} and
  * their connections {@link ConnectionEndpoint} {@link Connection} are added onto.
+ * 
  * @author Nehon
  */
 public abstract class Diagram extends JPanel implements MouseListener, 

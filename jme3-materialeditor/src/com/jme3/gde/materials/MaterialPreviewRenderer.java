@@ -31,7 +31,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- *
+ * Handles rendering of materials in preview widgets of Material and Shader Node editor.
+ * 
  * @author Nehon
  */
 public class MaterialPreviewRenderer implements SceneListener {

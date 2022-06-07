@@ -69,6 +69,7 @@ import javax.swing.SwingUtilities;
 /**
  * The Diagram is the main canvas where all nodes {@link DraggablePanel} and
  * their connections {@link ConnectionEndpoint} {@link Connection} are added onto.
+ * 
  * @author Nehon
  */
 public class ShaderNodeDiagram extends Diagram implements ComponentListener {
@@ -76,7 +77,7 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
     protected List<ShaderOutBusPanel> outBuses = new ArrayList<ShaderOutBusPanel>();
     private String currentTechniqueName;
     private final BackdropPanel backDrop = new BackdropPanel();
-    private final Point pp = new Point();
+    private Thread backgroundThread;
     private UpdateBackgroundRunnable backgroundUpdate = new UpdateBackgroundRunnable();
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -494,24 +495,28 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
 
     @Override
     public void toggleUpdateThread(boolean on) {
-        if(on && !backgroundUpdate.isRunning()){
+        if (on && !backgroundUpdate.isRunning()) {
             backgroundUpdate.setRunning(true);
-            new Thread(backgroundUpdate).start();
-        } else if (!on && backgroundUpdate.isRunning()){
-            backgroundUpdate.setRunning(false);
+            backgroundThread = new Thread(backgroundUpdate);
+            backgroundThread.setDaemon(true);
+            backgroundThread.start();
+        } else if (!on && backgroundUpdate.isRunning()) {
+            try {
+                backgroundUpdate.setRunning(false);
+                backgroundThread.join();
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
-    /**
-     * Class to request updates for backdrop panel from SceneApplication.
-     * It will only send request if the previous request has been handled.
-     */
-    private final class UpdateBackgroundRunnable implements Runnable{
+    private final class UpdateBackgroundRunnable implements Runnable {
 
         private boolean running;
+
         @Override
         public void run() {
-            while(running) {
+            while (running) {
                 if (backDrop.isVisible() && !backDrop.getRenderer().isPreviewRequested()) {
                     backDrop.refreshOnly();
                 }
@@ -521,17 +526,17 @@ public class ShaderNodeDiagram extends Diagram implements ComponentListener {
                     running = false;
                     ExceptionUtils.caughtException(ex, "Material update thread caught an exception and shut down.");
                 }
-                if(!ShaderNodeDiagram.this.isShowing()){
+                if (!ShaderNodeDiagram.this.isShowing()) {
                     running = false;
                 }
             }
             Logger.getLogger(ShaderNodeDiagram.class.getName()).log(Level.INFO, "UpdateThread stopped");
         }
-        
+
         public boolean isRunning() {
             return running;
         }
-        
+
         public void setRunning(boolean on) {
             this.running = on;
         }

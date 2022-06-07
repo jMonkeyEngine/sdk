@@ -77,7 +77,9 @@ import org.openide.util.Lookup;
 import org.openide.util.WeakListeners;
 
 /**
- *
+ * This is the MatDef representation in the editor. It will update the file with
+ * any changes.
+ * 
  * @author Nehon
  */
 public class EditableMatDefFile {
@@ -183,7 +185,7 @@ public class EditableMatDefFile {
         }
     }
 
-    protected void registerListener(Statement sta) {
+    void registerListener(Statement sta) {
         if (sta instanceof UberStatement) {
             ((UberStatement) sta).addPropertyChangeListener(WeakListeners.propertyChange(changeListener, ((UberStatement) sta)));
         } else if (sta instanceof LeafStatement) {

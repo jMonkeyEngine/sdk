@@ -135,11 +135,18 @@ public class MatDefEditorToolBar extends JPanel {
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jToggleButton2, org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.text")); // NOI18N
-        jToggleButton2.setToolTipText(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.toolTipText")); // NOI18N
-        jToggleButton2.setActionCommand(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jToggleButton2.actionCommand")); // NOI18N
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/repeat.png"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jToggleButton2, org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.text")); // NOI18N
+        jToggleButton2.setToolTipText(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.toolTipText")); // NOI18N
+        jToggleButton2.setActionCommand(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.actionCommand")); // NOI18N
         jToggleButton2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jToggleButton2.setPreferredSize(new java.awt.Dimension(99, 24));
+        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton2.setIconTextGap(0);
+        jToggleButton2.setMargin(new java.awt.Insets(2, 14, 2, 18));
+        jToggleButton2.setMaximumSize(new java.awt.Dimension(25, 24));
+        jToggleButton2.setMinimumSize(new java.awt.Dimension(25, 24));
+        jToggleButton2.setName("toggleLiveUpdates"); // NOI18N
+        jToggleButton2.setPreferredSize(new java.awt.Dimension(25, 24));
         jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton2ActionPerformed(evt);
@@ -161,7 +168,7 @@ public class MatDefEditorToolBar extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(99, 99, 99))
         );
         layout.setVerticalGroup(
