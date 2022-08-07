@@ -23,7 +23,7 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
         super(lineNumber, line);
         
     }
-    
+
     public ShaderNodesBlock(Statement sta) {
         this(sta.getLineNumber(), sta.getLine());
         for (Statement statement : sta.getContents()) {
@@ -32,16 +32,16 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
             addStatement(b);
         }
     }
-    
-    public List<ShaderNodeBlock> getShaderNodes() {        
+
+    public List<ShaderNodeBlock> getShaderNodes() {
         return getBlocks(ShaderNodeBlock.class);
     }
-    
+
     public void addShaderNode(ShaderNodeBlock shaderNodeBlock) {
-        addStatement(shaderNodeBlock);      
+        addStatement(shaderNodeBlock);
         shaderNodeBlock.addPropertyChangeListener(WeakListeners.propertyChange(this, shaderNodeBlock));
     }
-    
+
     public boolean removeShaderNode(ShaderNodeBlock shaderNodeBlock) {
         return contents.remove(shaderNodeBlock);
     }
@@ -50,9 +50,9 @@ public class ShaderNodesBlock extends UberStatement implements PropertyChangeLis
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(ShaderNodeBlock.ADD_MAPPING) || evt.getPropertyName().equals("order")) {
             sort();
-        }        
+        }
     }
-    
+
     public void sort() {
         List<ShaderNodeBlock> list = getShaderNodes();
         int passes = 0;
