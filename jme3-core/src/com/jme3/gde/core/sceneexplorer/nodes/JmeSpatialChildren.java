@@ -83,11 +83,15 @@ public class JmeSpatialChildren extends Children.Keys<Object> {
         setKeys(createKeys());
         refresh();
         
-        for (Node n : nodes) { // TODO: Why is nodes always empty? What about the Children's Children?
-            if (n instanceof AbstractSceneExplorerNode) {
-                ((AbstractSceneExplorerNode)n).refresh(immediate);
+        if (nodes != null) { //Added a null check just to make sure the UI don't crash
+            
+            for (Node n : nodes) { // TODO: Why is nodes always empty? What about the Children's Children?
+                if (n instanceof AbstractSceneExplorerNode) {
+                    ((AbstractSceneExplorerNode)n).refresh(immediate);
+                }
             }
         }
+
     }
 
     public void setReadOnly(boolean cookie) {

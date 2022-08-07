@@ -3,7 +3,7 @@ import groovy.xml.MarkupBuilder
 import java.util.zip.ZipFile
 
 plugins {
-    id "de.undercouch.download" version "3.4.3"
+    id "de.undercouch.download" version "5.1.0"
 }
 
 apply from: 'gradle/libs/digest.gradle'
@@ -35,29 +35,29 @@ dependencies {
     corelibs dep("com.badlogicgames.gdx:gdx-ai:1.8.1", true, true)
     corelibs dep("javax.help:javahelp:2.0.05", false, false)
 
-    corelibs dep("org.jmonkeyengine:jme3-core:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-desktop:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-lwjgl:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-effects:3.4.0-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-core:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-desktop:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-lwjgl:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-effects:3.4.1-stable", false, false)
     corelibs dep("org.jmonkeyengine:jme3-blender:3.3.2-stable", false, false) // Pin Pointed until jme3-blender has a dedicated release or support is phased out.
     optlibs dep("com.github.stephengold:Minie:4.6.0", false, false) // replacement for bullet-native
     corelibs dep(fileTree("lib"), false, false)
-    corelibs dep("org.jmonkeyengine:jme3-jogg:3.4.0-stable", true, true)
+    corelibs dep("org.jmonkeyengine:jme3-jogg:3.4.1-stable", true, true)
 
-    corelibs dep("org.jmonkeyengine:jme3-networking:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-niftygui:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-plugins:3.4.0-stable", false, false)
-    corelibs dep("org.jmonkeyengine:jme3-terrain:3.4.0-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-networking:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-niftygui:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-plugins:3.4.1-stable", false, false)
+    corelibs dep("org.jmonkeyengine:jme3-terrain:3.4.1-stable", false, false)
 
-    optlibs dep("org.jmonkeyengine:jme3-jbullet:3.4.0-stable", false, false)
-    optlibs dep("org.jmonkeyengine:jme3-android:3.4.0-stable", false, false)
-    optlibs dep("org.jmonkeyengine:jme3-ios:3.4.0-stable", false, false)
-    optlibs dep("org.jmonkeyengine:jme3-android-native:3.4.0-stable", false, false)
-    optlibs dep("org.jmonkeyengine:jme3-lwjgl3:3.4.0-stable", false, false)
+    optlibs dep("org.jmonkeyengine:jme3-jbullet:3.4.1-stable", false, false)
+    optlibs dep("org.jmonkeyengine:jme3-android:3.4.1-stable", false, false)
+    optlibs dep("org.jmonkeyengine:jme3-ios:3.4.1-stable", false, false)
+    optlibs dep("org.jmonkeyengine:jme3-android-native:3.4.1-stable", false, false)
+    optlibs dep("org.jmonkeyengine:jme3-lwjgl3:3.4.1-stable", false, false)
     optlibs dep("com.github.stephengold:Heart:7.1.0", false, false)
     optlibs dep("com.github.stephengold:Wes:0.6.7", false, false)
-    testdatalibs dep("org.jmonkeyengine:jme3-testdata:3.4.0-stable", false, false)
-    examplelibs dep("org.jmonkeyengine:jme3-examples:3.4.0-stable", false, false)
+    testdatalibs dep("org.jmonkeyengine:jme3-testdata:3.4.1-stable", false, false)
+    examplelibs dep("org.jmonkeyengine:jme3-examples:3.4.1-stable", false, false)
 }
 
 def dep(coords, javadoc = false, sources = false) {
@@ -82,7 +82,7 @@ task checkPlatformConfig {
              * def f = file("netbeans.zip")
              * new URL(netbeansUrl).withInputStream{ i -> f.withOutputStream{ it << i }}
              */
-            download {
+            download.run {
                 src netbeansUrl
                 dest "netbeans.zip"
                 overwrite false // however if overwrite matters the build failed anyway

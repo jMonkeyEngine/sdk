@@ -97,7 +97,9 @@ public class JmeMesh extends AbstractSceneExplorerNode{
 
         set.put(makeProperty(obj, int.class, "getId", "setId", "Id"));
         set.put(makeProperty(obj, Mesh.Mode.class, "getMode", "setMode", "Mode"));
-        set.put(makeProperty(obj, float.class, "getPointSize", "setPointSize", "Point Size"));
+        //Removed below property because it caused a nullpointer exception 
+        //because the getter and setter does not exist anymore, it was deprecated
+        //set.put(makeProperty(obj, float.class, "getPointSize", "setPointSize", "Point Size"));
 
         sheet.put(set);
         return sheet;
