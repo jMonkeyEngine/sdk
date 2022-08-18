@@ -2,7 +2,9 @@
 name: Release Builds
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - feature/decomission-travis
 jobs:
   build:
     runs-on: ubuntu-latest
