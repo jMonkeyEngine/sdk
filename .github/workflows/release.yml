@@ -19,7 +19,7 @@ jobs:
     - name: Build the SDK
       run: ./gradlew buildSdk
     - name: Build the JDKs
-      run: sh download-jdks.sh
+      run: bash download-jdks.sh
       working-directory: jdks
     - name: Override Harness (custom icon)
       run: ./gradlew overrideHarness
