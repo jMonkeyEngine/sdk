@@ -2,9 +2,8 @@
 name: Release Builds
 on:
   push:
-    branches:
-      - master
-      - feature/decomission-travis
+    tags:
+      - "*"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,5 +30,11 @@ jobs:
         BUILD_OTHER: true
     - name: Fix Platform Independent Build
       run: ./gradlew fixPlatformIndependent
-    - name: Debug List all Artifacts
-      run: ls -lsh dist/jmonkeyplatform*.*
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/jmonkeyplatform*.*
+        tag_name:  ${{ github.ref }}
+        name: Release ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
