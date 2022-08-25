@@ -57,7 +57,7 @@ dependencies {
     optlibs dep("com.github.stephengold:Heart:7.1.0", false, false)
     optlibs dep("com.github.stephengold:Wes:0.6.7", false, false)
     testdatalibs dep("org.jmonkeyengine:jme3-testdata:3.4.1-stable", false, false)
-    examplelibs dep("org.jmonkeyengine:jme3-examples:3.4.1-stable", false, false)
+    examplelibs dep("org.jmonkeyengine:jme3-examples:3.4.1-stable", false, true)
 }
 
 def dep(coords, javadoc = false, sources = false) {

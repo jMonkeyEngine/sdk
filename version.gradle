@@ -137,8 +137,8 @@ task configureVersionInfo {
         jmeShortGitHash = head.abbreviatedId
         jmeBranchName = grgit.branch.current.name
         
-        if (System.env.TRAVIS_TAG != null) {
-            jmeGitTag = System.env.TRAVIS_TAG
+        if (project.hasProperty("tag_name")) {
+            jmeGitTag = project.getProperty("tag_name")
         } else {
             jmeGitTag = grgit.tag.list().find { it.commit == head }
         }
