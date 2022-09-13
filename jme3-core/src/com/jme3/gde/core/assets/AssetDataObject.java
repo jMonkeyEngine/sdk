@@ -35,6 +35,7 @@ import com.jme3.asset.AssetEventListener;
 import com.jme3.asset.AssetKey;
 import com.jme3.export.Savable;
 import com.jme3.export.binary.BinaryExporter;
+import com.jme3.gde.core.icons.IconList;
 import com.jme3.gde.core.scene.SceneApplication;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -138,7 +139,7 @@ public class AssetDataObject extends MultiDataObject {
     @Override
     protected Node createNodeDelegate() {
         AssetDataNode node = new AssetDataNode(this, Children.LEAF, new ProxyLookup(getCookieSet().getLookup(), contentLookup));
-        node.setIconBaseWithExtension("com/jme3/gde/core/icons/model.gif");
+        node.setIconBaseWithExtension(IconList.CARDBOARD_BOX_CLOSED);
         return node;
     }
 

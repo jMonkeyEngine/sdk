@@ -58,7 +58,7 @@ public final class SceneViewerTopComponent extends TopComponent {
     /**
      * path to the icon used by the component and its open action
      */
-    static final String ICON_PATH = "com/jme3/gde/core/sceneviewer/jme-logo.png";
+    static final String ICON_PATH = IconList.JME_LOGO;
     private static final String PREFERRED_ID = "SceneViewerTopComponent";
     private SceneApplication app;
     private HelpCtx helpContext = new HelpCtx("com.jme3.gde.core.sceneviewer");

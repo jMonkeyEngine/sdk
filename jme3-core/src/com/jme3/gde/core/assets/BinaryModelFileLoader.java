@@ -31,6 +31,7 @@
  */
 package com.jme3.gde.core.assets;
 
+import com.jme3.gde.core.icons.IconList;
 import java.io.IOException;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -54,7 +55,7 @@ import org.openide.loaders.MultiFileLoader;
         mimeType = "application/jme3model",
         extension = {"j3o", "j3s", "j3odata"}
 )
-@DataObject.Registration(iconBase = "com/jme3/gde/core/icons/model.gif", displayName = "jME3 Model", mimeType = "application/jme3model")
+@DataObject.Registration(iconBase = IconList.CARDBOARD_BOX_CLOSED, displayName = "jME3 Model", mimeType = "application/jme3model")
 @ActionReferences({
     @ActionReference(id = @ActionID(category = "Edit", id = "org.openide.actions.CutAction"), path = "Loaders/application/jme3model/Actions", position = 200, separatorBefore = 100),
     @ActionReference(id = @ActionID(category = "Edit", id = "org.openide.actions.CopyAction"), path = "Loaders/application/jme3model/Actions", position = 300, separatorAfter = 400),
