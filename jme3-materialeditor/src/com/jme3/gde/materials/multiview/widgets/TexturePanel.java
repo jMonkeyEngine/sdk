@@ -16,6 +16,7 @@ import com.jme3.gde.core.properties.TexturePropertyEditor;
 import com.jme3.gde.core.properties.preview.TexturePreview;
 import com.jme3.gde.materials.MaterialProperty;
 import com.jme3.gde.materials.multiview.MaterialEditorTopComponent;
+import com.jme3.gde.materials.multiview.widgets.icons.Icons;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -138,7 +139,7 @@ public class TexturePanel extends MaterialPropertyWidget {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materials/multiview/widgets/icons/picture_add.png"))); // NOI18N
+        jButton1.setIcon(Icons.textureAdd);
         jButton1.setText(org.openide.util.NbBundle.getMessage(TexturePanel.class, "TexturePanel.jButton1.text")); // NOI18N
         jButton1.setFocusable(false);
         jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -170,7 +171,7 @@ public class TexturePanel extends MaterialPropertyWidget {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materials/multiview/widgets/icons/picture_delete.png"))); // NOI18N
+        jButton2.setIcon(Icons.textureRemove);
         jButton2.setText(org.openide.util.NbBundle.getMessage(TexturePanel.class, "TexturePanel.jButton2.text")); // NOI18N
         jButton2.setToolTipText(org.openide.util.NbBundle.getMessage(TexturePanel.class, "TexturePanel.jButton2.toolTipText")); // NOI18N
         jButton2.setFocusable(false);
@@ -198,7 +199,7 @@ public class TexturePanel extends MaterialPropertyWidget {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(texturePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -221,8 +222,8 @@ public class TexturePanel extends MaterialPropertyWidget {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
                     .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -231,9 +232,9 @@ public class TexturePanel extends MaterialPropertyWidget {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 30, Short.MAX_VALUE)
+                    .addGap(0, 55, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 15, Short.MAX_VALUE)))
+                    .addGap(0, 40, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 

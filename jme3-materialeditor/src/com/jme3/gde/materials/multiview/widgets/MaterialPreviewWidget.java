@@ -13,6 +13,7 @@ package com.jme3.gde.materials.multiview.widgets;
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.core.scene.SceneRequest;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
+import com.jme3.gde.materials.multiview.widgets.icons.Icons;
 
 /**
  *
@@ -78,15 +79,21 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
+        jToolBar1.setMaximumSize(new java.awt.Dimension(80, 40));
+        jToolBar1.setMinimumSize(new java.awt.Dimension(80, 40));
+        jToolBar1.setPreferredSize(new java.awt.Dimension(80, 40));
 
         toggleButtonGroup.add(sphereButton);
-        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materials/multiview/widgets/icons/sphere.png"))); // NOI18N
+        sphereButton.setIcon(Icons.sphere);
         sphereButton.setSelected(true);
         sphereButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.text")); // NOI18N
         sphereButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.toolTipText")); // NOI18N
         sphereButton.setFocusable(false);
         sphereButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         sphereButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sphereButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        sphereButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        sphereButton.setPreferredSize(new java.awt.Dimension(40, 40));
         sphereButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         sphereButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,11 +103,14 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         jToolBar1.add(sphereButton);
 
         toggleButtonGroup.add(cubeButton);
-        cubeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materials/multiview/widgets/icons/box.png"))); // NOI18N
+        cubeButton.setIcon(Icons.cube);
         cubeButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.cubeButton.text")); // NOI18N
         cubeButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.cubeButton.toolTipText")); // NOI18N
         cubeButton.setFocusable(false);
         cubeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        cubeButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        cubeButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        cubeButton.setPreferredSize(new java.awt.Dimension(40, 40));
         cubeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         cubeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -110,12 +120,15 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         jToolBar1.add(cubeButton);
 
         toggleButtonGroup.add(planeButton);
-        planeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materials/multiview/widgets/icons/plane.png"))); // NOI18N
+        planeButton.setIcon(Icons.plane);
         planeButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.planeButton.text")); // NOI18N
         planeButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.planeButton.toolTipText")); // NOI18N
         planeButton.setFocusable(false);
         planeButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         planeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        planeButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        planeButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        planeButton.setPreferredSize(new java.awt.Dimension(40, 40));
         planeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         planeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -128,13 +141,13 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+            .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
