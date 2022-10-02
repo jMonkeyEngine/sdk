@@ -68,9 +68,9 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         toggleButtonGroup = new javax.swing.ButtonGroup();
         previewLabel = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
-        sphereButton = new javax.swing.JToggleButton();
         cubeButton = new javax.swing.JToggleButton();
         planeButton = new javax.swing.JToggleButton();
+        sphereButton = new javax.swing.JToggleButton();
 
         previewLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         previewLabel.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.previewLabel.text")); // NOI18N
@@ -78,29 +78,11 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         previewLabel.setMinimumSize(new java.awt.Dimension(120, 120));
 
         jToolBar1.setFloatable(false);
+        jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.setRollover(true);
-        jToolBar1.setMaximumSize(new java.awt.Dimension(80, 40));
-        jToolBar1.setMinimumSize(new java.awt.Dimension(80, 40));
-        jToolBar1.setPreferredSize(new java.awt.Dimension(80, 40));
-
-        toggleButtonGroup.add(sphereButton);
-        sphereButton.setIcon(Icons.sphere);
-        sphereButton.setSelected(true);
-        sphereButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.text")); // NOI18N
-        sphereButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.toolTipText")); // NOI18N
-        sphereButton.setFocusable(false);
-        sphereButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        sphereButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        sphereButton.setMaximumSize(new java.awt.Dimension(40, 40));
-        sphereButton.setMinimumSize(new java.awt.Dimension(40, 40));
-        sphereButton.setPreferredSize(new java.awt.Dimension(40, 40));
-        sphereButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        sphereButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sphereButtonActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(sphereButton);
+        jToolBar1.setMaximumSize(new java.awt.Dimension(80, 50));
+        jToolBar1.setMinimumSize(new java.awt.Dimension(80, 50));
+        jToolBar1.setPreferredSize(new java.awt.Dimension(80, 50));
 
         toggleButtonGroup.add(cubeButton);
         cubeButton.setIcon(Icons.cube);
@@ -137,19 +119,40 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         });
         jToolBar1.add(planeButton);
 
+        toggleButtonGroup.add(sphereButton);
+        sphereButton.setIcon(Icons.sphere);
+        sphereButton.setSelected(true);
+        sphereButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.text")); // NOI18N
+        sphereButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.sphereButton.toolTipText")); // NOI18N
+        sphereButton.setFocusable(false);
+        sphereButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        sphereButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sphereButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        sphereButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        sphereButton.setPreferredSize(new java.awt.Dimension(40, 40));
+        sphereButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        sphereButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sphereButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(sphereButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 

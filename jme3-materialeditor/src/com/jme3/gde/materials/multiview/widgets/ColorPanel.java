@@ -46,7 +46,6 @@ public class ColorPanel extends MaterialPropertyWidget {
         aLabel = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         colorPreview = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
 
         setMaximumSize(new java.awt.Dimension(32767, 35));
@@ -54,6 +53,8 @@ public class ColorPanel extends MaterialPropertyWidget {
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(ColorPanel.class, "ColorPanel.jLabel1.text")); // NOI18N
         jLabel1.setPreferredSize(new java.awt.Dimension(100, 16));
+
+        jPanel2.setPreferredSize(new java.awt.Dimension(377, 40));
 
         rLabel.setText(org.openide.util.NbBundle.getMessage(ColorPanel.class, "ColorPanel.rLabel.text")); // NOI18N
         rLabel.setMaximumSize(new java.awt.Dimension(110, 2147483647));
@@ -119,7 +120,6 @@ public class ColorPanel extends MaterialPropertyWidget {
         aLabel.setText(org.openide.util.NbBundle.getMessage(ColorPanel.class, "ColorPanel.aLabel.text")); // NOI18N
         aLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         aLabel.setMaximumSize(new java.awt.Dimension(110, 2147483647));
-        aLabel.setNextFocusableComponent(jButton1);
         aLabel.setPreferredSize(new java.awt.Dimension(110, 28));
         aLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,14 +142,18 @@ public class ColorPanel extends MaterialPropertyWidget {
         colorPreview.setText(org.openide.util.NbBundle.getMessage(ColorPanel.class, "ColorPanel.colorPreview.text")); // NOI18N
         colorPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
         colorPreview.setOpaque(true);
+        colorPreview.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                colorPreviewMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(colorPreview, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
+                .addComponent(colorPreview, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -169,60 +173,97 @@ public class ColorPanel extends MaterialPropertyWidget {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-            .addComponent(bLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel3)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(jLabel4)
                 .addComponent(jLabel5)
-                .addComponent(jLabel2)
-                .addComponent(rLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
-            .addComponent(colorPreview, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
-            .addComponent(aLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                .addComponent(rLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(gLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(aLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(colorPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        jButton1.setIcon(Icons.selectColor);
-        jButton1.setText(org.openide.util.NbBundle.getMessage(ColorPanel.class, "ColorPanel.jButton1.text")); // NOI18N
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setMaximumSize(new java.awt.Dimension(43, 15));
-        jButton1.setMinimumSize(new java.awt.Dimension(43, 15));
-        jButton1.setPreferredSize(new java.awt.Dimension(43, 15));
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(4, 4, 4)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 9, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void aLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_aLabelFocusLost
+        updateValue();
+    }//GEN-LAST:event_aLabelFocusLost
+
+    private void aLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_aLabelFocusGained
+        aLabel.setSelectionStart(0);
+        aLabel.setSelectionEnd(aLabel.getText().length());
+    }//GEN-LAST:event_aLabelFocusGained
+
+    private void aLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aLabeltextChanged
+        updateValue();
+    }//GEN-LAST:event_aLabeltextChanged
+
+    private void bLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bLabelFocusLost
+        updateValue();
+    }//GEN-LAST:event_bLabelFocusLost
+
+    private void bLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bLabelFocusGained
+        bLabel.setSelectionStart(0);
+        bLabel.setSelectionEnd(bLabel.getText().length());
+    }//GEN-LAST:event_bLabelFocusGained
+
+    private void bLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLabeltextChanged
+        updateValue();
+    }//GEN-LAST:event_bLabeltextChanged
+
+    private void gLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gLabelFocusLost
+        updateValue();
+    }//GEN-LAST:event_gLabelFocusLost
+
+    private void gLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gLabelFocusGained
+        gLabel.setSelectionStart(0);
+        gLabel.setSelectionEnd(gLabel.getText().length());
+    }//GEN-LAST:event_gLabelFocusGained
+
+    private void gLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gLabeltextChanged
+        updateValue();
+    }//GEN-LAST:event_gLabeltextChanged
+
+    private void rLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rLabelFocusLost
+        updateValue();
+    }//GEN-LAST:event_rLabelFocusLost
+
+    private void rLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rLabelFocusGained
+        rLabel.setSelectionStart(0);
+        rLabel.setSelectionEnd(rLabel.getText().length());
+    }//GEN-LAST:event_rLabelFocusGained
+
+    private void textChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textChanged
+        updateValue();
+    }//GEN-LAST:event_textChanged
+
+    private void colorPreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_colorPreviewMouseClicked
         ColorRGBADialog dialog = new ColorRGBADialog(new JFrame(), true);
         dialog.setLocationRelativeTo(null);
         dialog.setColor(getColor(rLabel.getText(), gLabel.getText(), bLabel.getText(), aLabel.getText()));
@@ -239,61 +280,8 @@ public class ColorPanel extends MaterialPropertyWidget {
             property.setValue(rLabel.getText() + " " + gLabel.getText() + " " + bLabel.getText() + " " + aLabel.getText());
             fireChanged();
         }
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-    
-    private void textChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textChanged
-        updateValue();
-    }//GEN-LAST:event_textChanged
-    
-private void gLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gLabeltextChanged
-    updateValue();
-}//GEN-LAST:event_gLabeltextChanged
-    
-private void bLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLabeltextChanged
-    updateValue();
-}//GEN-LAST:event_bLabeltextChanged
-    
-private void aLabeltextChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aLabeltextChanged
-    updateValue();
-}//GEN-LAST:event_aLabeltextChanged
-    
-private void rLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rLabelFocusGained
-    rLabel.setSelectionStart(0);
-    rLabel.setSelectionEnd(rLabel.getText().length());
-}//GEN-LAST:event_rLabelFocusGained
-    
-private void gLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gLabelFocusGained
-    gLabel.setSelectionStart(0);
-    gLabel.setSelectionEnd(gLabel.getText().length());
-}//GEN-LAST:event_gLabelFocusGained
-    
-private void bLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bLabelFocusGained
-    bLabel.setSelectionStart(0);
-    bLabel.setSelectionEnd(bLabel.getText().length());
-}//GEN-LAST:event_bLabelFocusGained
-    
-private void aLabelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_aLabelFocusGained
-    aLabel.setSelectionStart(0);
-    aLabel.setSelectionEnd(aLabel.getText().length());
-}//GEN-LAST:event_aLabelFocusGained
-    
-private void rLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_rLabelFocusLost
-    updateValue();
-}//GEN-LAST:event_rLabelFocusLost
-    
-private void gLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gLabelFocusLost
-    updateValue();
-}//GEN-LAST:event_gLabelFocusLost
-    
-private void bLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bLabelFocusLost
-    updateValue();
-}//GEN-LAST:event_bLabelFocusLost
-    
-private void aLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_aLabelFocusLost
-    updateValue();
-}//GEN-LAST:event_aLabelFocusLost
-    
+    }//GEN-LAST:event_colorPreviewMouseClicked
+                                                    
     private void updateValue() {
         Color c = getColor(rLabel.getText(), gLabel.getText(), bLabel.getText(), aLabel.getText());
         if (c != null) {
@@ -355,7 +343,6 @@ private void aLabelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_a
     private javax.swing.JTextField bLabel;
     private javax.swing.JLabel colorPreview;
     private javax.swing.JTextField gLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
