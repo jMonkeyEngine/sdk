@@ -66,48 +66,6 @@
                 </folder>
             </folder>
         </folder>
-        <folder name="text">
-            <folder name="ogrexml+xml">
-                <folder name="Actions">
-                   <file name="scenecomposer_sep-1.instance">
-                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="50"/>
-                    </file>
-                    <file name="com-jme3-gde-scenecomposer-AddSceneComposer.shadow">
-                        <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-scenecomposer-AddSceneComposer.instance"/>
-                        <attr name="position" intvalue="52"/>
-                    </file>
-                    <file name="com-jme3-gde-scenecomposer-LinkSceneComposer.shadow">
-                        <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-scenecomposer-LinkSceneComposer.instance"/>
-                        <attr name="position" intvalue="53"/>
-                    </file>
-                    <file name="scenecomposer_sep-2.instance">
-                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="69"/>
-                    </file>
-                 </folder>
-            </folder>
-            <folder name="ogrescene+xml">
-                <folder name="Actions">
-                   <file name="scenecomposer_sep-1.instance">
-                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="50"/>
-                    </file>
-                    <file name="com-jme3-gde-scenecomposer-AddSceneComposer.shadow">
-                        <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-scenecomposer-AddSceneComposer.instance"/>
-                        <attr name="position" intvalue="52"/>
-                    </file>
-                    <file name="com-jme3-gde-scenecomposer-LinkSceneComposer.shadow">
-                        <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-scenecomposer-LinkSceneComposer.instance"/>
-                        <attr name="position" intvalue="53"/>
-                    </file>
-                    <file name="scenecomposer_sep-2.instance">
-                        <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="69"/>
-                    </file>
-                </folder>
-            </folder>
-        </folder>
     </folder>
     <!--<folder name="Menu">
         <folder name="Window">
