@@ -718,7 +718,9 @@ public class SceneEditorController implements NodeListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                selectedExplorerNode.refresh(true); // rootNode doesn't seem to be recursive, TODO: Fix it.
+                if(selectedExplorerNode != null) {
+                    selectedExplorerNode.refresh(true); // rootNode doesn't seem to be recursive, TODO: Fix it.
+                }
                 jmeRootNode.refresh(false);
             }
         });

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   style="height: 32px; width: 32px;"
+   width="32px"
+   height="32px"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="snap_geom.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs12" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1717"
+     inkscape:window-height="979"
+     id="namedview10"
+     showgrid="false"
+     inkscape:zoom="7.375"
+     inkscape:cx="-59.254238"
+     inkscape:cy="16"
+     inkscape:window-x="617"
+     inkscape:window-y="378"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg8" />
+  <path
+     d="M0 0h512v512H0z"
+     fill="#000000"
+     fill-opacity="0"
+     style="--darkreader-inline-fill: #000000;"
+     data-darkreader-inline-fill=""
+     id="path2" />
+  <g
+     id="g825"
+     class=""
+     transform="translate(-7.1373029,51.051691)"
+     style="stroke:#000000;stroke-opacity:1;stroke-width:4.192;stroke-miterlimit:4;stroke-dasharray:none">
+    <path
+       id="path823"
+       data-darkreader-inline-fill=""
+       style="fill:#48baff;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:4.192;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 256,73.32 -181.4,81.78 82.3,37.1 173.2,-85.5 z m 95.4,42.98 -173.2,85.5 77.8,35.1 181.4,-81.8 z M 61.7,169 V 351 L 247,434.6 v -182 z m 388.6,0 -185.3,83.6 v 182 L 450.3,351 Z"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     id="g838"
+     transform="matrix(0.75,0,0,0.75,64,-27.118644)">
+    <path
+       id="path821"
+       data-darkreader-inline-fill=""
+       style="fill:#000000;fill-opacity:0"
+       d="M 0,0 H 512 V 512 H 0 Z"
+       inkscape:connector-curvature="0" />
+  </g>
+  <g
+     class=""
+     transform="translate(-8.5303029,-10.961309)"
+     id="g6"
+     style="stroke:#000000;stroke-opacity:1;stroke-width:4.192;stroke-miterlimit:4;stroke-dasharray:none">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 146.063,25.656 C 115.203,25.73 85.507,37.708 60.969,61.969 3.285,119 12.986,194.422 63.905,245.343 c 12.042,12.04 47.124,35.39 78.75,55.437 l 36.938,-36.967 c -23.064,-18.33 -46.265,-37.235 -54.375,-45.344 -38.193,-38.193 -42.604,-75.96 -13.44,-105.126 29.167,-29.166 66.482,-24.61 105.126,14.03 8.09,8.09 26.932,31.048 45.22,53.907 l 37.03,-37.03 C 279.109,112.627 255.819,77.51 243.779,65.47 213.094,38.987 178.911,25.578 146.061,25.656 Z M 309.375,160.47 273.845,196 c 13.103,16.54 24.525,31.2 29.5,37.656 l 31.53,-31.53 c 0,0 -10.95,-18.314 -25.5,-41.657 z m 54.125,33.124 c -31.963,73.943 -90.175,135.65 -167.313,169.22 96.67,-10.858 166.86,-86.763 167.313,-169.22 z m 58.438,0 C 378.812,293.36 300.23,376.616 196.155,421.906 326.581,407.258 421.322,304.846 421.935,193.594 Z m 72.53,0 C 437.49,325.414 333.7,435.407 196.19,495.25 368.52,475.894 493.66,340.59 494.47,193.594 Z M 194.345,275.5 158.907,310.938 c 23.348,14.552 41.656,25.5 41.656,25.5 l 31.532,-31.532 c -6.443,-4.963 -21.143,-16.33 -37.75,-29.406 z"
+       style="fill:#76df76;fill-opacity:1;stroke:#000000;stroke-opacity:1;stroke-width:4.192;stroke-miterlimit:4;stroke-dasharray:none"
+       data-darkreader-inline-fill=""
+       id="path4" />
+  </g>
+</svg>
