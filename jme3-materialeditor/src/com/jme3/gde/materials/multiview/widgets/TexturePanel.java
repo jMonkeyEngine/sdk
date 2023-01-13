@@ -173,6 +173,7 @@ public class TexturePanel extends MaterialPropertyWidget {
         });
 
         texturePreview.setText(org.openide.util.NbBundle.getMessage(TexturePanel.class, "TexturePanel.texturePreview.text")); // NOI18N
+        texturePreview.setToolTipText(org.openide.util.NbBundle.getMessage(TexturePanel.class, "TexturePanel.texturePreview.toolTipText")); // NOI18N
         texturePreview.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         texturePreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
         texturePreview.setFocusable(false);

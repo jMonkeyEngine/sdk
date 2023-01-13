@@ -13,8 +13,7 @@
    viewBox="0 0 512 512"
    version="1.1"
    id="svg8"
-   sodipodi:docname="plane.svg"
-   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+   sodipodi:docname="cube.svg">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -23,7 +22,6 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -38,17 +36,10 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1219"
-     inkscape:window-height="1011"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
      id="namedview10"
-     showgrid="false"
-     inkscape:zoom="14.75"
-     inkscape:cx="11.060968"
-     inkscape:cy="18.250031"
-     inkscape:window-x="42"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg8" />
+     showgrid="false" />
   <path
      d="M0 0h512v512H0z"
      fill="#0a0a0a"
@@ -56,11 +47,17 @@
      style="--darkreader-inline-fill: #080808;"
      data-darkreader-inline-fill=""
      id="path2" />
-  <rect
-     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:4;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="rect852"
-     width="439.77628"
-     height="460.38687"
-     x="33.17289"
-     y="27.748705" />
+  <g
+     class=""
+     style="stroke:#000000;stroke-opacity:1;opacity:1;stroke-width:4.192;stroke-miterlimit:4;stroke-dasharray:none"
+     transform="translate(0,0)"
+     id="g6">
+    <path
+       d="M256 24.585L51.47 118.989 256 213.394l204.53-94.405zM38.998 133.054v258.353L247 487.415V229.063zm434.004 0L265 229.062v258.353l208.002-96.008z"
+       fill="#48baff"
+       fill-opacity="1"
+       style="--darkreader-inline-fill: #8b8104;"
+       data-darkreader-inline-fill=""
+       id="path4" />
+  </g>
 </svg>

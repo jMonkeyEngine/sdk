@@ -158,7 +158,7 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         editorPanel.setPreferredSize(new java.awt.Dimension(0, 0));
 
         texturesAndColorsPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        texturesAndColorsPane.setPreferredSize(new java.awt.Dimension(0, 0));
+        texturesAndColorsPane.setPreferredSize(new java.awt.Dimension(539, 355));
 
         jScrollPane3.setBorder(null);
         jScrollPane3.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -168,6 +168,9 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
 
         texturesAndColorsPane.addTab(org.openide.util.NbBundle.getMessage(MaterialEditorTopComponent.class, "MaterialEditorTopComponent.jScrollPane3.TabConstraints.tabTitle"), jScrollPane3); // NOI18N
 
+        jTabbedPane3.setMinimumSize(new java.awt.Dimension(350, 355));
+        jTabbedPane3.setPreferredSize(new java.awt.Dimension(410, 355));
+
         jScrollPane2.setBorder(null);
         jScrollPane2.setMinimumSize(new java.awt.Dimension(220, 0));
 
@@ -176,7 +179,6 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
 
         jTabbedPane3.addTab(org.openide.util.NbBundle.getMessage(MaterialEditorTopComponent.class, "MaterialEditorTopComponent.jScrollPane2.TabConstraints.tabTitle_1"), jScrollPane2); // NOI18N
 
-        jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(MaterialEditorTopComponent.class, "MaterialEditorTopComponent.jLabel1.text")); // NOI18N
@@ -188,13 +190,13 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(0, 7, Short.MAX_VALUE))
+                .addGap(0, 4, Short.MAX_VALUE))
         );
 
         jToolBar2.add(jPanel3);
@@ -209,7 +211,6 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         });
         jToolBar2.add(jComboBox1);
 
-        jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(MaterialEditorTopComponent.class, "MaterialEditorTopComponent.jLabel3.text")); // NOI18N
@@ -226,7 +227,7 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 7, Short.MAX_VALUE)
+                .addGap(0, 4, Short.MAX_VALUE)
                 .addComponent(jLabel3))
         );
 
@@ -248,7 +249,8 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
             }
         });
 
-        additionalRenderStatePane.setPreferredSize(new java.awt.Dimension(0, 0));
+        additionalRenderStatePane.setMinimumSize(new java.awt.Dimension(350, 355));
+        additionalRenderStatePane.setPreferredSize(new java.awt.Dimension(411, 355));
 
         jScrollPane10.setBorder(null);
 
@@ -263,21 +265,21 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
             editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editorPanelLayout.createSequentialGroup()
                 .addGroup(editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(materialPreviewWidget1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(editorPanelLayout.createSequentialGroup()
-                        .addComponent(materialPreviewWidget1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46)
+                        .addComponent(texturesAndColorsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(additionalRenderStatePane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(editorPanelLayout.createSequentialGroup()
                         .addGroup(editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE))
+                            .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(editorPanelLayout.createSequentialGroup()
-                        .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(texturesAndColorsPane, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(additionalRenderStatePane, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(68, Short.MAX_VALUE))
+                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         editorPanelLayout.setVerticalGroup(
             editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,7 +295,7 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
                     .addComponent(materialPreviewWidget1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(texturesAndColorsPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(additionalRenderStatePane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
