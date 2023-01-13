@@ -58,7 +58,7 @@ public final class SceneViewerTopComponent extends TopComponent {
     /**
      * path to the icon used by the component and its open action
      */
-    static final String ICON_PATH = "com/jme3/gde/core/sceneviewer/jme-logo.png";
+    static final String ICON_PATH = IconList.JME_LOGO;
     private static final String PREFERRED_ID = "SceneViewerTopComponent";
     private SceneApplication app;
     private HelpCtx helpContext = new HelpCtx("com.jme3.gde.core.sceneviewer");
@@ -171,6 +171,7 @@ public final class SceneViewerTopComponent extends TopComponent {
         enableWireframe = new javax.swing.JToggleButton();
         enablePBREnv = new javax.swing.JToggleButton();
         enablePBRSky = new javax.swing.JToggleButton();
+        enableNormalView = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
         enableStats = new javax.swing.JToggleButton();
         oGLPanel = new javax.swing.JPanel();
@@ -178,12 +179,17 @@ public final class SceneViewerTopComponent extends TopComponent {
         setLayout(new java.awt.BorderLayout());
 
         jToolBar1.setRollover(true);
+        jToolBar1.setMinimumSize(new java.awt.Dimension(110, 40));
+        jToolBar1.setPreferredSize(new java.awt.Dimension(110, 40));
 
         enableCamLight.setIcon(IconList.lightOff);
         org.openide.awt.Mnemonics.setLocalizedText(enableCamLight, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableCamLight.text")); // NOI18N
         enableCamLight.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableCamLight.toolTipText")); // NOI18N
         enableCamLight.setFocusable(false);
         enableCamLight.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        enableCamLight.setMaximumSize(new java.awt.Dimension(32, 32));
+        enableCamLight.setMinimumSize(new java.awt.Dimension(32, 32));
+        enableCamLight.setPreferredSize(new java.awt.Dimension(32, 32));
         enableCamLight.setSelectedIcon(IconList.lightOn);
         enableCamLight.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         enableCamLight.addActionListener(new java.awt.event.ActionListener() {
@@ -198,6 +204,9 @@ public final class SceneViewerTopComponent extends TopComponent {
         jToggleButton1.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.jToggleButton1.toolTipText")); // NOI18N
         jToggleButton1.setFocusable(false);
         jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton1.setMaximumSize(new java.awt.Dimension(32, 32));
+        jToggleButton1.setMinimumSize(new java.awt.Dimension(32, 32));
+        jToggleButton1.setPreferredSize(new java.awt.Dimension(32, 32));
         jToggleButton1.setSelectedIcon(IconList.eyeGreen);
         jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -206,6 +215,8 @@ public final class SceneViewerTopComponent extends TopComponent {
             }
         });
         jToolBar1.add(jToggleButton1);
+
+        jSeparator1.setPreferredSize(new java.awt.Dimension(32, 32));
         jToolBar1.add(jSeparator1);
 
         enableWireframe.setIcon(IconList.colorBox);
@@ -213,6 +224,9 @@ public final class SceneViewerTopComponent extends TopComponent {
         enableWireframe.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableWireframe.toolTipText")); // NOI18N
         enableWireframe.setFocusable(false);
         enableWireframe.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        enableWireframe.setMaximumSize(new java.awt.Dimension(32, 32));
+        enableWireframe.setMinimumSize(new java.awt.Dimension(32, 32));
+        enableWireframe.setPreferredSize(new java.awt.Dimension(32, 32));
         enableWireframe.setSelectedIcon(IconList.wireBox);
         enableWireframe.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         enableWireframe.addActionListener(new java.awt.event.ActionListener() {
@@ -222,12 +236,15 @@ public final class SceneViewerTopComponent extends TopComponent {
         });
         jToolBar1.add(enableWireframe);
 
-        enablePBREnv.setIcon(IconList.chimpSmile);
+        enablePBREnv.setIcon(IconList.enablePbrEnvironment);
         org.openide.awt.Mnemonics.setLocalizedText(enablePBREnv, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBREnv.text")); // NOI18N
         enablePBREnv.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBREnv.toolTipText")); // NOI18N
         enablePBREnv.setFocusable(false);
         enablePBREnv.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        enablePBREnv.setSelectedIcon(IconList.chimpSmile);
+        enablePBREnv.setMaximumSize(new java.awt.Dimension(32, 32));
+        enablePBREnv.setMinimumSize(new java.awt.Dimension(32, 32));
+        enablePBREnv.setPreferredSize(new java.awt.Dimension(32, 32));
+        enablePBREnv.setSelectedIcon(IconList.enablePbrEnvironment);
         enablePBREnv.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         enablePBREnv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -236,12 +253,15 @@ public final class SceneViewerTopComponent extends TopComponent {
         });
         jToolBar1.add(enablePBREnv);
 
-        enablePBRSky.setIcon(IconList.chimpMad);
+        enablePBRSky.setIcon(IconList.enablePbrSky);
         org.openide.awt.Mnemonics.setLocalizedText(enablePBRSky, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBRSky.text")); // NOI18N
         enablePBRSky.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBRSky.toolTipText")); // NOI18N
         enablePBRSky.setFocusable(false);
         enablePBRSky.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        enablePBRSky.setSelectedIcon(IconList.chimpMad);
+        enablePBRSky.setMaximumSize(new java.awt.Dimension(32, 32));
+        enablePBRSky.setMinimumSize(new java.awt.Dimension(32, 32));
+        enablePBRSky.setPreferredSize(new java.awt.Dimension(32, 32));
+        enablePBRSky.setSelectedIcon(IconList.enablePbrSky);
         enablePBRSky.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         enablePBRSky.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -249,9 +269,23 @@ public final class SceneViewerTopComponent extends TopComponent {
             }
         });
         jToolBar1.add(enablePBRSky);
+
+        enableNormalView.setIcon(IconList.normalView);
+        org.openide.awt.Mnemonics.setLocalizedText(enableNormalView, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableNormalView.text")); // NOI18N
+        enableNormalView.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableNormalView.toolTipText")); // NOI18N
+        enableNormalView.setFocusable(false);
+        enableNormalView.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        enableNormalView.setSelectedIcon(IconList.normalView);
+        enableNormalView.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        enableNormalView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enableNormalViewActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(enableNormalView);
         jToolBar1.add(jPanel1);
 
-        enableStats.setIcon(IconList.info);
+        enableStats.setIcon(IconList.sceneInfo);
         org.openide.awt.Mnemonics.setLocalizedText(enableStats, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableStats.text")); // NOI18N
         enableStats.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enableStats.toolTipText")); // NOI18N
         enableStats.setFocusable(false);
@@ -295,8 +329,13 @@ public final class SceneViewerTopComponent extends TopComponent {
         app.enablePBRSkybox(enablePBRSky.isSelected());
     }//GEN-LAST:event_enablePBRSkyActionPerformed
 
+    private void enableNormalViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enableNormalViewActionPerformed
+        app.enableNormalView(enableNormalView.isSelected());
+    }//GEN-LAST:event_enableNormalViewActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton enableCamLight;
+    private javax.swing.JToggleButton enableNormalView;
     private javax.swing.JToggleButton enablePBREnv;
     private javax.swing.JToggleButton enablePBRSky;
     private javax.swing.JToggleButton enableStats;

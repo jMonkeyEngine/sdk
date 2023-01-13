@@ -31,12 +31,9 @@
  */
 package com.jme3.gde.core.sceneexplorer.nodes;
 
-import com.jme3.gde.core.filters.AbstractFilterNode;
 import com.jme3.gde.core.icons.IconList;
 import com.jme3.gde.core.scene.SceneApplication;
-import com.jme3.gde.core.util.PropertyUtils;
 import com.jme3.light.Light;
-import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
 import java.awt.Image;
 import java.io.IOException;
@@ -60,7 +57,7 @@ public class JmeLight extends AbstractSceneExplorerNode {
 
     private Spatial spatial;
     private Light light;
-    private static Image smallImage = IconList.light.getImage();
+    private static Image smallImage = IconList.lightYellow.getImage();
 
     public JmeLight() {
     }

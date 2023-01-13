@@ -145,11 +145,11 @@ public class EditableMaterialFile {
                     }
                     if (lines != null) {
                         MaterialProperty prop = new MaterialProperty();
-                        String name = lines[0].trim();
-                        prop.setName(name);
-                        if (additionalRenderStates.get(name) != null) {
+                        final String propName = lines[0].trim();
+                        prop.setName(propName);
+                        if (additionalRenderStates.get(propName) != null) {
 
-                            prop.setType(additionalRenderStates.get(name).getType());
+                            prop.setType(additionalRenderStates.get(propName).getType());
                             if (lines.length > 1) {
                                 String value = "";
                                 for (int i = 1; i < lines.length; i++) {
@@ -194,7 +194,7 @@ public class EditableMaterialFile {
             try {
                 fs = FileUtil.createMemoryFileSystem();
                 matDef = fs.getRoot().createData(name, "j3md");
-                try (OutputStream out = matDef.getOutputStream()) {
+                try ( OutputStream out = matDef.getOutputStream()) {
                     InputStream in = manager.getResourceAsStream(getMatDefName());
                     if (in != null) {
                         int input = in.read();
@@ -240,16 +240,20 @@ public class EditableMaterialFile {
                     }
                     //read variable types
                     if (level == 2 && params) {
-                        for (int i = 0; i < variableTypes.length; i++) {
-                            String string = variableTypes[i];
+                        for (String string : variableTypes) {
                             if (defLine.startsWith(string)) {
-                                String name = MaterialUtils.trimName(defLine.replaceFirst(string, ""));
-                                matDefEntries.add(name);
-                                MaterialProperty prop = materialParameters.get(name);
+                                final String propName = MaterialUtils.trimName(defLine.replaceFirst(string, ""));
+                                matDefEntries.add(propName);
+                                MaterialProperty prop = materialParameters.get(propName);
                                 if (prop == null) {
                                     prop = new MaterialProperty();
-                                    prop.setName(name);
-                                    prop.setValue("");
+                                    prop.setName(propName);
+                                    // property with set value
+                                    if (defLine.contains(":")) {
+                                        prop.setValue(defLine.split(":")[1]);
+                                    } else {
+                                        prop.setValue("");
+                                    }
                                     materialParameters.put(prop.getName(), prop);
                                 }
                                 prop.setType(string);
@@ -380,7 +384,7 @@ public class EditableMaterialFile {
                     }
                 }
                 //try replacing value of state line with new value
-                if (level == 2 && states) {
+                if (level == 2 && states && newLine != null) {
                     String cutLine = newLine.trim();
                     String[] lines = null;
                     int colonIdx = cutLine.indexOf(" ");
@@ -417,15 +421,13 @@ public class EditableMaterialFile {
     }
 
     private void createBaseMaterialFile() throws IOException {
-        try (OutputStreamWriter out = new OutputStreamWriter(material.getOutputStream())) {
+        try ( OutputStreamWriter out = new OutputStreamWriter(material.getOutputStream())) {
             out.write("Material MyMaterial : " + matDefName + " {\n");
             out.write("    MaterialParameters {\n");
             out.write("    }\n");
             out.write("}\n");
         }
     }
-
- 
 
     public Map<String, MaterialProperty> getParameterMap() {
         return materialParameters;
@@ -450,7 +452,7 @@ public class EditableMaterialFile {
     }
 
     public void setAsText(String text) throws IOException {
-        try (OutputStreamWriter out = new OutputStreamWriter(material.getOutputStream())) {
+        try ( OutputStreamWriter out = new OutputStreamWriter(material.getOutputStream())) {
             out.write(text, 0, text.length());
         }
     }
@@ -499,42 +501,43 @@ public class EditableMaterialFile {
                     case TextureBuffer:
                     case TextureCubeMap:
                         try {
-                            MatParamTexture texParam = mat.getTextureParam(param.getName());
-                            Texture tex = texParam.getTextureValue();
-                            Image img = tex.getImage();
-                            if (img == null) {
-                                logger.log(Level.INFO, "No image found");
-                                return;
-                            }
-                            BufferedImage image = ImageToAwt.convert(img, false, false, 0);
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            ImageWriter imgWrtr = ImageIO.getImageWritersByFormatName("png").next();
-                            ImageOutputStream imgOutStrm;
-                            imgOutStrm = ImageIO.createImageOutputStream(out);
-                            imgWrtr.setOutput(imgOutStrm);
-                            ImageWriteParam jpgWrtPrm = imgWrtr.getDefaultWriteParam();
-                            imgWrtr.write(null, new IIOImage(image, null, null), jpgWrtPrm);
-                            imgOutStrm.close();
-                            out.close();
-                            String texturePath = material.getName();
-                            texturePath = "Textures/" + texturePath + "-" + param.getName() + ".png";
-                            StoreTextureWizardWizardAction act = new StoreTextureWizardWizardAction(manager, out.toByteArray(), texturePath);
-                            act.actionPerformed(null);
-                            texturePath = act.getName();
-                            TextureKey texKey = new TextureKey(texturePath);
-                            TextureKey oldKey = (TextureKey)tex.getKey();
-                            if(oldKey!=null){
-                                Beans.copyProperties(texKey, oldKey);
-                            }
-                            //TODO: seems like flip is removed due to ImageToAwt
-                            texKey.setFlipY(false);
-                            Texture texture = manager.loadTexture(texKey);
-                            MatParamTexture newParam = new MatParamTexture(texParam.getVarType(), texParam.getName(), texture, null);
-                            materialParameters.put(newParam.getName(), new MaterialProperty(newParam));
-                        } catch (Exception ex) {
-                            Exceptions.printStackTrace(ex);
+                        MatParamTexture texParam = mat.getTextureParam(param.getName());
+                        Texture tex = texParam.getTextureValue();
+                        Image img = tex.getImage();
+                        if (img == null) {
+                            logger.log(Level.INFO, "No image found");
+                            return;
                         }
-                        break;
+                        BufferedImage image = ImageToAwt.convert(img, false, false, 0);
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        ImageWriter imgWrtr = ImageIO.getImageWritersByFormatName("png").next();
+                        ImageOutputStream imgOutStrm;
+                        imgOutStrm = ImageIO.createImageOutputStream(out);
+                        imgWrtr.setOutput(imgOutStrm);
+                        ImageWriteParam jpgWrtPrm = imgWrtr.getDefaultWriteParam();
+                        imgWrtr.write(null, new IIOImage(image, null, null), jpgWrtPrm);
+                        imgOutStrm.close();
+                        out.close();
+                        String texturePath = material.getName();
+                        texturePath = "Textures/" + texturePath + "-" + param.getName() + ".png";
+                        StoreTextureWizardWizardAction act = new StoreTextureWizardWizardAction(manager, out.toByteArray(), texturePath);
+                        act.actionPerformed(null);
+                        texturePath = act.getName();
+                        TextureKey texKey = new TextureKey(texturePath);
+                        TextureKey oldKey = (TextureKey) tex.getKey();
+                        if (oldKey != null) {
+                            Beans.copyProperties(texKey, oldKey);
+                        }
+                        //TODO: seems like flip is removed due to ImageToAwt
+                        texKey.setFlipY(false);
+                        Texture texture = manager.loadTexture(texKey);
+                        MatParamTexture newParam = new MatParamTexture(texParam.getVarType(), texParam.getName(), texture, null);
+                        materialParameters.put(newParam.getName(), new MaterialProperty(newParam));
+                    } catch (IOException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                    break;
+
                     default:
                 }
             } else {

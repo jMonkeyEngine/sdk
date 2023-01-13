@@ -55,7 +55,7 @@ import jme3_ext_xbuf.*;
 )
 @DataObject.Registration(
     mimeType = "application/xbuf", 
-    iconBase = "com/jme3/gde/blender/xbuf.png",
+    iconBase = "com/jme3/gde/blender/xbuf.svg",
     displayName="#LBL_XBUF_LOADER",
     position=300
 )

@@ -32,7 +32,6 @@
 package com.jme3.gde.core.util.notify;
 
 import com.jme3.gde.core.icons.IconList;
-import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import org.openide.NotifyDescriptor;
@@ -44,13 +43,13 @@ import org.openide.NotifyDescriptor;
 public enum MessageType {
 
     PLAIN(NotifyDescriptor.PLAIN_MESSAGE, IconList.chimpSmile),
-    INFO(NotifyDescriptor.INFORMATION_MESSAGE, IconList.chimpSmile),
+    INFO(NotifyDescriptor.INFORMATION_MESSAGE, IconList.info),
     QUESTION(NotifyDescriptor.QUESTION_MESSAGE, IconList.chimpConfused),
-    EXCEPTION(NotifyDescriptor.ERROR_MESSAGE, IconList.chimpLobo),
+    EXCEPTION(NotifyDescriptor.ERROR_MESSAGE, IconList.exception),
     ERROR(NotifyDescriptor.ERROR_MESSAGE, IconList.chimpSad),
     WARNING(NotifyDescriptor.WARNING_MESSAGE, IconList.chimpNogood);
-    private int notifyDescriptorType;
-    private Icon icon;
+    private final int notifyDescriptorType;
+    private final Icon icon;
 
     private MessageType(int notifyDescriptorType, ImageIcon icon) {
         this.notifyDescriptorType = notifyDescriptorType;

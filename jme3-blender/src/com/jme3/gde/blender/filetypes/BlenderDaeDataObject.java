@@ -28,7 +28,7 @@ mimeType = "model/vnd.collada+xml",
 extension = {"dae", "DAE"})
 @DataObject.Registration(
     mimeType = "model/vnd.collada+xml",
-iconBase = "com/jme3/gde/blender/blender.png",
+iconBase = "com/jme3/gde/blender/blender.svg",
 displayName = "#LBL_BlenderDae_LOADER",
 position = 300)
 @ActionReferences({

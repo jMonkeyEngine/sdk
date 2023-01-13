@@ -62,7 +62,7 @@ import org.openide.util.actions.SystemAction;
 @SuppressWarnings({"unchecked", "rawtypes", "OverridableMethodCallInConstructor", "LeakingThisInConstructor"})
 public class JmeVector3f extends JmeSpatial {
 
-    private static Image smallImage = IconList.wireBox.getImage();
+    private static Image smallImage = IconList.track.getImage();
     private JmeVector3fChildren parent;
     private JmeMotionPath jmeMotionPath;
     private Vector3f v;

@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.textureeditor;
 
+import com.jme3.gde.textureeditor.icons.Icons;
 import java.io.IOException;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -24,7 +25,7 @@ import org.openide.util.Lookup;
         mimeType = "image/x-jmetexture",
         extension = {"png", "bmp", "jpg", "PNG", "BMP", "JPG", "jpeg", "JPEG", "tga", "TGA"}
 )
-@DataObject.Registration(displayName = "jME3 Texture", mimeType = "image/x-jmetexture", iconBase = "com/jme3/gde/textureeditor/Computer_File_068.gif")
+@DataObject.Registration(displayName = "jME3 Texture", mimeType = "image/x-jmetexture", iconBase = Icons.TEXTURE_BLUE)
 @ActionReferences(value = {
     @ActionReference(id =
     @ActionID(category = "JME3", id = "com.jme3.gde.textureeditor.OpenTexture"), path = "Loaders/image/x-jmetexture/Actions", position = 0),

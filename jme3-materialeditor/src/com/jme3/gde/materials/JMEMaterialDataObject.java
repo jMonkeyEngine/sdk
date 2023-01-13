@@ -33,6 +33,7 @@ package com.jme3.gde.materials;
 
 import com.jme3.gde.core.assets.AssetDataObject;
 import com.jme3.gde.core.assets.ProjectAssetManager;
+import com.jme3.gde.core.icons.IconList;
 import com.jme3.gde.materials.multiview.MaterialOpenSupport;
 import java.io.IOException;
 import org.openide.filesystems.FileObject;
@@ -48,7 +49,7 @@ import org.openide.nodes.Node;
         mimeType = "text/jme3material",
         extension = {"j3m", "J3M"}
 )
-@DataObject.Registration(displayName = "jME3 Material", mimeType = "text/jme3material", iconBase = "com/jme3/gde/materials/material.png")
+@DataObject.Registration(displayName = "jME3 Material", mimeType = "text/jme3material", iconBase = IconList.MATERIAL)
 public class JMEMaterialDataObject extends AssetDataObject {
 
     public JMEMaterialDataObject(FileObject pf, MultiFileLoader loader) throws DataObjectExistsException, IOException {

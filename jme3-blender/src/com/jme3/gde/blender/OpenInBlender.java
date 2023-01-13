@@ -18,7 +18,7 @@ import org.openide.util.NbBundle.Messages;
     category = "jMonkeyEngine",
 id = "com.jme3.gde.blender.OpenBlender")
 @ActionRegistration(
-    iconBase = "com/jme3/gde/blender/blender.png",
+    iconBase = "com/jme3/gde/blender/blender.svg",
 displayName = "#CTL_OpenInBlender")
 @ActionReferences({
     @ActionReference(path = "Toolbars/File", position = 335),

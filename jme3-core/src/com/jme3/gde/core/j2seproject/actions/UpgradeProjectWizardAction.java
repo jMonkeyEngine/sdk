@@ -1,5 +1,6 @@
 package com.jme3.gde.core.j2seproject.actions;
 
+import com.jme3.gde.core.icons.IconList;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ import org.openide.util.NbBundle;
         id = "com.jme3.gde.core.j2seproject.actions.UpgradeProjectWizardAction"
 )
 @ActionRegistration(
-        iconBase = "com/jme3/gde/core/icons/chimpanzee-smile.gif",
+        iconBase = IconList.CONFIRMED,
         displayName = "#CTL_UpgradeProjectWizardAction"
 )
 @ActionReferences({

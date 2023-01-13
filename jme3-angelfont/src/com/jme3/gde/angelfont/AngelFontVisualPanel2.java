@@ -112,7 +112,7 @@ public final class AngelFontVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(AngelFontVisualPanel2.class, "AngelFontVisualPanel2.jLabel2.text")); // NOI18N
 
-        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(256), Integer.valueOf(64), null, Integer.valueOf(1)));
+        jSpinner2.setModel(new javax.swing.SpinnerNumberModel(256, 64, null, 1));
         jSpinner2.setToolTipText(org.openide.util.NbBundle.getMessage(AngelFontVisualPanel2.class, "AngelFontVisualPanel2.jSpinner2.toolTipText")); // NOI18N
         jSpinner2.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -186,7 +186,7 @@ public final class AngelFontVisualPanel2 extends JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AngelFontVisualPanel2.class, "AngelFontVisualPanel2.jLabel1.text")); // NOI18N
 
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(16), Integer.valueOf(1), null, Integer.valueOf(1)));
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(16, 1, null, 1));
         jSpinner1.setToolTipText(org.openide.util.NbBundle.getMessage(AngelFontVisualPanel2.class, "AngelFontVisualPanel2.jSpinner1.toolTipText")); // NOI18N
         jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {

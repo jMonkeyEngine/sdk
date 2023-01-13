@@ -11,6 +11,8 @@
 package com.jme3.gde.materials.multiview.widgets;
 
 import com.jme3.gde.core.assets.ProjectAssetManager;
+import com.jme3.gde.core.icons.IconList;
+import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.scene.SceneRequest;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
 import com.jme3.gde.materials.multiview.widgets.icons.Icons;
@@ -71,6 +73,8 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         cubeButton = new javax.swing.JToggleButton();
         planeButton = new javax.swing.JToggleButton();
         sphereButton = new javax.swing.JToggleButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        togglePbrEnvButton = new javax.swing.JToggleButton();
 
         previewLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         previewLabel.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.previewLabel.text")); // NOI18N
@@ -118,6 +122,23 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(planeButton);
+        jToolBar1.add(jSeparator1);
+
+        togglePbrEnvButton.setIcon(IconList.lightYellow);
+        togglePbrEnvButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.togglePbrEnvButton.toolTipText")); // NOI18N
+        togglePbrEnvButton.setFocusable(false);
+        togglePbrEnvButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        togglePbrEnvButton.setLabel(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.togglePbrEnvButton.label")); // NOI18N
+        togglePbrEnvButton.setMaximumSize(new java.awt.Dimension(26, 24));
+        togglePbrEnvButton.setMinimumSize(new java.awt.Dimension(26, 24));
+        togglePbrEnvButton.setName("togglePbrEnvButton"); // NOI18N
+        togglePbrEnvButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        togglePbrEnvButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                togglePbrEnvButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(togglePbrEnvButton);
 
         toggleButtonGroup.add(sphereButton);
         sphereButton.setIcon(Icons.sphere);
@@ -142,10 +163,8 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(previewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,12 +186,20 @@ private void cubeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 private void planeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_planeButtonActionPerformed
     matRenderer.switchDisplay(MaterialPreviewRenderer.DisplayType.Quad);
 }//GEN-LAST:event_planeButtonActionPerformed
+
+    private void togglePbrEnvButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togglePbrEnvButtonActionPerformed
+        SceneApplication.getApplication().enablePreviewLighting(togglePbrEnvButton.isSelected());
+        matRenderer.refreshOnly();
+    }//GEN-LAST:event_togglePbrEnvButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton cubeButton;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToggleButton planeButton;
     private javax.swing.JLabel previewLabel;
     private javax.swing.JToggleButton sphereButton;
     private javax.swing.ButtonGroup toggleButtonGroup;
+    private javax.swing.JToggleButton togglePbrEnvButton;
     // End of variables declaration//GEN-END:variables
 }

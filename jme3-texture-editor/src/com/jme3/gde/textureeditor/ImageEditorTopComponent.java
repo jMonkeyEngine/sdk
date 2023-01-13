@@ -4,6 +4,7 @@
  */
 package com.jme3.gde.textureeditor;
 
+import com.jme3.gde.textureeditor.icons.Icons;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,7 +27,7 @@ public final class ImageEditorTopComponent extends TopComponent {
 
     private static ImageEditorTopComponent instance;
     /** path to the icon used by the component and its open action */
-    static final String ICON_PATH = "com/jme3/gde/textureeditor/Computer_File_067.gif";
+    static final String ICON_PATH = Icons.TEXTURE_GREEN;
     private static final String PREFERRED_ID = "ImageEditorTopComponent";
     private final ImageEditorComponent EDITOR = ImageEditorComponent.create();
 

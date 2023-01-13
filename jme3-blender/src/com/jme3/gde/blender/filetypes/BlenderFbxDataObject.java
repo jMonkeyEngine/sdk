@@ -24,7 +24,7 @@ import org.openide.util.NbBundle.Messages;
         extension = {"fbx"})
 @DataObject.Registration(
         mimeType = "application/fbx",
-        iconBase = "com/jme3/gde/blender/blender.png",
+        iconBase = "com/jme3/gde/blender/blender.svg",
         displayName = "#LBL_BlenderFbx_LOADER",
         position = 300)
 @ActionReferences({

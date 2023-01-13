@@ -24,7 +24,7 @@ import org.openide.util.NbBundle.Messages;
         extension = {"3ds", "3DS"})
 @DataObject.Registration(
         mimeType = "application/x-3ds",
-        iconBase = "com/jme3/gde/blender/blender.png",
+        iconBase = "com/jme3/gde/blender/blender.svg",
         displayName = "#LBL_Blender3ds_LOADER",
         position = 300)
 @ActionReferences({

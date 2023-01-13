@@ -44,12 +44,17 @@ import com.jme3.gde.core.util.datatransfer.CopyMaterialDataFromOriginal;
 import com.jme3.gde.core.util.datatransfer.CopyMeshDataFromOriginal;
 import com.jme3.gde.core.util.datatransfer.CopyTransformDataFromOriginal;
 import com.jme3.scene.Spatial;
+import java.awt.BorderLayout;
 import java.io.IOException;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.netbeans.api.progress.ProgressHandle;
 import org.openide.DialogDisplayer;
@@ -80,6 +85,15 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
     private final AssetDataObject assetDataObject;
     private final AssetData assetData;
     private FileObject originalObject;
+    
+    final String noOption = "No";
+    final String allOption = "All";
+    final String meshOption = "Only mesh data";
+    final String animOption = "Only animation data";
+    // closing window without selection
+    final int cancel = -1;
+    
+    private Object savedOption;
 
     public ExternalChangeScanner(AssetDataObject assetDataObject) {
         this.assetDataObject = assetDataObject;
@@ -115,24 +129,34 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
     }
 
     private void notifyUser() {
-        if (!userNotified.getAndSet(true)) {
+        if (savedOption == null && !userNotified.getAndSet(true)) {
             //TODO: execute on separate thread?
             java.awt.EventQueue.invokeLater(() -> {
-                final String noOption = "No";
-                final String allOption = "All";
-                final String meshOption = "Only mesh data";
-                final String animOption = "Only animation data";
+                JPanel panel = new JPanel();
+                panel.setLayout(new BorderLayout());
+                panel.add(new JLabel("Original file for "
+                                + assetDataObject.getName() + " changed\n Try "
+                                + "and reapply data to j3o file?"), BorderLayout.NORTH);
+                JCheckBox rememberSelectionBox = new JCheckBox("Remember selection");
+                rememberSelectionBox.setSelected(savedOption != null);
+                panel.add(rememberSelectionBox, BorderLayout.SOUTH);
+                
                 final NotifyDescriptor.Confirmation message =
-                        new NotifyDescriptor.Confirmation("Original file for "
-                                + assetDataObject.getName() + " changed\nTry "
-                                + "and reapply data to j3o file?",
+                        new NotifyDescriptor.Confirmation(panel ,
                                 "Original file changed",
                                 NotifyDescriptor.YES_NO_CANCEL_OPTION,
                                 NotifyDescriptor.QUESTION_MESSAGE);
                 message.setOptions(new Object[]{allOption, meshOption, animOption,
                         noOption});
+                
                 DialogDisplayer.getDefault().notify(message);
-                if (message.getValue().equals(noOption)) {
+
+                if(rememberSelectionBox.isSelected() && !message.getValue().equals(cancel)) {
+                    savedOption = message.getValue();
+                    LOGGER.log(Level.INFO, "Saving selection "
+                    + "{0}", savedOption);
+                }
+                if (message.getValue().equals(cancel) || message.getValue().equals(noOption)) {
                     userNotified.set(false);
                     return;
                 }
@@ -143,6 +167,17 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
                 });
                 userNotified.set(false);
             });
+        } else if(savedOption != null) {
+            LOGGER.log(Level.INFO, "Using saved option "
+                    + "{0}", savedOption);
+            if(savedOption.equals(noOption)) {
+                return;
+            }
+            SceneApplication.getApplication().enqueue((Callable<Void>) () -> {
+                    applyExternalData(savedOption.equals(meshOption), 
+                            savedOption.equals(animOption));
+                    return null;
+                });
         } else {
             LOGGER.log(Level.INFO, "User already notified about change in "
                     + "{0}", assetDataObject.getName());
@@ -173,12 +208,16 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
                 new CopyMaterialDataFromOriginal(finder).update(spat, original);
             }
             // Do a complicated recurse refresh since AbstractSceneExplorerNode:refresh() isn't working
-            SceneApplication.getApplication().enqueue((Runnable) () -> {
+            SwingUtilities.invokeLater(() -> {
                 Node rootNode = SceneExplorerTopComponent.findInstance().getExplorerManager().getRootContext();
                 if (rootNode instanceof JmeNode) {
+                    SceneApplication.getApplication().enqueue((Runnable) () -> {
                     refreshNamedSpatial((JmeNode) rootNode, spat.getName());
+                    });
                 }
             });
+                
+            
             closeOriginalSpatial();
             assetDataObject.saveAsset();
         } catch (IOException e) {

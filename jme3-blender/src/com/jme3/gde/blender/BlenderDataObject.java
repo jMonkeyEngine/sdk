@@ -28,7 +28,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @DataObject.Registration(
     mimeType = "application/blender", 
-    iconBase = "com/jme3/gde/blender/blender.png",
+    iconBase = "com/jme3/gde/blender/blender.svg",
     displayName="#LBL_Blender_LOADER",
     position=300
 )

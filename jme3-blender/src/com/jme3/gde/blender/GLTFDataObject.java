@@ -33,7 +33,6 @@ package com.jme3.gde.blender;
 
 import com.jme3.asset.ModelKey;
 import com.jme3.gde.core.assets.SpatialAssetDataObject;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.plugins.gltf.GltfModelKey;
 import java.io.IOException;
 import org.openide.awt.ActionID;
@@ -58,8 +57,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @DataObject.Registration(
     mimeType = "model/gltf+json", 
-    iconBase = "com/jme3/gde/blender/glTF.png",
-    //iconBase = "com/jme3/gde/blender/glTF_100px_June16.png",
+    iconBase = "com/jme3/gde/blender/glTF.svg",
     displayName="#LBL_GLTF_LOADER",
     position=300
 )

@@ -318,7 +318,7 @@ task copyProjectLibs(dependsOn: [configurations.corelibs, configurations.testdat
             if(isJmeDep(dep.name)){
                 copy {
                     from dep
-                    into "jme3-project-testdata/release/libs/"
+                    into "jme3-project-testdata/release/modules/ext/"
                     rename ("jme3-testdata(.*)", "jme3-testdata.jar")
                 }
             }
@@ -330,7 +330,7 @@ copyProjectLibs.inputs.files configurations.optlibs.resolve()
 copyProjectLibs.inputs.files configurations.testdatalibs.resolve()
 copyProjectLibs.outputs.dir "jme3-project-baselibs/release/libs/"
 copyProjectLibs.outputs.dir "jme3-project-libraries/release/libs/"
-copyProjectLibs.outputs.dir "jme3-project-testdata/release/libs/"
+copyProjectLibs.outputs.dir "jme3-project-testdata/release/modules/ext/"
 
 // workaround method to add a tag with the name "name" and "file" to an XML MarkupBuilder
 def makeName(builder, nameR) { builder.name nameR }

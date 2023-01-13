@@ -23,17 +23,13 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
-import com.jme3.math.FastMath;
 import com.jme3.math.Matrix3f;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,17 +47,16 @@ import org.openide.util.Utilities;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class VehicleEditorController implements LookupListener, ActionListener {
 
-    private JmeSpatial jmeRootNode;
-    private Node rootNode;
+    private final JmeSpatial jmeRootNode;
     private JmeSpatial selectedSpat;
-    private BinaryModelDataObject currentFileObject;
+    private final BinaryModelDataObject currentFileObject;
     private VehicleControl vehicleControl;
-    private Result<JmeSpatial> result;
+    private final Result<JmeSpatial> result;
     private Result<VehicleWheel> result2;
-    private List<Geometry> list = new LinkedList<Geometry>();
+    private final List<Geometry> list = new LinkedList<>();
     private SceneToolController toolController;
-    private Node toolsNode;
-    private BulletAppState bulletState;
+    private final Node toolsNode;
+    private final BulletAppState bulletState;
     private boolean testing = false;
     private float motorForce = 800;
     private float brakeForce = 40;
@@ -69,7 +64,6 @@ public class VehicleEditorController implements LookupListener, ActionListener {
     public VehicleEditorController(JmeSpatial jmeRootNode, BinaryModelDataObject currentFileObject) {
         this.jmeRootNode = jmeRootNode;
         this.currentFileObject = currentFileObject;
-        rootNode = jmeRootNode.getLookup().lookup(Node.class);
         toolsNode = new Node("ToolsNode");
         toolController = new SceneToolController(toolsNode, currentFileObject.getLookup().lookup(ProjectAssetManager.class));
         toolController.setShowSelection(true);
@@ -77,21 +71,26 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         result.addLookupListener(this);
         toolsNode.addLight(new DirectionalLight());
         Node track = (Node) new DesktopAssetManager(true).loadModel("Models/Racetrack/Raceway.j3o");
-        track.getChild("Grass").getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(30, -1, 0));
-        track.getChild("Grass").getControl(RigidBodyControl.class).setPhysicsRotation(new Quaternion().fromAngleAxis(FastMath.HALF_PI * 0.68f, Vector3f.UNIT_Y).toRotationMatrix());
-        track.getChild("Road").getControl(RigidBodyControl.class).setPhysicsLocation(new Vector3f(30, 0, 0));
-        track.getChild("Road").getControl(RigidBodyControl.class).setPhysicsRotation(new Quaternion().fromAngleAxis(FastMath.HALF_PI * 0.68f, Vector3f.UNIT_Y).toRotationMatrix());
+        if (track.getChild("Grass").getControl(RigidBodyControl.class) == null) {
+            track.getChild("Grass").addControl(new RigidBodyControl());
+        }
+        if (track.getChild("Road").getControl(RigidBodyControl.class) == null) {
+            track.getChild("Road").addControl(new RigidBodyControl());
+        }
+        if (track.getChild("Wall").getControl(RigidBodyControl.class) == null) {
+            track.getChild("Wall").addControl(new RigidBodyControl());
+        }
+        if (track.getChild("Rumble-Strip").getControl(RigidBodyControl.class) == null) {
+            track.getChild("Rumble-Strip").addControl(new RigidBodyControl());
+        }
+
         toolsNode.attachChild(track);
         bulletState = new BulletAppState();
 
         result2 = Utilities.actionsGlobalContext().lookupResult(VehicleWheel.class);
-        LookupListener listener = new LookupListener() {
-
-            public void resultChanged(LookupEvent ev) {
-                for (Iterator<? extends VehicleWheel> it = result2.allInstances().iterator(); it.hasNext();) {
-                    VehicleWheel wheel = it.next();
-                    toolController.updateSelection(wheel.getWheelSpatial());
-                }
+        LookupListener listener = (LookupEvent ev) -> {
+            for (VehicleWheel wheel : result2.allInstances()) {
+                toolController.updateSelection(wheel.getWheelSpatial());
             }
         };
         result2.addLookupListener(listener);
@@ -136,18 +135,12 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         try {
             final Spatial node = selectedSpat.getLookup().lookup(Spatial.class);
             if (node != null) {
-                SceneApplication.getApplication().enqueue(new Callable() {
-
-                    public Object call() throws Exception {
-                        doAwtCall(node);
-                        return null;
-
-                    }
+                SceneApplication.getApplication().enqueue(() -> {
+                    doAwtCall(node);
+                    return null;
                 }).get();
             }
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -161,13 +154,9 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         }
         final Node node = jmeRootNode.getLookup().lookup(Node.class);
         if (node != null) {
-            SceneApplication.getApplication().enqueue(new Callable() {
-
-                public Object call() throws Exception {
-                    doTestVehicle(node);
-                    return null;
-
-                }
+            SceneApplication.getApplication().enqueue(() -> {
+                doTestVehicle(node);
+                return null;
             });
         }
     }
@@ -188,17 +177,11 @@ public class VehicleEditorController implements LookupListener, ActionListener {
 
     public void stopVehicle() {
         try {
-            SceneApplication.getApplication().enqueue(new Callable() {
-
-                public Object call() throws Exception {
-                    doStopVehicle();
-                    return null;
-
-                }
+            SceneApplication.getApplication().enqueue(() -> {
+                doStopVehicle();
+                return null;
             }).get();
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -224,19 +207,13 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         try {
             final Spatial node = selectedSpat.getLookup().lookup(Spatial.class);
             if (node != null) {
-                SceneApplication.getApplication().enqueue(new Callable() {
-
-                    public Object call() throws Exception {
-                        doCenterSelected(node);
-                        return null;
-
-                    }
+                SceneApplication.getApplication().enqueue(() -> {
+                    doCenterSelected(node);
+                    return null;
                 }).get();
                 currentFileObject.setModified(true);
             }
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -276,31 +253,26 @@ public class VehicleEditorController implements LookupListener, ActionListener {
             final Spatial node = selectedSpat.getLookup().lookup(Spatial.class);
             final Node rootNode = jmeRootNode.getLookup().lookup(Node.class);
             if (node != null) {
-                SceneApplication.getApplication().enqueue(new Callable() {
-
-                    public Object call() throws Exception {
-                        doAddWheel(node, rootNode, settings);
-                        return null;
-                    }
+                SceneApplication.getApplication().enqueue(() -> {
+                    doAddWheel(node, rootNode, settings);
+                    return null;
                 }).get();
                 currentFileObject.setModified(true);
                 refreshSelectedParent();
             }
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
 
     public void doAddWheel(Spatial selected, Spatial vehicle, SuspensionSettings settings) {
-        Spatial node = null;
+        Spatial node;
         Vector3f wheelLocation = vehicle.worldToLocal(selected.getWorldBound().getCenter(), new Vector3f());
         wheelLocation.add(0, settings.getRestLength(), 0);
 
         //compute radius from bounding volue with scale if set
         if (settings.getBoundingScale() > 0) {
-            BoundingBox worldBound = null;
+            BoundingBox worldBound;
             if (selected.getWorldBound() instanceof BoundingBox) {
                 worldBound = (BoundingBox) selected.getWorldBound();
                 settings.setRadius(worldBound.getYExtent() * settings.getBoundingScale());
@@ -325,27 +297,6 @@ public class VehicleEditorController implements LookupListener, ActionListener {
             ((Node) node).attachChild(selected);
             parent.attachChild(node);
         }
-
-//        Lookup.getDefault().lookup(SceneUndoRedoManager.class).addEdit(this, new AbstractUndoableSceneEdit() {
-//
-//            @Override
-//            public void sceneUndo() throws CannotUndoException {
-//                //undo stuff here
-//            }
-//
-//            @Override
-//            public void sceneRedo() throws CannotRedoException {
-//                //redo stuff here
-//            }
-//
-//            @Override
-//            public void awtRedo() {
-//            }
-//
-//            @Override
-//            public void awtUndo() {
-//            }
-//        });
     }
 
     public void checkVehicle() {
@@ -355,19 +306,12 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         try {
             final Node node = jmeRootNode.getLookup().lookup(Node.class);
             if (node != null) {
-                if (SceneApplication.getApplication().enqueue(new Callable<Boolean>() {
-
-                    public Boolean call() throws Exception {
-                        return doCheckVehicle(node);
-                    }
-                }).get().booleanValue()) {
+                if (SceneApplication.getApplication().enqueue(() -> doCheckVehicle(node)).get()) {
                     currentFileObject.setModified(true);
                     refreshRoot();
                 }
             }
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -397,17 +341,12 @@ public class VehicleEditorController implements LookupListener, ActionListener {
 //                return;
 //            }
             final VehicleControl control = vehicleControl;
-            SceneApplication.getApplication().enqueue(new Callable() {
-
-                public Object call() throws Exception {
-                    doCreateHullShapeFromSelected(control, node);// new LinkedList<Geometry>(list));
-                    return null;
-                }
+            SceneApplication.getApplication().enqueue(() -> {
+                doCreateHullShapeFromSelected(control, node);// new LinkedList<Geometry>(list));
+                return null;
             }).get();
             currentFileObject.setModified(true);
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -424,18 +363,12 @@ public class VehicleEditorController implements LookupListener, ActionListener {
     public void applyWheelData(final int wheels, final SuspensionSettings settings) {
         try {
             final VehicleControl vehicleControl = this.vehicleControl;
-            SceneApplication.getApplication().enqueue(new Callable() {
-
-                public Object call() throws Exception {
-                    doApplyWheelData(vehicleControl, wheels, settings);
-                    return null;
-
-                }
+            SceneApplication.getApplication().enqueue(() -> {
+                doApplyWheelData(vehicleControl, wheels, settings);
+                return null;
             }).get();
             currentFileObject.setModified(true);
-        } catch (InterruptedException ex) {
-            Exceptions.printStackTrace(ex);
-        } catch (ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException ex) {
             Exceptions.printStackTrace(ex);
         }
     }
@@ -468,49 +401,28 @@ public class VehicleEditorController implements LookupListener, ActionListener {
         }
     }
 
-    private void refreshSelected(final JmeSpatial spat) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                if (spat != null) {
-                    spat.refresh(false);
-                }
-            }
-        });
-
-    }
-
     private void refreshSelected() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                if (getSelectedSpat() != null) {
-                    getSelectedSpat().refresh(false);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            if (getSelectedSpat() != null) {
+                getSelectedSpat().refresh(false);
             }
         });
 
     }
 
     private void refreshSelectedParent() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                if (getSelectedSpat() != null) {
-                    ((JmeSpatial) getSelectedSpat().getParentNode()).refresh(false);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            if (getSelectedSpat() != null) {
+                ((JmeSpatial) getSelectedSpat().getParentNode()).refresh(false);
             }
         });
 
     }
 
     private void refreshRoot() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                if (getJmeRootNode() != null) {
-                    getJmeRootNode().refresh(true);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            if (getJmeRootNode() != null) {
+                getJmeRootNode().refresh(true);
             }
         });
 
@@ -519,14 +431,13 @@ public class VehicleEditorController implements LookupListener, ActionListener {
     public void cleanup() {
         result.removeLookupListener(this);
         result2.removeLookupListener(this);
-        final Node node = jmeRootNode.getLookup().lookup(Node.class);
         toolController.cleanup();
     }
 
+    @Override
     public void resultChanged(LookupEvent ev) {
         boolean cleared = false;
-        for (Iterator<? extends JmeSpatial> it = result.allInstances().iterator(); it.hasNext();) {
-            JmeSpatial jmeSpatial = it.next();
+        for (JmeSpatial jmeSpatial : result.allInstances()) {
             selectedSpat = jmeSpatial;
             Spatial spat = jmeSpatial.getLookup().lookup(Spatial.class);
             toolController.updateSelection(spat);
@@ -536,7 +447,7 @@ public class VehicleEditorController implements LookupListener, ActionListener {
                     list.clear();
                     cleared = true;
                 }
-                Logger.getLogger(VehicleEditorController.class.getName()).log(Level.INFO, "adding:" + jmeSpatial.getName());
+                Logger.getLogger(VehicleEditorController.class.getName()).log(Level.INFO, "adding:{0}", jmeSpatial.getName());
                 list.add(geom);
             }
         }
@@ -558,47 +469,56 @@ public class VehicleEditorController implements LookupListener, ActionListener {
     float steeringValue = 0;
     float accelerationValue = 0;
 
+    @Override
     public void onAction(String binding, boolean value, float f) {
         if (!testing) {
             return;
         }
-        if (binding.equals("VehicleEditor_Left")) {
-            if (value) {
-                steeringValue += .5f;
-            } else {
-                steeringValue += -.5f;
-            }
-            vehicleControl.steer(steeringValue);
-        } else if (binding.equals("VehicleEditor_Right")) {
-            if (value) {
-                steeringValue += -.5f;
-            } else {
-                steeringValue += .5f;
-            }
-            vehicleControl.steer(steeringValue);
-        } else if (binding.equals("VehicleEditor_Up")) {
-            if (value) {
-                accelerationValue += motorForce;
-            } else {
-                accelerationValue -= motorForce;
-            }
-            vehicleControl.accelerate(accelerationValue);
-        } else if (binding.equals("VehicleEditor_Down")) {
-            if (value) {
-                vehicleControl.brake(brakeForce);
-            } else {
-                vehicleControl.brake(0);
-            }
-        } else if (binding.equals("VehicleEditor_Reset")) {
-            if (value) {
-                System.out.println("Reset");
-                vehicleControl.setPhysicsLocation(Vector3f.ZERO);
-                vehicleControl.setPhysicsRotation(new Matrix3f());
-                vehicleControl.setLinearVelocity(Vector3f.ZERO);
-                vehicleControl.setAngularVelocity(Vector3f.ZERO);
-                vehicleControl.resetSuspension();
-            } else {
-            }
+        switch (binding) {
+            case "VehicleEditor_Left":
+                if (value) {
+                    steeringValue += .5f;
+                } else {
+                    steeringValue += -.5f;
+                }
+                vehicleControl.steer(steeringValue);
+                break;
+            case "VehicleEditor_Right":
+                if (value) {
+                    steeringValue += -.5f;
+                } else {
+                    steeringValue += .5f;
+                }
+                vehicleControl.steer(steeringValue);
+                break;
+            case "VehicleEditor_Up":
+                if (value) {
+                    accelerationValue += motorForce;
+                } else {
+                    accelerationValue -= motorForce;
+                }
+                vehicleControl.accelerate(accelerationValue);
+                break;
+            case "VehicleEditor_Down":
+                if (value) {
+                    vehicleControl.brake(brakeForce);
+                } else {
+                    vehicleControl.brake(0);
+                }
+                break;
+            case "VehicleEditor_Reset":
+                if (value) {
+                    System.out.println("Reset");
+                    vehicleControl.setPhysicsLocation(Vector3f.ZERO);
+                    vehicleControl.setPhysicsRotation(new Matrix3f());
+                    vehicleControl.setLinearVelocity(Vector3f.ZERO);
+                    vehicleControl.setAngularVelocity(Vector3f.ZERO);
+                    vehicleControl.resetSuspension();
+                } else {
+                }
+                break;
+            default:
+                break;
         }
     }
 

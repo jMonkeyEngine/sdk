@@ -36,6 +36,7 @@ import com.jme3.gde.core.assets.AssetData;
 import com.jme3.gde.core.assets.AssetDataObject;
 import com.jme3.gde.core.scene.controller.AbstractCameraController;
 import com.jme3.gde.core.scene.processors.WireProcessor;
+import com.jme3.gde.core.scene.state.NormalViewState;
 import com.jme3.gde.core.sceneexplorer.nodes.NodeUtility;
 import com.jme3.gde.core.sceneviewer.SceneViewerTopComponent;
 import com.jme3.gde.core.undoredo.SceneUndoRedoManager;
@@ -594,70 +595,87 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
             }
         });
     }
+    
+    private void createPbrLightProbe(final Node activeNode) {
+        new Thread() {
+            @Override
+            public void run() {
+                Spatial s = assetManager.loadModel("com/jme3/gde/core/sceneviewer/pbrenv.j3o");
+                pbrLightProbe = (LightProbe)s.getLocalLightList().get(0);
+                s.getLocalLightList().clear();
 
-    public void enablePBRProbe(final boolean selected) {
-        if (pbrLightProbe == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    Spatial s = assetManager.loadModel("com/jme3/gde/core/sceneviewer/pbrenv.j3o");
-                    pbrLightProbe = (LightProbe)s.getLocalLightList().get(0);
-                    s.getLocalLightList().clear();
-
-                    enqueue(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            rootNode.addLight(pbrLightProbe);
-                            return null;
-                        }
-                    });
-                }
-
-            }.start();
-        } else {
-            enqueue(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    if (selected) {
-                        rootNode.addLight(pbrLightProbe);
-                    } else {
-                        rootNode.removeLight(pbrLightProbe);
-                    }
+                enqueue(() -> {
+                    activeNode.addLight(pbrLightProbe);
                     return null;
+                });
+            }
+
+        }.start();
+    }
+    
+    private void togglePbrProbe(final boolean selected, final Node activeNode) {
+        if (pbrLightProbe == null) {
+            createPbrLightProbe(activeNode);
+        } else {
+            enqueue(() -> {
+                if (selected) {
+                    activeNode.addLight(pbrLightProbe);
+                } else {
+                    activeNode.removeLight(pbrLightProbe);
                 }
+                return null;
             });
         }
     }
+    
 
-    public void enablePBRSkybox(final boolean selected) {
-        if (pbrSky == null) {
-            new Thread() {
+    public void enablePBRProbe(final boolean selected) {
+        if (pbrLightProbe == null) {
+            createPbrLightProbe(rootNode);
+        } else {
+            togglePbrProbe(selected, rootNode);
+        }
+    }
+    
+    private void createPbrSkyBox(final Node activeNode) {
+        new Thread() {
                 @Override
                 public void run() {
                     pbrSky = SkyFactory.createSky(assetManager, "Textures/Sky/Path.hdr", SkyFactory.EnvMapType.EquirectMap);
 
-                    enqueue(new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            rootNode.attachChild(pbrSky);
-                            return null;
-                        }
+                    enqueue(() -> {
+                        activeNode.attachChild(pbrSky);
+                        return null;
                     });
                 }
 
             }.start();
+    }
+    
+    private void togglePbrSkybox(final boolean selected, final Node activeNode) {
+        enqueue(() -> {
+            if (selected) {
+                activeNode.attachChild(pbrSky);
+            } else {
+                pbrSky.removeFromParent();
+            }
+            return null;
+        });
+    }
+
+    public void enablePBRSkybox(final boolean selected) {
+        if (pbrSky == null) {
+            createPbrSkyBox(rootNode);
         } else {
-            enqueue(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    if (selected) {
-                        rootNode.attachChild(pbrSky);
-                    } else {
-                        pbrSky.removeFromParent();
-                    }
-                    return null;
-                }
-            });
+            togglePbrSkybox(selected, rootNode);
+        }
+    }
+    
+    public void enablePreviewLighting(final boolean selected) {
+        if (pbrLightProbe == null) {
+            createPbrLightProbe(previewProcessor.previewNode);
+        } else {
+            togglePbrProbe(selected, previewProcessor.previewNode);
         }
     }
 
@@ -768,5 +786,13 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
 
     public boolean isAwt() {
         return java.awt.EventQueue.isDispatchThread();
+    }
+
+    public void enableNormalView(boolean selected) {
+        if(selected) {
+            stateManager.attach(new NormalViewState());
+        } else if(stateManager.getState(NormalViewState.class) != null) {
+            stateManager.detach(stateManager.getState(NormalViewState.class));
+        }
     }
 }

@@ -33,6 +33,7 @@ jobs:
       run: ./gradlew fixPlatformIndependent -Ptag_name=${{ github.ref_name }}
     - name: Create Release
       uses: softprops/action-gh-release@v1
+
       with:
         files: dist/jmonkeyplatform*.*
         tag_name:  ${{ github.ref }}

@@ -32,6 +32,7 @@
 package com.jme3.gde.core.assets;
 
 import com.jme3.gde.core.filters.FilterPostProcessorNode;
+import com.jme3.gde.core.icons.IconList;
 import com.jme3.post.FilterPostProcessor;
 import java.io.IOException;
 import org.openide.awt.ActionID;
@@ -52,7 +53,7 @@ import org.openide.loaders.MultiFileLoader;
         mimeType = "application/jme3filterpostprocessor",
         extension = {"j3f"}
 )
-@DataObject.Registration(iconBase = "com/jme3/gde/core/icons/eye.gif", displayName = "jME3 FilterPostProcessor", mimeType = "application/jme3filterpostprocessor")
+@DataObject.Registration(iconBase = IconList.FILTER, displayName = "jME3 FilterPostProcessor", mimeType = "application/jme3filterpostprocessor")
 @ActionReferences({
     @ActionReference(id = @ActionID(category = "Edit", id = "org.openide.actions.CutAction"), path = "Loaders/application/jme3filterpostprocessor/Actions", position = 200, separatorBefore = 100),
     @ActionReference(id = @ActionID(category = "Edit", id = "org.openide.actions.CopyAction"), path = "Loaders/application/jme3filterpostprocessor/Actions", position = 300, separatorAfter = 400),

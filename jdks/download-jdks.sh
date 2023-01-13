@@ -11,8 +11,8 @@
 set -e # Quit on Error
 
 jdk_major_version="11"
-jdk_version="0.15"
-jdk_build_version="10"
+jdk_version="0.17"
+jdk_build_version="8"
 platforms=( "x64_linux" "x86-32_windows" "x64_windows" "x64_mac" )
 
 # DEPRECATED (not required anymore)
@@ -72,7 +72,7 @@ function download_jdk {
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -s -o downloads/jdk-$1$2 -L https://github.com/adoptium/temurin$jdk_major_version-binaries/releases/download/jdk-$jdk_major_version.$jdk_version+$jdk_build_version/OpenJDK${jdk_major_version}U-jdk_$1_hotspot_$jdk_major_version.${jdk_version}_$jdk_build_version$2
+        curl -# -o downloads/jdk-$1$2 -L https://github.com/adoptium/temurin$jdk_major_version-binaries/releases/download/jdk-$jdk_major_version.$jdk_version+$jdk_build_version/OpenJDK${jdk_major_version}U-jdk_$1_hotspot_$jdk_major_version.${jdk_version}_$jdk_build_version$2
         echo "<<< OK!"
     fi
 }
