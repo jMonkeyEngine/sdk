@@ -87,22 +87,23 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="materialPreviewWidget1" min="-2" pref="255" max="-2" attributes="0"/>
-                              <Component id="jTabbedPane3" max="32767" attributes="0"/>
+                              <Component id="jTabbedPane3" pref="480" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="texturesAndColorsPane" pref="504" max="32767" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="32767" attributes="0"/>
-                                  <Component id="additionalRenderStatePane" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="texturesAndColorsPane" min="-2" pref="496" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="additionalRenderStatePane" pref="355" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jToolBar3" max="32767" attributes="1"/>
                                       <Component id="jToolBar2" pref="387" max="32767" attributes="1"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jCheckBox1" min="-2" pref="148" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
@@ -138,8 +139,11 @@
                 <Container class="javax.swing.JTabbedPane" name="texturesAndColorsPane">
                   <Properties>
                     <Property name="tabLayoutPolicy" type="int" value="1"/>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[150, 31]"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[539, 355]"/>
+                      <Dimension value="[480, 355]"/>
                     </Property>
                   </Properties>
 
@@ -179,10 +183,10 @@
                 <Container class="javax.swing.JTabbedPane" name="jTabbedPane3">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[350, 355]"/>
+                      <Dimension value="[380, 355]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[410, 355]"/>
+                      <Dimension value="[500, 355]"/>
                     </Property>
                   </Properties>
 
@@ -211,8 +215,9 @@
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="optionsPanel">
 
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
-                            <Property name="axis" type="int" value="3"/>
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                            <Property name="columns" type="int" value="2"/>
+                            <Property name="rows" type="int" value="0"/>
                           </Layout>
                         </Container>
                       </SubComponents>
@@ -357,10 +362,10 @@
                 <Container class="javax.swing.JTabbedPane" name="additionalRenderStatePane">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[350, 355]"/>
+                      <Dimension value="[150, 100]"/>
                     </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[411, 355]"/>
+                      <Dimension value="[380, 355]"/>
                     </Property>
                   </Properties>
 
