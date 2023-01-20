@@ -86,6 +86,7 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         previewLabel.setMinimumSize(new java.awt.Dimension(200, 200));
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
         jToolBar1.setMaximumSize(new java.awt.Dimension(80, 50));
         jToolBar1.setMinimumSize(new java.awt.Dimension(80, 50));

@@ -35,34 +35,24 @@ public class FloatPanel extends MaterialPropertyWidget {
 
         jToolBar1 = new javax.swing.JToolBar();
         jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(32767, 0));
         jSpinner1 = new javax.swing.JSpinner();
+
+        setMinimumSize(new java.awt.Dimension(100, 27));
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
+        jToolBar1.setPreferredSize(new java.awt.Dimension(159, 27));
 
         jLabel1.setText(org.openide.util.NbBundle.getMessage(FloatPanel.class, "FloatPanel.jLabel1.text")); // NOI18N
-        jLabel1.setMaximumSize(new java.awt.Dimension(100, 16));
-        jLabel1.setPreferredSize(new java.awt.Dimension(100, 16));
+        jLabel1.setMaximumSize(new java.awt.Dimension(300, 16));
         jToolBar1.add(jLabel1);
+        jToolBar1.add(filler1);
 
-        jPanel1.setOpaque(false);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 23, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 24, Short.MAX_VALUE)
-        );
-
-        jToolBar1.add(jPanel1);
-
-        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(0.0f), null, null, Float.valueOf(1.0f)));
-        jSpinner1.setPreferredSize(new java.awt.Dimension(70, 20));
+        jSpinner1.setModel(new javax.swing.SpinnerNumberModel(0.0f, null, null, 1.0f));
+        jSpinner1.setMaximumSize(new java.awt.Dimension(100, 23));
+        jSpinner1.setMinimumSize(new java.awt.Dimension(100, 23));
+        jSpinner1.setPreferredSize(new java.awt.Dimension(100, 23));
         jSpinner1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 valueChanged(evt);
@@ -74,7 +64,7 @@ public class FloatPanel extends MaterialPropertyWidget {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,8 +99,8 @@ public class FloatPanel extends MaterialPropertyWidget {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
