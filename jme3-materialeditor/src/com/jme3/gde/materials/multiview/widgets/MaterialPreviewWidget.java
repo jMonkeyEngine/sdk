@@ -1,8 +1,34 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (c) 2009-2023 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 /*
  * MaterialPreviewWidget.java
  *
@@ -73,6 +99,7 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         cubeButton = new javax.swing.JToggleButton();
         planeButton = new javax.swing.JToggleButton();
         sphereButton = new javax.swing.JToggleButton();
+        teapotButton = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         togglePbrEnvButton = new javax.swing.JToggleButton();
 
@@ -86,7 +113,6 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         previewLabel.setMinimumSize(new java.awt.Dimension(200, 200));
 
         jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
         jToolBar1.setMaximumSize(new java.awt.Dimension(80, 50));
         jToolBar1.setMinimumSize(new java.awt.Dimension(80, 50));
@@ -120,7 +146,7 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         planeButton.setMaximumSize(new java.awt.Dimension(40, 40));
         planeButton.setMinimumSize(new java.awt.Dimension(40, 40));
         planeButton.setPreferredSize(new java.awt.Dimension(40, 40));
-        planeButton.setPressedIcon(Icons.planeOn);
+        planeButton.setSelectedIcon(Icons.planeOn);
         planeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         planeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,6 +174,25 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(sphereButton);
+
+        toggleButtonGroup.add(teapotButton);
+        teapotButton.setIcon(Icons.teapotOff);
+        teapotButton.setText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.teapotButton.text")); // NOI18N
+        teapotButton.setToolTipText(org.openide.util.NbBundle.getMessage(MaterialPreviewWidget.class, "MaterialPreviewWidget.teapotButton.toolTipText")); // NOI18N
+        teapotButton.setFocusable(false);
+        teapotButton.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        teapotButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        teapotButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        teapotButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        teapotButton.setPreferredSize(new java.awt.Dimension(40, 40));
+        teapotButton.setSelectedIcon(Icons.teapotOn);
+        teapotButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        teapotButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                teapotButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(teapotButton);
         jToolBar1.add(jSeparator1);
 
         togglePbrEnvButton.setIcon(Icons.lightOff);
@@ -207,6 +252,10 @@ private void planeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         matRenderer.refreshOnly();
     }//GEN-LAST:event_togglePbrEnvButtonActionPerformed
 
+    private void teapotButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_teapotButtonActionPerformed
+        matRenderer.switchDisplay(MaterialPreviewRenderer.DisplayType.Teapot);
+    }//GEN-LAST:event_teapotButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton cubeButton;
     private javax.swing.JToolBar.Separator jSeparator1;
@@ -214,6 +263,7 @@ private void planeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JToggleButton planeButton;
     private javax.swing.JLabel previewLabel;
     private javax.swing.JToggleButton sphereButton;
+    private javax.swing.JToggleButton teapotButton;
     private javax.swing.ButtonGroup toggleButtonGroup;
     private javax.swing.JToggleButton togglePbrEnvButton;
     // End of variables declaration//GEN-END:variables
