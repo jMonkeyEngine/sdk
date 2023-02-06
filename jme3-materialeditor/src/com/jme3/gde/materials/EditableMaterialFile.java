@@ -72,10 +72,8 @@ public class EditableMaterialFile {
         additionalRenderStates.put("DepthWrite", new MaterialProperty("OnOff", "DepthWrite", ""));
         additionalRenderStates.put("DepthTest", new MaterialProperty("OnOff", "DepthTest", ""));
         additionalRenderStates.put("ColorWrite", new MaterialProperty("OnOff", "ColorWrite", ""));
-        additionalRenderStates.put("PointSprite", new MaterialProperty("OnOff", "PointSprite", ""));
         additionalRenderStates.put("FaceCull", new MaterialProperty("FaceCullMode", "FaceCull", ""));
         additionalRenderStates.put("Blend", new MaterialProperty("BlendMode", "Blend", ""));
-        additionalRenderStates.put("AlphaTestFalloff", new MaterialProperty("Float", "AlphaTestFalloff", ""));
         additionalRenderStates.put("PolyOffset", new MaterialProperty("Float,Float", "PolyOffset", ""));
     }
 
@@ -474,10 +472,8 @@ public class EditableMaterialFile {
         additionalRenderStates.put("DepthWrite", new MaterialProperty("OnOff", "DepthWrite", mat.getAdditionalRenderState().isDepthWrite() ? "On" : "Off"));
         additionalRenderStates.put("DepthTest", new MaterialProperty("OnOff", "DepthTest", mat.getAdditionalRenderState().isDepthTest() ? "On" : "Off"));
         additionalRenderStates.put("ColorWrite", new MaterialProperty("OnOff", "ColorWrite", mat.getAdditionalRenderState().isColorWrite() ? "On" : "Off"));
-        additionalRenderStates.put("PointSprite", new MaterialProperty("OnOff", "PointSprite", mat.getAdditionalRenderState().isPointSprite() ? "On" : "Off"));
         additionalRenderStates.put("FaceCull", new MaterialProperty("FaceCullMode", "FaceCull", mat.getAdditionalRenderState().getFaceCullMode().name()));
         additionalRenderStates.put("Blend", new MaterialProperty("BlendMode", "Blend", mat.getAdditionalRenderState().getBlendMode().name()));
-        additionalRenderStates.put("AlphaTestFalloff", new MaterialProperty("Float", "AlphaTestFalloff", mat.getAdditionalRenderState().getAlphaFallOff() + ""));
         additionalRenderStates.put("PolyOffset", new MaterialProperty("Float,Float", "PolyOffset", mat.getAdditionalRenderState().getPolyOffsetUnits() + " " + mat.getAdditionalRenderState().getPolyOffsetFactor()));
         checkWithMatDef();
         setAsText(getUpdatedContent());
