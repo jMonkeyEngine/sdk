@@ -110,7 +110,8 @@ public class TexturePanelSquare extends MaterialPropertyWidget {
                         if (texPreview == null) {
                             texPreview = new TexturePreview(manager);
                         }
-                        texPreview.requestPreview(stripQuotes(textureName), "", 80, 25, texturePreview, null);
+                        final String[] textureNameComponents = textureName.split(" ");
+                        texPreview.requestPreview(stripQuotes(textureNameComponents[textureNameComponents.length-1]), "", 80, 25, texturePreview, null);
                     } catch (AssetNotFoundException a) {
                         Logger.getLogger(MaterialEditorTopComponent.class.getName()).log(Level.WARNING, "Could not load texture {0}", textureName);
                     }

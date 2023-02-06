@@ -54,7 +54,8 @@ public class TexturePanel extends MaterialPropertyWidget {
                         if (texPreview == null) {
                             texPreview = new TexturePreview(manager);
                         }
-                        texPreview.requestPreview(stripQuotes(textureName), "", 80, 25, texturePreview, null);
+                        final String[] textureNameComponents = textureName.split(" ");
+                        texPreview.requestPreview(stripQuotes(textureNameComponents[textureNameComponents.length-1]), "", 80, 25, texturePreview, null);
                     } catch (AssetNotFoundException a) {
                         Logger.getLogger(MaterialEditorTopComponent.class.getName()).log(Level.WARNING, "Could not load texture {0}", textureName);
                     }
@@ -68,19 +69,21 @@ public class TexturePanel extends MaterialPropertyWidget {
     }
 
     private void updateFlipRepeat() {
-        if (flip && repeat) {
-            property.setValue("Flip Repeat " + textureName);
-            texturePreview.setToolTipText("Flip Repeat " + textureName);
-        } else if (flip) {
-            property.setValue("Flip " + textureName);
-            texturePreview.setToolTipText("Flip " + textureName);
-        } else if (repeat) {
-            property.setValue("Repeat " + textureName);
-            texturePreview.setToolTipText("Repeat " + textureName);
-        } else {
-            property.setValue(textureName);
-            texturePreview.setToolTipText(textureName);
+        String propertyValue = property.getValue();
+        propertyValue = propertyValue.replaceFirst(textureName, "");
+        if(flip && !propertyValue.contains("Flip ")) {
+            propertyValue += "Flip ";
+        } else if(!flip) {
+            propertyValue = propertyValue.replaceFirst("Flip ", "");
         }
+        if(repeat && !propertyValue.contains("Repeat ")) {
+            propertyValue += "Repeat ";
+        } else if(!repeat) {
+            propertyValue = propertyValue.replaceFirst("Repeat ", "");
+        }
+        propertyValue += textureName;
+        property.setValue(propertyValue);
+        texturePreview.setToolTipText(propertyValue);
     }
 
     private static BufferedImage resizeImage(BufferedImage originalImage) {
@@ -281,19 +284,16 @@ public class TexturePanel extends MaterialPropertyWidget {
 
             @Override
             public void run() {
-                if (property.getValue().startsWith("Flip Repeat ")) {
+                textureName = property.getValue();
+                if (textureName.contains("Flip ")) {
                     flip = true;
+                    textureName = textureName.replaceFirst("Flip ", "").trim();
+                } 
+                if (textureName.contains("Repeat ")) {
                     repeat = true;
-                    textureName = property.getValue().replaceFirst("Flip Repeat ", "").trim();
-                } else if (property.getValue().startsWith("Flip ")) {
-                    flip = true;
-                    textureName = property.getValue().replaceFirst("Flip ", "").trim();
-                } else if (property.getValue().startsWith("Repeat ")) {
-                    repeat = true;
-                    textureName = property.getValue().replaceFirst("Repeat ", "").trim();
-                } else {
-                    textureName = property.getValue();
+                    textureName = textureName.replaceFirst("Repeat ", "").trim();
                 }
+                property.setValue(textureName);
                 jLabel1.setText(property.getName());
                 jLabel1.setToolTipText(property.getName());
                 displayPreview();
