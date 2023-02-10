@@ -55,7 +55,7 @@ public class TexturePanel extends MaterialPropertyWidget {
                             texPreview = new TexturePreview(manager);
                         }
                         final String[] textureNameComponents = textureName.split(" ");
-                        texPreview.requestPreview(stripQuotes(textureNameComponents[textureNameComponents.length-1]), "", 80, 25, texturePreview, null);
+                        texPreview.requestPreview(stripQuotes(textureNameComponents[textureNameComponents.length - 1]), "", 80, 25, texturePreview, null);
                     } catch (AssetNotFoundException a) {
                         Logger.getLogger(MaterialEditorTopComponent.class.getName()).log(Level.WARNING, "Could not load texture {0}", textureName);
                     }
@@ -280,30 +280,26 @@ public class TexturePanel extends MaterialPropertyWidget {
 
     @Override
     protected void readProperty() {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                textureName = property.getValue();
-                if (textureName.contains("Flip ")) {
-                    flip = true;
-                    textureName = textureName.replaceFirst("Flip ", "").trim();
-                } 
-                if (textureName.contains("Repeat ")) {
-                    repeat = true;
-                    textureName = textureName.replaceFirst("Repeat ", "").trim();
-                }
-                property.setValue(textureName);
-                jLabel1.setText(property.getName());
-                jLabel1.setToolTipText(property.getName());
-                displayPreview();
-                texturePreview.setToolTipText(property.getValue());
-                MaterialProperty prop = property;
-                property = null;
-                jCheckBox1.setSelected(flip);
-                jCheckBox2.setSelected(repeat);
-                property = prop;
+        java.awt.EventQueue.invokeLater(() -> {
+            textureName = property.getValue();
+            if (textureName.contains("Flip ")) {
+                flip = true;
+                textureName = textureName.replaceFirst("Flip ", "").trim();
             }
+            if (textureName.contains("Repeat ")) {
+                repeat = true;
+                textureName = textureName.replaceFirst("Repeat ", "").trim();
+            }
+            property.setValue(textureName);
+            jLabel1.setText(property.getName());
+            jLabel1.setToolTipText(property.getName());
+            displayPreview();
+            texturePreview.setToolTipText(property.getValue());
+            MaterialProperty prop = property;
+            property = null;
+            jCheckBox1.setSelected(flip);
+            jCheckBox2.setSelected(repeat);
+            property = prop;
         });
     }
 
