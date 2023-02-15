@@ -127,14 +127,14 @@ public class TexturePanelSquare extends MaterialPropertyWidget {
     private void updateFlipRepeat() {
         String propertyValue = property.getValue();
         propertyValue = propertyValue.replaceFirst(textureName, "");
-        if(flip && !propertyValue.contains("Flip ")) {
+        if (flip && !propertyValue.contains("Flip ")) {
             propertyValue += "Flip ";
-        } else if(!flip) {
+        } else if (!flip) {
             propertyValue = propertyValue.replaceFirst("Flip ", "");
         }
-        if(repeat && !propertyValue.contains("Repeat ")) {
+        if (repeat && !propertyValue.contains("Repeat ")) {
             propertyValue += "Repeat ";
-        } else if(!repeat) {
+        } else if (!repeat) {
             propertyValue = propertyValue.replaceFirst("Repeat ", "");
         }
         propertyValue += textureName;
