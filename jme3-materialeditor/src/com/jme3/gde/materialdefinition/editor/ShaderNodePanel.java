@@ -31,13 +31,13 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.ConnectionEndpoint;
-import com.jme3.gde.core.editor.nodes.NodePanel;
+import com.jme3.gde.materialdefinition.editor.nodes.ConnectionEndpoint;
+import com.jme3.gde.materialdefinition.editor.nodes.NodePanel;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.DefinitionBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
-import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.icons.Icons;
 import com.jme3.gde.materialdefinition.editor.previews.BasePreview;
 import com.jme3.gde.materialdefinition.editor.previews.PreviewFactory;
 import com.jme3.shader.Shader;

@@ -31,12 +31,12 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.ConnectionEndpoint;
-import com.jme3.gde.core.editor.nodes.Connection;
-import com.jme3.gde.core.editor.nodes.NodeEditor;
-import com.jme3.gde.core.editor.nodes.Diagram;
-import com.jme3.gde.core.editor.nodes.NodePanel;
-import com.jme3.gde.core.editor.nodes.Selectable;
+import com.jme3.gde.materialdefinition.editor.nodes.ConnectionEndpoint;
+import com.jme3.gde.materialdefinition.editor.nodes.Connection;
+import com.jme3.gde.materialdefinition.editor.nodes.NodeEditor;
+import com.jme3.gde.materialdefinition.editor.nodes.Diagram;
+import com.jme3.gde.materialdefinition.editor.nodes.NodePanel;
+import com.jme3.gde.materialdefinition.editor.nodes.Selectable;
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.core.errorreport.ExceptionPanel;
 import com.jme3.gde.materialdefinition.EditableMatDefFile;
@@ -101,7 +101,7 @@ import org.openide.windows.TopComponent;
 
 @MultiViewElement.Registration(
         displayName = "#LBL_MatDef_EDITOR",
-        iconBase = "com/jme3/gde/core/editor/icons/matdef.png",
+        iconBase = "com/jme3/gde/materialdefinition/editor/icons/matdef.png",
         mimeType = "text/jme-materialdefinition",
         persistenceType = TopComponent.PERSISTENCE_ONLY_OPENED,
         preferredID = "MatDefVisual",

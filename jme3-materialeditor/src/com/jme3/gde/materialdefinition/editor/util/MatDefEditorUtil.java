@@ -34,7 +34,7 @@ package com.jme3.gde.materialdefinition.editor.util;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.ShaderNodeDefinitionKey;
-import com.jme3.gde.core.editor.nodes.Connection;
+import com.jme3.gde.materialdefinition.editor.nodes.Connection;
 import com.jme3.gde.materialdefinition.editor.InOut;
 import com.jme3.gde.materialdefinition.editor.ShaderOutBusPanel;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;

@@ -35,7 +35,7 @@ import com.jme3.asset.ShaderNodeDefinitionKey;
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.core.util.TreeUtil;
 import com.jme3.gde.materialdefinition.editor.ShaderNodeDiagram;
-import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.icons.Icons;
 import com.jme3.gde.materialdefinition.utils.DocFormatter;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderNodeDefinition;

@@ -149,7 +149,6 @@ public final class SNDefVisualPanel2 extends JPanel {
         });
         jScrollPane1.setViewportView(varTable);
 
-        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         org.openide.awt.Mnemonics.setLocalizedText(titleLabel, org.openide.util.NbBundle.getMessage(SNDefVisualPanel2.class, "SNDefVisualPanel2.titleLabel.text")); // NOI18N
@@ -161,7 +160,7 @@ public final class SNDefVisualPanel2 extends JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 372, Short.MAX_VALUE)
+            .addGap(0, 332, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,7 +169,7 @@ public final class SNDefVisualPanel2 extends JPanel {
 
         jToolBar1.add(jPanel1);
 
-        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/add.png"))); // NOI18N
+        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/add.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(addButton, org.openide.util.NbBundle.getMessage(SNDefVisualPanel2.class, "SNDefVisualPanel2.addButton.text")); // NOI18N
         addButton.setToolTipText(org.openide.util.NbBundle.getMessage(SNDefVisualPanel2.class, "SNDefVisualPanel2.addButton.toolTipText")); // NOI18N
         addButton.setAlignmentX(0.5F);
@@ -181,7 +180,7 @@ public final class SNDefVisualPanel2 extends JPanel {
         });
         jToolBar1.add(addButton);
 
-        delButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/remove.png"))); // NOI18N
+        delButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/remove.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(delButton, org.openide.util.NbBundle.getMessage(SNDefVisualPanel2.class, "SNDefVisualPanel2.delButton.text")); // NOI18N
         delButton.setToolTipText(org.openide.util.NbBundle.getMessage(SNDefVisualPanel2.class, "SNDefVisualPanel2.delButton.toolTipText")); // NOI18N
         delButton.setAlignmentX(0.5F);

@@ -31,10 +31,10 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.DraggablePanel;
-import com.jme3.gde.core.editor.nodes.ConnectionEndpoint;
-import com.jme3.gde.core.editor.nodes.Diagram;
-import com.jme3.gde.core.editor.nodes.Selectable;
+import com.jme3.gde.materialdefinition.editor.nodes.DraggablePanel;
+import com.jme3.gde.materialdefinition.editor.nodes.ConnectionEndpoint;
+import com.jme3.gde.materialdefinition.editor.nodes.Diagram;
+import com.jme3.gde.materialdefinition.editor.nodes.Selectable;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.OutputMappingBlock;
 import com.jme3.material.Material;

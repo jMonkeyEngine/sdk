@@ -29,9 +29,9 @@
  *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jme3.gde.core.editor.nodes;
+package com.jme3.gde.materialdefinition.editor.nodes;
 
-import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.icons.Icons;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GradientPaint;

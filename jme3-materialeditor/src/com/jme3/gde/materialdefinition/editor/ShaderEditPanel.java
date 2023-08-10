@@ -233,11 +233,11 @@ public class ShaderEditPanel extends JPanel {
 
         headerText.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         headerText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        headerText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/fragment.png"))); // NOI18N
+        headerText.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/fragment.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(headerText, org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.headerText.text")); // NOI18N
 
         closeButton.setFont(new java.awt.Font("Tahoma", 1, 8)); // NOI18N
-        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/out.png"))); // NOI18N
+        closeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/out.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(closeButton, org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.closeButton.text")); // NOI18N
         closeButton.setToolTipText(org.openide.util.NbBundle.getMessage(ShaderEditPanel.class, "ShaderEditPanel.closeButton.toolTipText")); // NOI18N
         closeButton.setMargin(new java.awt.Insets(0, 0, 0, 0));

@@ -31,7 +31,7 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.Diagram;
+import com.jme3.gde.materialdefinition.editor.nodes.Diagram;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
 import com.jme3.material.Material;
 import java.awt.Container;
@@ -144,7 +144,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         toolBar.setOpaque(false);
 
         reloadButton.setBackground(new java.awt.Color(153, 153, 153));
-        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/reload.png"))); // NOI18N
+        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/reload.png"))); // NOI18N
         reloadButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.reloadButton.toolTipText")); // NOI18N
         reloadButton.setBorder(null);
         reloadButton.setBorderPainted(false);
@@ -170,7 +170,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         });
 
         expandButton.setBackground(new java.awt.Color(153, 153, 153));
-        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/collapse.png"))); // NOI18N
+        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/collapse.png"))); // NOI18N
         expandButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.expandButton.toolTipText")); // NOI18N
         expandButton.setBorder(null);
         expandButton.setBorderPainted(false);
@@ -196,7 +196,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         });
 
         sphereButton.setBackground(new java.awt.Color(153, 153, 153));
-        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Sphere.png"))); // NOI18N
+        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/Sphere.png"))); // NOI18N
         sphereButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.sphereButton.toolTipText")); // NOI18N
         sphereButton.setBorder(null);
         sphereButton.setBorderPainted(false);
@@ -222,7 +222,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         });
 
         boxButton.setBackground(new java.awt.Color(153, 153, 153));
-        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/cube.png"))); // NOI18N
+        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/cube.png"))); // NOI18N
         boxButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.boxButton.toolTipText")); // NOI18N
         boxButton.setBorder(null);
         boxButton.setBorderPainted(false);
@@ -248,7 +248,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         });
 
         quadButton.setBackground(new java.awt.Color(153, 153, 153));
-        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Quad.png"))); // NOI18N
+        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/Quad.png"))); // NOI18N
         quadButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.quadButton.toolTipText")); // NOI18N
         quadButton.setBorder(null);
         quadButton.setBorderPainted(false);
@@ -274,7 +274,7 @@ public class BackdropPanel extends JPanel implements MouseListener, ChangeListen
         });
 
         bringToFrontButton.setBackground(new java.awt.Color(153, 153, 153));
-        bringToFrontButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/frontBack.png"))); // NOI18N
+        bringToFrontButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/frontBack.png"))); // NOI18N
         bringToFrontButton.setToolTipText(org.openide.util.NbBundle.getMessage(BackdropPanel.class, "BackdropPanel.bringToFrontButton.toolTipText")); // NOI18N
         bringToFrontButton.setBorder(null);
         bringToFrontButton.setBorderPainted(false);

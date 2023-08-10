@@ -29,25 +29,13 @@
  *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jme3.gde.core.editor.nodes;
+package com.jme3.gde.materialdefinition.editor.nodes;
 
 /**
- * Form a Connection between two ConnectionEndpoints
+ * A marker interface for selectable items (Nodes and Connections)
  * @author Nehon
  */
-public class Connection extends ConnectionCurve {
-
-    /**
-     * Create a new Instance of Connection.
-     * Don't call this from Usercode, call 
-     * {@link Diagram#connect(com.jme3.gde.materialdefinition.editor.ConnectionEndpoint,
-     * com.jme3.gde.materialdefinition.editor.ConnectionEndpoint)  } instead.
-     * 
-     * @param start The Connection Start
-     * @param end The Connection End
-     */
-    public Connection(ConnectionEndpoint start, ConnectionEndpoint end) {
-        super(start, end);
-    }
-    
+public interface Selectable {
+    //@TODO: Explain and find out what for selecteable needs keys
+    public String getKey();    
 }

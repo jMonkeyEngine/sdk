@@ -31,7 +31,7 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.NodeToolBar;
+import com.jme3.gde.materialdefinition.editor.nodes.NodeToolBar;
 
 /**
  * This class displays a small bar with an edit and remove icon.
@@ -78,7 +78,7 @@ public class ShaderNodeToolBar extends NodeToolBar {
         setLayout(layout);
 
         codeButton.setBackground(new java.awt.Color(255, 255, 255));
-        codeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/code.png"))); // NOI18N
+        codeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/code.png"))); // NOI18N
         codeButton.setToolTipText(org.openide.util.NbBundle.getMessage(ShaderNodeToolBar.class, "ShaderNodeToolBar.codeButton.toolTipText")); // NOI18N
         codeButton.setBorder(null);
         codeButton.setBorderPainted(false);
@@ -88,7 +88,7 @@ public class ShaderNodeToolBar extends NodeToolBar {
         codeButton.setIconTextGap(0);
         codeButton.setMaximumSize(new java.awt.Dimension(24, 24));
         codeButton.setMinimumSize(new java.awt.Dimension(24, 24));
-        codeButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/codeHover.png"))); // NOI18N
+        codeButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/codeHover.png"))); // NOI18N
         codeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 codeButtonActionPerformed(evt);
@@ -97,7 +97,7 @@ public class ShaderNodeToolBar extends NodeToolBar {
         add(codeButton, new java.awt.GridBagConstraints());
 
         deleteButton.setBackground(new java.awt.Color(255, 255, 255));
-        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/deleteNode.png"))); // NOI18N
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/deleteNode.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(deleteButton, org.openide.util.NbBundle.getMessage(ShaderNodeToolBar.class, "ShaderNodeToolBar.deleteButton.text")); // NOI18N
         deleteButton.setToolTipText(org.openide.util.NbBundle.getMessage(ShaderNodeToolBar.class, "ShaderNodeToolBar.deleteButton.toolTipText")); // NOI18N
         deleteButton.setBorder(null);
@@ -108,7 +108,7 @@ public class ShaderNodeToolBar extends NodeToolBar {
         deleteButton.setIconTextGap(0);
         deleteButton.setMaximumSize(new java.awt.Dimension(24, 24));
         deleteButton.setMinimumSize(new java.awt.Dimension(24, 24));
-        deleteButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/deleteNodeHover.png"))); // NOI18N
+        deleteButton.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/deleteNodeHover.png"))); // NOI18N
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteButtonActionPerformed(evt);

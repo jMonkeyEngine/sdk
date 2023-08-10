@@ -115,7 +115,7 @@ public class MatDefEditorToolBar extends JPanel {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/add.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/add.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jButton1.text")); // NOI18N
         jButton1.setToolTipText(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.jButton1.toolTipText")); // NOI18N
         jButton1.setMargin(new java.awt.Insets(2, 5, 2, 5));
@@ -135,7 +135,7 @@ public class MatDefEditorToolBar extends JPanel {
             }
         });
 
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/repeat.png"))); // NOI18N
+        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/repeat.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jToggleButton2, org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.text")); // NOI18N
         jToggleButton2.setToolTipText(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.toolTipText")); // NOI18N
         jToggleButton2.setActionCommand(org.openide.util.NbBundle.getMessage(MatDefEditorToolBar.class, "MatDefEditorToolBar.toggleLiveUpdates.actionCommand")); // NOI18N

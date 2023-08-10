@@ -31,8 +31,8 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.ConnectionEndpoint;
-import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.nodes.ConnectionEndpoint;
+import com.jme3.gde.materialdefinition.editor.icons.Icons;
 import com.jme3.shader.Shader;
 import com.jme3.shader.ShaderUtils;
 

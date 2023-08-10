@@ -23,7 +23,7 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/jme3/gde/core/editor/icons/code.png"/>
+          <Image iconType="3" name="/com/jme3/gde/materialdefinition/editor/icons/code.png"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/jme3/gde/materialdefinition/editor/Bundle.properties" key="ShaderNodeToolBar.codeButton.toolTipText" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
@@ -34,7 +34,7 @@
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Standardcursor"/>
+          <Color id="Default Cursor"/>
         </Property>
         <Property name="focusable" type="boolean" value="false"/>
         <Property name="iconTextGap" type="int" value="0"/>
@@ -45,7 +45,7 @@
           <Dimension value="[24, 24]"/>
         </Property>
         <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/jme3/gde/core/editor/icons/codeHover.png"/>
+          <Image iconType="3" name="/com/jme3/gde/materialdefinition/editor/icons/codeHover.png"/>
         </Property>
       </Properties>
       <Events>
@@ -63,7 +63,7 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/jme3/gde/core/editor/icons/deleteNode.png"/>
+          <Image iconType="3" name="/com/jme3/gde/materialdefinition/editor/icons/deleteNode.png"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="com/jme3/gde/materialdefinition/editor/Bundle.properties" key="ShaderNodeToolBar.deleteButton.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
@@ -77,7 +77,7 @@
         <Property name="borderPainted" type="boolean" value="false"/>
         <Property name="contentAreaFilled" type="boolean" value="false"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Standardcursor"/>
+          <Color id="Default Cursor"/>
         </Property>
         <Property name="focusable" type="boolean" value="false"/>
         <Property name="iconTextGap" type="int" value="0"/>
@@ -88,7 +88,7 @@
           <Dimension value="[24, 24]"/>
         </Property>
         <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/jme3/gde/core/editor/icons/deleteNodeHover.png"/>
+          <Image iconType="3" name="/com/jme3/gde/materialdefinition/editor/icons/deleteNodeHover.png"/>
         </Property>
       </Properties>
       <Events>

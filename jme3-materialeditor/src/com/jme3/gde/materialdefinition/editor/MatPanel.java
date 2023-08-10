@@ -104,7 +104,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         toolBar.setOpaque(false);
 
         sphereButton.setBackground(new java.awt.Color(153, 153, 153));
-        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Sphere.png"))); // NOI18N
+        sphereButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/Sphere.png"))); // NOI18N
         sphereButton.setToolTipText("Sphere");
         sphereButton.setBorder(null);
         sphereButton.setBorderPainted(false);
@@ -130,7 +130,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         });
 
         boxButton.setBackground(new java.awt.Color(153, 153, 153));
-        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/cube.png"))); // NOI18N
+        boxButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/cube.png"))); // NOI18N
         boxButton.setToolTipText("Cube");
         boxButton.setBorder(null);
         boxButton.setBorderPainted(false);
@@ -156,7 +156,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         });
 
         reloadButton.setBackground(new java.awt.Color(153, 153, 153));
-        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/reload.png"))); // NOI18N
+        reloadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/reload.png"))); // NOI18N
         reloadButton.setToolTipText("Refresh");
         reloadButton.setBorder(null);
         reloadButton.setBorderPainted(false);
@@ -182,7 +182,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         });
 
         quadButton.setBackground(new java.awt.Color(153, 153, 153));
-        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/Quad.png"))); // NOI18N
+        quadButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/Quad.png"))); // NOI18N
         quadButton.setToolTipText("Quad");
         quadButton.setBorder(null);
         quadButton.setBorderPainted(false);
@@ -208,7 +208,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         });
 
         expandButton.setBackground(new java.awt.Color(153, 153, 153));
-        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/core/editor/icons/expend.png"))); // NOI18N
+        expandButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/jme3/gde/materialdefinition/editor/icons/expend.png"))); // NOI18N
         expandButton.setToolTipText("Display Backdrop");
         expandButton.setBorder(null);
         expandButton.setBorderPainted(false);

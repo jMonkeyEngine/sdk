@@ -31,10 +31,10 @@
  */
 package com.jme3.gde.materialdefinition.editor;
 
-import com.jme3.gde.core.editor.nodes.Connection;
-import com.jme3.gde.core.editor.nodes.Diagram;
-import com.jme3.gde.core.editor.nodes.NodePanel;
-import com.jme3.gde.core.editor.nodes.Selectable;
+import com.jme3.gde.materialdefinition.editor.nodes.Connection;
+import com.jme3.gde.materialdefinition.editor.nodes.Diagram;
+import com.jme3.gde.materialdefinition.editor.nodes.NodePanel;
+import com.jme3.gde.materialdefinition.editor.nodes.Selectable;
 import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.materialdefinition.dialog.AddAttributeDialog;
 import com.jme3.gde.materialdefinition.dialog.AddMaterialParameterDialog;
@@ -43,7 +43,7 @@ import com.jme3.gde.materialdefinition.dialog.AddWorldParameterDialog;
 import com.jme3.gde.materialdefinition.editor.ShaderNodePanel.NodeType;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.MappingBlock;
-import com.jme3.gde.core.editor.icons.Icons;
+import com.jme3.gde.materialdefinition.editor.icons.Icons;
 import com.jme3.gde.core.errorreport.ExceptionUtils;
 import com.jme3.gde.materialdefinition.utils.MaterialUtils;
 import com.jme3.material.Material;
