@@ -39,6 +39,7 @@ dependencies {
     corelibs dep("org.jmonkeyengine:jme3-core:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-desktop:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-awt-dialogs:$jmeVersion-$jmeVersionTag", true, true)
+    corelibs dep("org.jmonkeyengine:jme3-plugins-json:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-lwjgl:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-effects:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("com.github.stephengold:Minie:8.0.0", false, false) // replacement for bullet-native
