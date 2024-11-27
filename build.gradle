@@ -42,8 +42,9 @@ dependencies {
     corelibs dep("org.jmonkeyengine:jme3-plugins-json:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-lwjgl:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-effects:$jmeVersion-$jmeVersionTag", true, true)
-    corelibs dep("com.github.stephengold:Minie:8.0.0", false, false) // replacement for bullet-native
-    corelibs dep("com.github.stephengold:Heart:9.0.0", true, true) // requirement for Minie
+    corelibs dep("com.github.stephengold:Minie:8.2.0", false, false) // replacement for bullet-native
+    corelibs dep("com.github.stephengold:Heart:9.1.0", true, true) // requirement for Minie
+    corelibs dep("com.github.stephengold:Wes:0.8.1", true, true) // Animation toolkit
     corelibs dep(fileTree("lib"), false, false)
     corelibs dep("org.jmonkeyengine:jme3-jogg:$jmeVersion-$jmeVersionTag", true, true)
 
@@ -63,7 +64,6 @@ dependencies {
     optlibs dep("org.jmonkeyengine:jme3-ios:$jmeVersion-$jmeVersionTag", true, true)
     optlibs dep("org.jmonkeyengine:jme3-android-native:$jmeVersion-$jmeVersionTag", true, true)
     optlibs dep("org.jmonkeyengine:jme3-lwjgl3:$jmeVersion-$jmeVersionTag", true, true)
-    optlibs dep("com.github.stephengold:Wes:0.7.5", true, true)
     testdatalibs dep("org.jmonkeyengine:jme3-testdata:$jmeVersion-$jmeVersionTag", false, false)
     examplelibs dep("org.jmonkeyengine:jme3-examples:$jmeVersion-$jmeVersionTag", false, true)
 }
@@ -132,7 +132,13 @@ task copyBaseLibs(dependsOn:configurations.corelibs) {
                     into "jme3-core-baselibs/release/modules/ext/"
                 }
             } else if( file.name.contains("Heart") && !isSourceOrJavadoc(file.name)) {
-                // Special handling of Minie, since it doesn't follow the name convention
+                // Special handling of Heart, since it doesn't follow the name convention
+                copy {
+                    from file
+                    into "jme3-core-baselibs/release/modules/ext/"
+                }
+            } else if( file.name.contains("Wes") && !isSourceOrJavadoc(file.name)) {
+                // Special handling of Wes, since it doesn't follow the name convention
                 copy {
                     from file
                     into "jme3-core-baselibs/release/modules/ext/"
