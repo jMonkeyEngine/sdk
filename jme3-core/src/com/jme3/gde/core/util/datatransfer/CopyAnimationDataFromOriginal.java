@@ -98,7 +98,6 @@ public final class CopyAnimationDataFromOriginal implements SpatialDataTransferI
         final Collection<AnimClip> clips = original.getAnimClips();
         for (final AnimClip c : clips) {
             control.addAnimClip((AnimClip) c.jmeClone());
-            control.makeAction(c.getName());
             LOGGER.log(Level.INFO, "Copied clip {0}",
                     c.getName());
         }

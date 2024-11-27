@@ -32,7 +32,7 @@ import java.util.logging.Logger;
  *
  * @author normenhansen
  */
-public class TexturePanel extends MaterialPropertyWidget implements TextureDropTarget{
+public class TexturePanel extends MaterialPropertyWidget implements TextureDropTarget {
 
     private final String REPEAT = "Repeat";
     private final String FLIP = "Flip";
