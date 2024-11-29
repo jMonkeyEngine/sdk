@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2012 jMonkeyEngine
+ * Copyright (c) 2003-2024 jMonkeyEngine
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ import com.jme3.gde.core.scene.ApplicationLogHandler;
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.sceneexplorer.SceneExplorerTopComponent;
 import com.jme3.gde.core.sceneexplorer.nodes.JmeNode;
-import com.jme3.gde.core.sceneexplorer.nodes.JmeSpatial;
 import com.jme3.gde.core.util.SpatialUtil;
 import com.jme3.gde.core.util.TaggedSpatialFinder;
 import com.jme3.gde.core.util.datatransfer.CopyAnimationDataFromOriginal;
@@ -186,9 +185,7 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
     
     private void applyExternalData(final boolean onlyMeshData, 
             final boolean onlyAnimData) {
-        final ProgressHandle handle = ProgressHandle.createHandle("Updating "
-                + "file "
-                + "data");
+        final ProgressHandle handle = ProgressHandle.createHandle("Updating file data");
         handle.start();
         try {
             final Spatial original = loadOriginalSpatial();
@@ -207,13 +204,11 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
                 new CopyTransformDataFromOriginal(finder).update(spat, original);
                 new CopyMaterialDataFromOriginal(finder).update(spat, original);
             }
-            // Do a complicated recurse refresh since AbstractSceneExplorerNode:refresh() isn't working
+            
             SwingUtilities.invokeLater(() -> {
                 Node rootNode = SceneExplorerTopComponent.findInstance().getExplorerManager().getRootContext();
-                if (rootNode instanceof JmeNode) {
-                    SceneApplication.getApplication().enqueue((Runnable) () -> {
-                    refreshNamedSpatial((JmeNode) rootNode, spat.getName());
-                    });
+                if (rootNode instanceof JmeNode jmeNode) {
+                    SceneApplication.getApplication().enqueue(new RefreshJmeSpatial(jmeNode, spat.getName()));
                 }
             });
                 
@@ -228,37 +223,6 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
         }
     }
     
-    /**
-     * Look for the spatial to update using the name of the asset
-     * @param spatial
-     * @param name 
-     */
-    private void refreshNamedSpatial(JmeSpatial spatial, String name){
-        if(spatial.getName().equals(name)){
-            recurseRefresh(spatial);
-        } else {
-            for(Node s: spatial.getChildren().getNodes()){
-                if(s instanceof JmeSpatial){
-                    refreshNamedSpatial((JmeSpatial) s, name);
-                }
-                
-            }
-        }
-    }
-    
-    /**
-     * Refreshes the spatial and all children
-     * @param spatial 
-     */
-    private void recurseRefresh(JmeSpatial spatial){
-        spatial.refresh(false);
-        for(Node s: spatial.getChildren().getNodes()){
-            if(s instanceof JmeSpatial){
-                recurseRefresh((JmeSpatial) s);
-            }
-        }
-    }
-
     private Spatial loadOriginalSpatial() {
         try {
             final DataObject dobj = DataObject.find(originalObject);
@@ -266,8 +230,8 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
                     dobj.getLookup().lookup(AssetData.class);
             if (originalAssetData != null) {
                 final Savable sav = originalAssetData.loadAsset();
-                if (sav instanceof Spatial) {
-                    return (Spatial) sav;
+                if (sav instanceof Spatial spatial) {
+                    return spatial;
                 } else {
                     LOGGER.log(Level.SEVERE, "Trying to load original for {0}"
                                     + " but it is not a Spatial: {1}",
@@ -352,18 +316,22 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
         }
     }
 
+    @Override
     public void fileFolderCreated(FileEvent fe) {
     }
 
+    @Override
     public void fileDataCreated(FileEvent fe) {
     }
 
+    @Override
     public void fileChanged(FileEvent fe) {
         LOGGER.log(Level.INFO, "External file {0} for {1} changed!",
                 new Object[]{fe.getFile(), assetDataObject.getName()});
         notifyUser();
     }
 
+    @Override
     public void fileDeleted(FileEvent fe) {
         LOGGER.log(Level.INFO, "External file {0} for {1} deleted!",
                 new Object[]{fe.getFile(), assetDataObject.getName()});
@@ -377,6 +345,7 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
         //TODO: add folder listener for when recreated
     }
 
+    @Override
     public void fileRenamed(FileRenameEvent fe) {
         LOGGER.log(Level.INFO, "External file {0} for {1} renamed!",
                 new Object[]{fe.getFile(), assetDataObject.getName()});
@@ -388,6 +357,7 @@ public class ExternalChangeScanner implements AssetDataPropertyChangeListener,
         }
     }
 
+    @Override
     public void fileAttributeChanged(FileAttributeEvent fe) {
     }
 }
