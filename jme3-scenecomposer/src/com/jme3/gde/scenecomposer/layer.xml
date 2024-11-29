@@ -33,6 +33,15 @@
                 <attr name="selectionType" stringvalue="ANY"/>
                 <attr name="type" stringvalue="com.jme3.gde.core.assets.SpatialAssetDataObject"/>
             </file>
+            <file name="com-jme3-gde-core-assets-actions-MergeAnimationsAction.instance">
+                <attr name="delegate" methodvalue="org.openide.awt.Actions.inject"/>
+                <attr name="displayName" bundlevalue="com.jme3.gde.scenecomposer.Bundle#CTL_MergeAnimationsAction"/>
+                <attr name="injectable" stringvalue="com.jme3.gde.core.assets.actions.MergeAnimationsAction"/>
+                <attr name="instanceCreate" methodvalue="org.openide.awt.Actions.context"/>
+                <attr name="noIconInMenu" boolvalue="false"/>
+                <attr name="selectionType" stringvalue="ANY"/>
+                <attr name="type" stringvalue="com.jme3.gde.core.assets.SpatialAssetDataObject"/>
+            </file>
         </folder>
         <folder name="Window">
             <file name="com-jme3-gde-scenecomposer-SceneComposerAction.instance">
@@ -59,9 +68,13 @@
                         <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-scenecomposer-LinkSceneComposer.instance"/>
                         <attr name="position" intvalue="30"/>
                     </file>
+                    <file name="com-jme3-gde-core-assets-actions-animation-MergeAnimationsAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/SceneComposer/com-jme3-gde-core-assets-actions-MergeAnimationsAction.instance"/>
+                        <attr name="position" intvalue="40"/>
+                    </file>
                     <file name="scenecomposer_sep-2.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
-                        <attr name="position" intvalue="40"/>
+                        <attr name="position" intvalue="45"/>
                     </file>
                 </folder>
             </folder>
