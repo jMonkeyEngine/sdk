@@ -75,7 +75,7 @@ public enum PhysicsLibrary implements TemplateLibrary {
     MINIE("Minie", NbBundle.getMessage(PhysicsLibrary.class,
             "physicslibrary.minie.description"),
             "com.github.stephengold", "Minie",
-            "5.0.0", false);
+            "8.2.0", false);
 
     /**
      * The name of the library. This will be displayed in the jComboBox in the

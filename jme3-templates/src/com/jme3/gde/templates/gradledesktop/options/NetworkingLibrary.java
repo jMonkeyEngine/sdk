@@ -79,7 +79,7 @@ public enum NetworkingLibrary implements TemplateLibrary {
     SIMETHEREAL("SimEthereal", NbBundle.getMessage(NetworkingLibrary.class,
             "networkinglibrary.simethereal.description"),
             "com.simsilica", "sim-ethereal",
-            "1.7.0", false);
+            "1.8.0", false);
 
     /**
      * The name of the library. This will be displayed in the jComboBox in the

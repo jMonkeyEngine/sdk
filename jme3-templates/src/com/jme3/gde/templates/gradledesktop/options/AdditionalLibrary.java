@@ -90,7 +90,7 @@ public enum AdditionalLibrary implements TemplateLibrary {
     HEART("Heart Library", NbBundle.getMessage(AdditionalLibrary.class,
             "additionalLibrary.heart.description"),
             "com.github.stephengold", "Heart",
-            "8.1.0", false),
+            "9.0.0", false),
     PARTICLE_MONKEY("Particle Monkey",
             NbBundle.getMessage(AdditionalLibrary.class,
             "additionalLibrary.particlemonkey.description"),
@@ -111,7 +111,11 @@ public enum AdditionalLibrary implements TemplateLibrary {
     ZAY_ES_NET("Zay-ES-Net Networking Extension",
             NbBundle.getMessage(AdditionalLibrary.class,
             "additionalLibrary.zayesnet.description"),
-            "com.simsilica", "zay-es-net", "1.5.0", false);
+            "com.simsilica", "zay-es-net", "1.5.0", false),
+    WES("Wes Library", NbBundle.getMessage(AdditionalLibrary.class,
+            "additionalLibrary.wes.description"),
+            "com.github.stephengold", "Wes",
+            "0.8.1", false),;
 
     /**
      * The name of the library. This will be displayed in the jComboBox in the
