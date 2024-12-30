@@ -1,6 +1,26 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2009-2024 jMonkeyEngine All rights reserved. <p/>
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer. <p/> * Redistributions
+ * in binary form must reproduce the above copyright notice, this list of
+ * conditions and the following disclaimer in the documentation and/or other
+ * materials provided with the distribution. <p/> * Neither the name of
+ * 'jMonkeyEngine' nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written
+ * permission. <p/> THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+ * CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
+ * NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.scenecomposer;
 
@@ -37,8 +57,6 @@ import com.jme3.util.BufferUtils;
 import com.jme3.util.TempVars;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.Iterator;
-import java.util.concurrent.Callable;
 import org.openide.loaders.DataObject;
 import org.openide.util.Lookup;
 
@@ -85,7 +103,8 @@ public abstract class SceneEditTool {
      * @param toolNode parent node that the marker will attach to
      * @param onTopToolNode the node displayed on top of the scene
      * @param selectedSpatial the selected spatial
-     * @param toolController the toolController {@link SceneComposerToolController }
+     * @param toolController the toolController {@link SceneComposerToolController
+     * }
      */
     public void activate(AssetManager manager, Node toolNode, Node onTopToolNode, Spatial selectedSpatial, SceneComposerToolController toolController) {
         this.manager = manager;
@@ -129,18 +148,15 @@ public abstract class SceneEditTool {
 
     /**
      * Called when the selected spatial has been modified outside of the tool.
-     * @TODO: why? just move the tool where the object is each frame?
-     * Proposed Answer: Performance.
+     *
+     * @TODO: why? just move the tool where the object is each frame? Proposed
+     * Answer: Performance.
      */
     public void updateToolsTransformation() {
 
-        SceneApplication.getApplication().enqueue(new Callable<Object>() {
-
-            @Override
-            public Object call() throws Exception {
-                doUpdateToolsTransformation();
-                return null;
-            }
+        SceneApplication.getApplication().enqueue(() -> {
+            doUpdateToolsTransformation();
+            return null;
         });
     }
 
@@ -148,17 +164,15 @@ public abstract class SceneEditTool {
         if (toolController.getSelectedSpatial() != null) {
             axisMarker.setLocalTranslation(toolController.getSelectedSpatial().getWorldTranslation());
             switch (transformType) {
-                case local:
+                case local ->
                     axisMarker.setLocalRotation(toolController.getSelectedSpatial().getWorldRotation());
-                    break;
-                case global:
+                case global ->
                     axisMarker.setLocalRotation(Quaternion.IDENTITY);
-                    break;
-                case camera:
+                case camera -> {
                     if (camera != null) {
                         axisMarker.setLocalRotation(camera.getRotation());
                     }
-                    break;
+                }
             }
             setAxisMarkerScale(toolController.getSelectedSpatial());
         } else {
@@ -173,10 +187,12 @@ public abstract class SceneEditTool {
      */
     private void setAxisMarkerScale(Spatial selected) {
         if (selected != null) {
-            if (selected.getWorldBound() instanceof BoundingBox) {
-                BoundingBox bbox = (BoundingBox) selected.getWorldBound();
+            if (selected.getWorldBound() instanceof BoundingBox bbox) {
                 float smallest = Math.min(Math.min(bbox.getXExtent(), bbox.getYExtent()), bbox.getZExtent());
                 float scale = Math.max(1, smallest / 2f);
+                if (scale > 100) {
+                    scale = 1;
+                }
                 axisMarker.setLocalScale(scale);
             }
         } else {
@@ -321,12 +337,8 @@ public abstract class SceneEditTool {
         if (exclude == null) {
             result = results.getClosestCollision();
         } else {
-            Iterator<CollisionResult> it = results.iterator();
-            while (it.hasNext()) {
-                CollisionResult cr = it.next();
-                if (isExcluded(cr.getGeometry(), exclude)) {
-                    continue;
-                } else {
+            for (CollisionResult cr : results) {
+                if (!isExcluded(cr.getGeometry(), exclude)) {
                     return cr;
                 }
             }
@@ -495,7 +507,7 @@ public abstract class SceneEditTool {
         redMat.setColor("Color", ColorRGBA.Red);
         redMat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
         redMat.getAdditionalRenderState().setLineWidth(2f);
-        
+
         greenMat = new Material(manager, "Common/MatDefs/Misc/Unshaded.j3md");
         greenMat.getAdditionalRenderState().setWireframe(false);
         greenMat.setColor("Color", ColorRGBA.Green);
@@ -535,7 +547,7 @@ public abstract class SceneEditTool {
         orangeMat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
         orangeMat.getAdditionalRenderState().setFaceCullMode(FaceCullMode.Off);
         orangeMat.getAdditionalRenderState().setLineWidth(2f);
-        
+
         Node axis = new Node();
 
         // create arrows
