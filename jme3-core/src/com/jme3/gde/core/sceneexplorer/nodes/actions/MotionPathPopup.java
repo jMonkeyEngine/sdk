@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2010 jMonkeyEngine
+ *  Copyright (c) 2009-2024 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -107,14 +107,20 @@ public class MotionPathPopup extends AbstractAction implements Presenter.Popup {
                 Vector3f pos;
                 
                 SceneToolController controller = SceneApplication.getApplication().getStateManager().getState(SceneToolController.class);
-                if (controller != null && (!controller.getCursorLocation().equals(Vector3f.ZERO))) { // Vector3f.ZERO means not yet clicked
+                 // Vector3f.ZERO means not yet clicked
+                if (controller != null && (!controller.getCursorLocation().equals(Vector3f.ZERO))) {
                     pos = controller.getCursorLocation().clone().addLocal(0, jmeMotionPath.getDebugBoxExtents() * 3f, 0); // Shifting up so a) Netbeans isn't merging Waypoints and b) it's visible
                 } else {
-                    AbstractSceneExplorerNode node = SceneExplorerTopComponent.findInstance().getLastSelected();
-                    if (node instanceof JmeVector3f) { // null instanceof JmeVector3f == false
-                        pos = ((JmeVector3f)node).getVector3f().clone().addLocal(0, jmeMotionPath.getDebugBoxExtents() * 3f, 0);
+                    AbstractSceneExplorerNode[] nodes = SceneExplorerTopComponent.findInstance().getLastSelected();
+                    if(nodes == null || nodes.length == 0) {
+                        return;
+                    }
+                    final AbstractSceneExplorerNode node = nodes[0];
+                    if (node instanceof JmeVector3f jmeVector3f) {
+                        pos = jmeVector3f.getVector3f().clone().addLocal(0, jmeMotionPath.getDebugBoxExtents() * 3f, 0);
                     } else {
-                        pos = new Vector3f(0f, 1.0f, 0f); // Default is a bit over the Center
+                        // Default is a bit over the Center
+                        pos = new Vector3f(0f, 1.0f, 0f);
                     }
                 }
                 

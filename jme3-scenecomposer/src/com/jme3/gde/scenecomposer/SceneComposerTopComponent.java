@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2023 jMonkeyEngine
+ *  Copyright (c) 2009-2024 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -1078,11 +1078,10 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
     // End of variables declaration//GEN-END:variables
 
     private void emit(Spatial root) {
-        if (root instanceof ParticleEmitter) {
-            ((ParticleEmitter) root).killAllParticles();
-            ((ParticleEmitter) root).emitAllParticles();
-        } else if (root instanceof Node) {
-            Node n = (Node) root;
+        if (root instanceof ParticleEmitter particleEmitter) {
+            particleEmitter.killAllParticles();
+            particleEmitter.emitAllParticles();
+        } else if (root instanceof Node n) {
             for (Spatial child : n.getChildren()) {
                 emit(child);
             }
@@ -1112,14 +1111,14 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
      * @return
      */
     public static synchronized SceneComposerTopComponent findInstance() {
-        TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
-        if (win == null) {
+        TopComponent window = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
+        if (window == null) {
             Logger.getLogger(SceneComposerTopComponent.class.getName()).warning(
                     "Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
             return getDefault();
         }
-        if (win instanceof SceneComposerTopComponent) {
-            return (SceneComposerTopComponent) win;
+        if (window instanceof SceneComposerTopComponent sceneComposerTopComponent) {
+            return sceneComposerTopComponent;
         }
         Logger.getLogger(SceneComposerTopComponent.class.getName()).warning(
                 "There seem to be multiple components with the '" + PREFERRED_ID
@@ -1203,15 +1202,11 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
     }
 
     private void setSelectedObjectText(final String text) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                if (text != null) {
-                    ((TitledBorder) jPanel4.getBorder()).setTitle("Utilities - " + text);
-                } else {
-                    ((TitledBorder) jPanel4.getBorder()).setTitle("Utilities - no spatial selected");
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            if (text != null) {
+                ((TitledBorder) jPanel4.getBorder()).setTitle("Utilities - " + text);
+            } else {
+                ((TitledBorder) jPanel4.getBorder()).setTitle("Utilities - no spatial selected");
             }
         });
     }
@@ -1255,15 +1250,15 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
         }
     }
 
-    public void openScene(Spatial spat, AssetDataObject file, ProjectAssetManager manager) {
+    public void openScene(Spatial spatial, AssetDataObject file, ProjectAssetManager manager) {
         cleanupControllers();
         SceneApplication.getApplication().addSceneListener(this);
         Node node;
-        if (spat instanceof Node) {
-            node = (Node) spat;
+        if (spatial instanceof Node node1) {
+            node = node1;
         } else {
             node = new Node();
-            node.attachChild(spat);
+            node.attachChild(spatial);
         }
         JmeNode jmeNode = NodeUtility.createNode(node, file, false);
         SceneRequest request = new SceneRequest(this, jmeNode, manager);
@@ -1318,28 +1313,30 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
             return;
         }
         Collection<AbstractSceneExplorerNode> items = (Collection<AbstractSceneExplorerNode>) result.allInstances();
-        for (AbstractSceneExplorerNode node : items) {
-            if (select(node)) {
-                return;
-            }
-        }
+
+        AbstractSceneExplorerNode[] abstractNodes = new AbstractSceneExplorerNode[items.size()];
+        SceneViewerTopComponent.findInstance().setActivatedNodes(items.toArray(org.openide.nodes.Node[]::new));
+        items.toArray(abstractNodes);
+        select(abstractNodes);
     }
 
-    private boolean select(AbstractSceneExplorerNode node) {
-        if (editorController != null) {
-            editorController.setSelectedExplorerNode(node);
+    private boolean select(AbstractSceneExplorerNode[] nodes) {
+        if( nodes.length == 0) {
+            return false;
         }
-        if (node instanceof JmeSpatial) {
-            selectSpatial(((JmeSpatial) node).getLookup().lookup(Spatial.class));
-            SceneViewerTopComponent.findInstance().setActivatedNodes(new org.openide.nodes.Node[]{node});
-            SceneExplorerTopComponent.findInstance().setSelectedNode(node);
+        AbstractSceneExplorerNode first = nodes[0];
+        if (editorController != null) {
+            editorController.setSelectedExplorerNode(first);
+        }
+        if (first instanceof JmeSpatial jmeSpatial) {
+            selectSpatial(jmeSpatial.getLookup().lookup(Spatial.class));
+            SceneExplorerTopComponent.findInstance().setSelectedNode(nodes);
             return true;
         } else if (toolController != null) {
-            Spatial selectedGizmo = toolController.getMarker(node);
+            Spatial selectedGizmo = toolController.getMarker(first);
             if (selectedGizmo != null) {
                 selectSpatial(selectedGizmo);
-                SceneViewerTopComponent.findInstance().setActivatedNodes(new org.openide.nodes.Node[]{node});
-                SceneExplorerTopComponent.findInstance().setSelectedNode(node);
+                SceneExplorerTopComponent.findInstance().setSelectedNode(nodes);
                 return true;
             }
         }
@@ -1356,8 +1353,8 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
         } else if (toolController != null) {
             toolController.updateSelection(selection);
         }
-        if (selection instanceof Node) {
-            setSelectedObjectText(((Node) selection).getName());
+        if (selection instanceof Node node) {
+            setSelectedObjectText(node.getName());
         } else if (selection instanceof Spatial) {
             setSelectedObjectText(selection.getName());
         } else {
@@ -1423,57 +1420,53 @@ private void jToggleSelectGeomActionPerformed(java.awt.event.ActionEvent evt) {/
 
             editorController.setTerrainLodCamera();
             final SpatialAssetDataObject dobj = ((SpatialAssetDataObject) currentRequest.getDataObject());
-            listener = new ProjectAssetManager.ClassPathChangeListener() {
-
-                @Override
-                public void classPathChanged(final ProjectAssetManager manager) {
-                    if (dobj.isModified()) {
-                        Confirmation msg = new NotifyDescriptor.Confirmation(
-                                "Classes have been changed, save and reload scene?",
-                                NotifyDescriptor.OK_CANCEL_OPTION,
-                                NotifyDescriptor.INFORMATION_MESSAGE);
-                        Object result = DialogDisplayer.getDefault().notify(msg);
-                        if (!NotifyDescriptor.OK_OPTION.equals(result)) {
-                            return;
-                        }
+            listener = (final ProjectAssetManager manager) -> {
+                if (dobj.isModified()) {
+                    Confirmation msg = new NotifyDescriptor.Confirmation(
+                            "Classes have been changed, save and reload scene?",
+                            NotifyDescriptor.OK_CANCEL_OPTION,
+                            NotifyDescriptor.INFORMATION_MESSAGE);
+                    Object result1 = DialogDisplayer.getDefault().notify(msg);
+                    if (!NotifyDescriptor.OK_OPTION.equals(result1)) {
+                        return;
+                    }
+                    try {
+                        dobj.saveAsset();
+                    } catch (IOException ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+                Runnable call = new Runnable() {
+                    
+                    @Override
+                    public void run() {
+                        ProgressHandle progressHandle = ProgressHandle.createHandle("Reloading Scene..");
+                        progressHandle.start();
                         try {
-                            dobj.saveAsset();
-                        } catch (IOException ex) {
-                            Exceptions.printStackTrace(ex);
+                            manager.clearCache();
+                            final Spatial asset = dobj.loadAsset();
+                            if (asset != null) {
+                                java.awt.EventQueue.invokeLater(new Runnable() {
+                                    
+                                    @Override
+                                    public void run() {
+                                        SceneComposerTopComponent composer = SceneComposerTopComponent.findInstance();
+                                        composer.openScene(asset, dobj, manager);
+                                    }
+                                });
+                            } else {
+                                Confirmation msg = new NotifyDescriptor.Confirmation(
+                                        "Error opening " + dobj.getPrimaryFile().getNameExt(),
+                                        NotifyDescriptor.OK_CANCEL_OPTION,
+                                        NotifyDescriptor.ERROR_MESSAGE);
+                                DialogDisplayer.getDefault().notify(msg);
+                            }
+                        } finally {
+                            progressHandle.finish();
                         }
                     }
-                    Runnable call = new Runnable() {
-
-                        @Override
-                        public void run() {
-                            ProgressHandle progressHandle = ProgressHandle.createHandle("Reloading Scene..");
-                            progressHandle.start();
-                            try {
-                                manager.clearCache();
-                                final Spatial asset = dobj.loadAsset();
-                                if (asset != null) {
-                                    java.awt.EventQueue.invokeLater(new Runnable() {
-
-                                        @Override
-                                        public void run() {
-                                            SceneComposerTopComponent composer = SceneComposerTopComponent.findInstance();
-                                            composer.openScene(asset, dobj, manager);
-                                        }
-                                    });
-                                } else {
-                                    Confirmation msg = new NotifyDescriptor.Confirmation(
-                                            "Error opening " + dobj.getPrimaryFile().getNameExt(),
-                                            NotifyDescriptor.OK_CANCEL_OPTION,
-                                            NotifyDescriptor.ERROR_MESSAGE);
-                                    DialogDisplayer.getDefault().notify(msg);
-                                }
-                            } finally {
-                                progressHandle.finish();
-                            }
-                        }
-                    };
-                    new Thread(call).start();
-                }
+                };
+                new Thread(call).start();
             };
 //            currentRequest.getManager().addClassPathEventListener(listener);
         }
