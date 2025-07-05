@@ -49,6 +49,7 @@ import org.openide.util.Exceptions;
  *
  * @author nehon
  */
+@Deprecated
 public class JmeAnimChildren extends Children.Keys<Object> {
 
     protected JmeAnimControl jmeAnimControl;

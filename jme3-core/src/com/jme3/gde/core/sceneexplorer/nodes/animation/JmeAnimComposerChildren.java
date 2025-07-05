@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2020 jMonkeyEngine
+ *  Copyright (c) 2009-2025 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@ import com.jme3.anim.AnimComposer;
 import com.jme3.anim.AnimLayer;
 import com.jme3.gde.core.scene.SceneApplication;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,15 +86,18 @@ public class JmeAnimComposerChildren extends Children.Keys<Object> {
                 List<Object> keys = new LinkedList<>();
                 AnimComposer composer = jmeAnimComposer.getLookup().lookup(AnimComposer.class);
                 if (composer != null) {
-                    keys.addAll(composer.getAnimClips());
+                    List<AnimClip> animClips = new ArrayList<>(composer.getAnimClips());
+                    Collections.sort(animClips, Comparator.comparing(AnimClip::getName));
+                    keys.addAll(animClips);
+
                     final Set<String> layerNames = composer.getLayerNames();
                     final List<AnimLayer> layers = new ArrayList<>();
-                    for(String s: layerNames) {
+                    for (String s : layerNames) {
                         layers.add(composer.getLayer(s));
                     }
                     keys.addAll(layers);
                 }
-                
+
                 return keys;
             }).get();
         } catch (InterruptedException | ExecutionException ex) {
@@ -103,13 +108,16 @@ public class JmeAnimComposerChildren extends Children.Keys<Object> {
 
     @Override
     protected Node[] createNodes(Object key) {
-        if (key instanceof AnimClip animClip) {
-            return new Node[]{ new JmeAnimClip(jmeAnimComposer, animClip, dataObject).setReadOnly(readOnly)};
-        } else if (key instanceof AnimLayer animLayer) {
-            return new Node[]{ new JmeAnimLayer(jmeAnimComposer, animLayer, dataObject).setReadOnly(readOnly)};
-        } 
-        else {
-            return new Node[]{ Node.EMPTY };
+        switch (key) {
+            case AnimClip animClip -> {
+                return new Node[]{ new JmeAnimClip(jmeAnimComposer, animClip, dataObject).setReadOnly(readOnly)};
+            }
+            case AnimLayer animLayer -> {
+                return new Node[]{ new JmeAnimLayer(jmeAnimComposer, animLayer, dataObject).setReadOnly(readOnly)};
+            }
+            default -> {
+                return new Node[]{ Node.EMPTY };
+            }
         }
     }
 
@@ -124,4 +132,5 @@ public class JmeAnimComposerChildren extends Children.Keys<Object> {
     public void setDataObject(DataObject dataObject) {
         this.dataObject = dataObject;
     }
+    
 }
