@@ -46,7 +46,7 @@ function prepare_nbpackage {
 function build_linux_deb {
     echo "> Building the Linux DEB"
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config linux-x64/jmonkeyengine-x64-deb.properties --output ../dist/ -Ppackage.version=3.8.0
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config linux-x64/jmonkeyengine-x64-deb.properties --output ../dist/ -Ppackage.version=$1
 
     echo "< OK!"
 }
@@ -56,7 +56,7 @@ function build_windows_installer {
     
     setup_inno_setup
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config windows-x64/jmonkeyengine-windows-x64.properties --output ../dist/ -Ppackage.version=3.8.0
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config windows-x64/jmonkeyengine-windows-x64.properties --output ../dist/ -Ppackage.version=$1
 
     echo "< OK!"
 }
@@ -90,7 +90,7 @@ function download_inno_setup {
 function build_macos_pgk {
     echo "> Building the MacOS pgk"
     
-    build_macos_x64_pgk
+    build_macos_x64_pgk $1
 
     echo "< OK!"
 }
@@ -100,13 +100,15 @@ function build_macos_x64_pgk {
     
     setup_inno_setup
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -Ppackage.version=3.8.0
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -Ppackage.version=$1
 
     echo "<< OK!"
 }
 
+echo "Building installers with version tag $1"
+
 download_nbpackage
 prepare_nbpackage
-build_linux_deb
-build_windows_installer
-build_macos_pgk
+build_linux_deb $1
+build_windows_installer $1
+build_macos_pgk $1
