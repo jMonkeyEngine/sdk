@@ -24,6 +24,7 @@ function build_mac_jdk {
     echo "> Getting the Mac JDK"
 
     download_jdk x64 macos .tar.gz
+    download_jdk aarch64 macos .tar.gz
 
     echo "< OK!"
 }

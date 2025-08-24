@@ -97,6 +97,7 @@ function build_macos_pgk {
     echo "> Building the MacOS pgk"
     
     build_macos_x64_pgk $1
+    build_macos_aarch64_pgk $1
 
     echo "< OK!"
 }
@@ -105,6 +106,14 @@ function build_macos_x64_pgk {
     echo ">> Building the MacOS x64 pgk"
 
     ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -v -Ppackage.version=$1
+
+    echo "<< OK!"
+}
+
+function build_macos_aarch64_pgk {
+    echo ">> Building the MacOS aarch64 pgk"
+
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-aarch64/jmonkeyengine-macos-aarch64.properties --output ../dist/ -v -Ppackage.version=$1
 
     echo "<< OK!"
 }
