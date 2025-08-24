@@ -14,24 +14,31 @@ jobs:
       with:
         distribution: temurin
         java-version: 21
+    - name: Install wine
+      run: sudo apt install -y wine
     - name: Grant execute permission for gradle
       run: chmod +x gradlew
     - name: Build the SDK
       run: ./gradlew buildSdk -Ptag_name=${{ github.ref_name }}
-    - name: Build the JDKs
-      run: bash download-jdks.sh
-      working-directory: jdks
     - name: Override Harness (custom icon)
       run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
     - name: Build Installers
       run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
     - name: Fix Platform Independent Build
       run: ./gradlew fixPlatformIndependent -Ptag_name=${{ github.ref_name }}
+    - name: Download the JDKs for the installers
+      run: bash download-jdks.sh
+      working-directory: installers
+    - name: Build the installers
+      run: bash build-installers.sh ${{ github.ref_name }}
+      working-directory: installers
     - name: Create Release
       uses: softprops/action-gh-release@v1
 
       with:
         files: dist/jmonkeyplatform*.*
+               dist/jmonkeyengine-sdk*.*
+               dist/jMonkeyEngine-SDK*.*
         tag_name:  ${{ github.ref }}
         name: Release ${{ github.ref }}
       env:
