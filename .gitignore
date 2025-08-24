@@ -24,9 +24,6 @@ build/*
 netbeans/*
 */nbproject/private/*
 ant-jme/dist
-jdks/local/*
-jdks/*.bin
-jdks/*.exe
-jdks/*.zip
 dist/
 /.nb-gradle/
+jdks/downloads/
