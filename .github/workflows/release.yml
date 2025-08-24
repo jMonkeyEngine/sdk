@@ -24,11 +24,7 @@ jobs:
     - name: Override Harness (custom icon)
       run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
     - name: Build Installers
-      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-installers unset-spec-version
-      env:
-        BUILD_X86: false
-        BUILD_X64: true
-        BUILD_OTHER: true
+      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
     - name: Fix Platform Independent Build
       run: ./gradlew fixPlatformIndependent -Ptag_name=${{ github.ref_name }}
     - name: Create Release

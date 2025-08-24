@@ -1,4 +1,0 @@
-Updating Bundled Products:
-a) To update the JDK edit ~/jdks/download-jdks.sh and make sure to clean any caches (on CI-Systems like Travis) or delete the file links in ~/jdks/
-
-The product "helloworld" is the SDK itself (don't ask me, legacy code)
