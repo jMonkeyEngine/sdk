@@ -87,7 +87,26 @@ function download_inno_setup {
     fi
 }
 
+function build_macos_pgk {
+    echo "> Building the MacOS pgk"
+    
+    build_macos_x64_pgk
+
+    echo "< OK!"
+}
+
+function build_macos_x64_pgk {
+    echo ">> Building the MacOS x64 pgk"
+    
+    setup_inno_setup
+
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -Ppackage.version=3.8.0
+
+    echo "<< OK!"
+}
+
 download_nbpackage
 prepare_nbpackage
 build_linux_deb
 build_windows_installer
+build_macos_pgk
