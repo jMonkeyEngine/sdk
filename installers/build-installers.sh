@@ -54,7 +54,7 @@ function build_linux_deb {
 function build_windows_installer {
     echo "> Building the Windows installer"
     
-    setup_inno_setup
+    setup_inno_setup $2
 
     ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config windows-x64/jmonkeyengine-windows-x64.properties --output ../dist/ -v -Ppackage.version=$1
 
@@ -67,7 +67,13 @@ function setup_inno_setup {
     download_inno_setup
     
     # Needs Wine!!!
-    wine downloads/innosetup.exe /VERYSILENT
+    if [ -z "$1" ];
+    then
+        wine downloads/innosetup.exe /VERYSILENT
+    else
+        echo "<< Trying headless mode"
+        xvfb-run wine downloads/innosetup.exe /VERYSILENT
+    fi
 
     echo "<< OK!"
 }
@@ -97,8 +103,6 @@ function build_macos_pgk {
 
 function build_macos_x64_pgk {
     echo ">> Building the MacOS x64 pgk"
-    
-    setup_inno_setup
 
     ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -v -Ppackage.version=$1
 
@@ -117,5 +121,5 @@ fi
 download_nbpackage
 prepare_nbpackage
 build_linux_deb $versionString
-build_windows_installer $versionString
+build_windows_installer $versionString $2
 build_macos_pgk $versionString

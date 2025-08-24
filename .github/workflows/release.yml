@@ -15,7 +15,7 @@ jobs:
         distribution: temurin
         java-version: 21
     - name: Install wine
-      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y wine32:i386 && sudo apt install -y wine
+      run: sudo dpkg --add-architecture i386 && sudo apt install -y xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic wine32:i386 wine
     - name: Grant execute permission for gradle
       run: chmod +x gradlew
     - name: Build the SDK
@@ -30,7 +30,7 @@ jobs:
       run: bash download-jdks.sh
       working-directory: installers
     - name: Build the installers
-      run: bash build-installers.sh ${{ github.ref_name }}
+      run: bash build-installers.sh ${{ github.ref_name }} headless
       working-directory: installers
     - name: Create Release
       uses: softprops/action-gh-release@v1
