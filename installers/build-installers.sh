@@ -107,8 +107,15 @@ function build_macos_x64_pgk {
 
 echo "Building installers with version tag $1"
 
+versionString=$1
+if [[ $versionString != [[:digit:]]* ]];
+then
+    versionString=${versionString:1}
+    echo "Stripped version tag to $versionString"
+fi
+
 download_nbpackage
 prepare_nbpackage
-build_linux_deb $1
-build_windows_installer $1
-build_macos_pgk $1
+build_linux_deb $versionString
+build_windows_installer $versionString
+build_macos_pgk $versionString
