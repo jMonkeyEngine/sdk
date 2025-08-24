@@ -26,7 +26,7 @@ jobs:
       run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
     - name: Fix Platform Independent Build
       run: ./gradlew fixPlatformIndependent -Ptag_name=${{ github.ref_name }}
-    - name: Download the JDKs for the installers
+    - name: Download JDKs for the installers
       run: bash download-jdks.sh
       working-directory: installers
     - name: Build the installers
