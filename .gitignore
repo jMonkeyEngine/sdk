@@ -27,3 +27,5 @@ ant-jme/dist
 dist/
 /.nb-gradle/
 jdks/downloads/
+installers/downloads/
+installers/nbpackage/
