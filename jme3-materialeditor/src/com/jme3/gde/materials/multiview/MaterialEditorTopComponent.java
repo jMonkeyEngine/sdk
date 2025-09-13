@@ -200,8 +200,6 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
 
         jScrollPane4.setPreferredSize(new java.awt.Dimension(0, 0));
 
-        editorPanel.setPreferredSize(new java.awt.Dimension(0, 0));
-
         texturesAndColorsPane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         texturesAndColorsPane.setMinimumSize(new java.awt.Dimension(150, 31));
         texturesAndColorsPane.setPreferredSize(new java.awt.Dimension(480, 355));
