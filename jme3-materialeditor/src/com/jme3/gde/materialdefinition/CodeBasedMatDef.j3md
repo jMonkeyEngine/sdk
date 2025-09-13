@@ -1,0 +1,16 @@
+MaterialDef ${name} {
+
+    MaterialParameters {
+        Vector4 Color
+    }
+
+    Technique {
+        VertexShader GLSL100: ${name}.vert
+        FragmentShader GLSL100: ${name}.frag
+
+        WorldParameters {
+            WorldViewProjectionMatrix
+        }
+    }
+
+}
