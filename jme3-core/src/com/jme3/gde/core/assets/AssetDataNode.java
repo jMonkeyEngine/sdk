@@ -32,6 +32,7 @@
 package com.jme3.gde.core.assets;
 
 import com.jme3.asset.AssetKey;
+import com.jme3.gde.core.dnd.AssetNameHolder;
 import com.jme3.gde.core.util.PropertyUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -48,7 +49,7 @@ import org.openide.util.Lookup;
  * @author normenhansen
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class AssetDataNode extends DataNode {
+public class AssetDataNode extends DataNode implements AssetNameHolder {
 
     public AssetDataNode(DataObject obj, Children ch) {
         super(obj, ch);
@@ -88,5 +89,22 @@ public class AssetDataNode extends DataNode {
         }
         sheet.put(set);
         return sheet;
+    }
+
+    @Override
+    public String getAssetName() {
+        AssetData data = getLookup().lookup(AssetData.class);
+        if (data != null && data.getAssetKey() != null) {
+            return data.getAssetKey().getName();
+        }
+        return null;
+    }
+
+    @Override
+    public void setAssetName(String name) {
+        // AssetDataNode's asset name is derived from the underlying asset key
+        // and typically shouldn't be changed directly
+        // This method is required by the interface but doesn't need implementation
+        // for the drag-and-drop use case
     }
 }
