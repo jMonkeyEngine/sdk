@@ -31,9 +31,12 @@
  */
 @TemplateRegistrations({
     @TemplateRegistration(folder = "Material", content = "MatDef.j3md", displayName="Material Definition Template (Shader Nodes)"),
-    @TemplateRegistration(folder = "Material", content = "CodeBasedMatDef.j3md", displayName="Material Definition Template (Code Based)", position = 100),
-    @TemplateRegistration(folder = "GLSL", content = "BasicShader.vert", displayName="Vertex Shader Template", position = 200),
-    @TemplateRegistration(folder = "GLSL", content = "BasicShader.frag", displayName="Fragment Shader Template", position = 300)
+    @TemplateRegistration(folder = "Material", content = "CodeBasedMatDef.j3md", displayName="Material Definition Template (Code Based)", 
+                         position = 100, scriptEngine = "freemarker"),
+    @TemplateRegistration(folder = "GLSL", content = "BasicShader.vert", displayName="Vertex Shader Template", 
+                         position = 200, scriptEngine = "freemarker"),
+    @TemplateRegistration(folder = "GLSL", content = "BasicShader.frag", displayName="Fragment Shader Template", 
+                         position = 300, scriptEngine = "freemarker")
 })
 package com.jme3.gde.materialdefinition;
 
