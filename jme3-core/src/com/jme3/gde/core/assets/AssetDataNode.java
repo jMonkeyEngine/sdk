@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2010 jMonkeyEngine
+ *  Copyright (c) 2009-2025 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ public class AssetDataNode extends DataNode implements AssetNameHolder {
         if (key == null) {
             return sheet;
         }
-        
+
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("AssetKey");
         set.setDisplayName("Conversion Settings");
@@ -100,11 +100,4 @@ public class AssetDataNode extends DataNode implements AssetNameHolder {
         return null;
     }
 
-    @Override
-    public void setAssetName(String name) {
-        // AssetDataNode's asset name is derived from the underlying asset key
-        // and typically shouldn't be changed directly
-        // This method is required by the interface but doesn't need implementation
-        // for the drag-and-drop use case
-    }
 }
