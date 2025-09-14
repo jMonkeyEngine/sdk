@@ -125,20 +125,20 @@ public class SceneViewerDropTargetListener implements DropTargetListener {
     }
 
     /**
-     * Determines if the file extension represents a model/spatial asset.
+     * Determines if the asset key represents a model/spatial asset by checking its file extension.
      *
-     * @param extension The file extension
-     * @return true if the extension is for model files
+     * @param assetKey The asset key (typically a filename or path); this method checks if it ends with the model file extension.
+     * @return true if the asset key is for model files
      */
     private boolean isModelExtension(String assetKey) {
         return assetKey.endsWith("j3o");
     }
 
     /**
-     * Determines if the file extension represents a material asset.
+     * Determines if the asset key represents a material asset by checking its file extension.
      *
-     * @param extension The file extension
-     * @return true if the extension is for material files
+     * @param assetKey The asset key (typically a filename or path); this method checks if it ends with the material file extension.
+     * @return true if the asset key is for material files
      */
     private boolean isMaterialExtension(String assetKey) {
         return assetKey.endsWith("j3m");
