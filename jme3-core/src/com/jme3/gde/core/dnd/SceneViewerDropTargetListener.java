@@ -87,8 +87,53 @@ public class SceneViewerDropTargetListener implements DropTargetListener {
             rootPanel.addModel(transferableObj.getAssetName(), new Vector2f(dropXLoc, dropYLoc));
         } else if (flavor instanceof MaterialDataFlavor) {
             rootPanel.applyMaterial(transferableObj.getAssetName(), new Vector2f(dropXLoc, dropYLoc));
+        } else {
+            // Handle generic flavors by determining asset type from file extension
+            String assetName = transferableObj.getAssetName();
+            if (assetName != null) {
+                String extension = getFileExtension(assetName);
+                if (isModelExtension(extension)) {
+                    rootPanel.addModel(assetName, new Vector2f(dropXLoc, dropYLoc));
+                } else if (isMaterialExtension(extension)) {
+                    rootPanel.applyMaterial(assetName, new Vector2f(dropXLoc, dropYLoc));
+                }
+            }
         }
 
+    }
+
+    /**
+     * Extracts the file extension from an asset name.
+     * @param filename The asset filename
+     * @return The file extension in lowercase, or empty string if no extension
+     */
+    private String getFileExtension(String filename) {
+        if (filename == null) {
+            return "";
+        }
+        int lastDotIndex = filename.lastIndexOf('.');
+        if (lastDotIndex == -1 || lastDotIndex == filename.length() - 1) {
+            return "";
+        }
+        return filename.substring(lastDotIndex + 1).toLowerCase();
+    }
+
+    /**
+     * Determines if the file extension represents a model/spatial asset.
+     * @param extension The file extension
+     * @return true if the extension is for model files
+     */
+    private boolean isModelExtension(String extension) {
+        return "j3o".equals(extension);
+    }
+
+    /**
+     * Determines if the file extension represents a material asset.
+     * @param extension The file extension  
+     * @return true if the extension is for material files
+     */
+    private boolean isMaterialExtension(String extension) {
+        return "j3m".equals(extension);
     }
 
 }
