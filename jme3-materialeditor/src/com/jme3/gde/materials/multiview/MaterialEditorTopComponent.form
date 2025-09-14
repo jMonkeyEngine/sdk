@@ -75,11 +75,6 @@
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
             <Container class="javax.swing.JPanel" name="editorPanel">
-              <Properties>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[0, 0]"/>
-                </Property>
-              </Properties>
 
               <Layout>
                 <DimensionLayout dim="0">
