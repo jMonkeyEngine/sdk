@@ -41,6 +41,9 @@ import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.core.scene.SceneRequest;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
 import com.jme3.gde.materials.multiview.widgets.icons.Icons;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 /**
  *
@@ -50,11 +53,21 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
 
     private boolean init=false;
     private MaterialPreviewRenderer matRenderer;
+    private boolean animationEnabled = false;
     
     /** Creates new form MaterialPreviewWidget */
     public MaterialPreviewWidget() {
         initComponents();        
     }
+    
+    private final Timer animationTimer = new Timer(20, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (animationEnabled && matRenderer != null) {
+                matRenderer.refreshOnly();
+            }
+        }
+    });
 
     private  void initWidget() {
         sphereButton.setSelected(true);
@@ -81,7 +94,31 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
     }
 
     public void cleanUp(){
+         animationTimer.stop();
          matRenderer.cleanUp();
+    }
+    
+    /**
+     * Enable or disable animation rendering
+     * @param enabled true to enable continuous rendering, false to disable
+     */
+    public void setAnimationEnabled(boolean enabled) {
+        this.animationEnabled = enabled;
+        if (animationToggleButton != null) {
+            animationToggleButton.setSelected(enabled);
+        }
+        if (enabled) {
+            animationTimer.start();
+        } else {
+            animationTimer.stop();
+        }
+    }
+    
+    /**
+     * @return true if animation rendering is enabled
+     */
+    public boolean isAnimationEnabled() {
+        return animationEnabled;
     }
     
     /** This method is called from within the constructor to
@@ -102,6 +139,8 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         teapotButton = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         togglePbrEnvButton = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        animationToggleButton = new javax.swing.JToggleButton();
 
         setMaximumSize(new java.awt.Dimension(244, 200));
         setMinimumSize(new java.awt.Dimension(244, 200));
@@ -213,6 +252,23 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(togglePbrEnvButton);
+        jToolBar1.add(jSeparator2);
+
+        animationToggleButton.setIcon(Icons.animationOff);
+        animationToggleButton.setToolTipText("Enable animation rendering");
+        animationToggleButton.setFocusable(false);
+        animationToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        animationToggleButton.setMaximumSize(new java.awt.Dimension(40, 40));
+        animationToggleButton.setMinimumSize(new java.awt.Dimension(40, 40));
+        animationToggleButton.setPreferredSize(new java.awt.Dimension(40, 40));
+        animationToggleButton.setSelectedIcon(Icons.animationOn);
+        animationToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        animationToggleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                animationToggleButtonActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(animationToggleButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -257,9 +313,15 @@ private void planeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         matRenderer.switchDisplay(MaterialPreviewRenderer.DisplayType.Teapot);
     }//GEN-LAST:event_teapotButtonActionPerformed
 
+    private void animationToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        setAnimationEnabled(animationToggleButton.isSelected());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton animationToggleButton;
     private javax.swing.JToggleButton cubeButton;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToggleButton planeButton;
     private javax.swing.JLabel previewLabel;

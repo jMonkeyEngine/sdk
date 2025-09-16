@@ -52,6 +52,7 @@ import javax.swing.Timer;
 public class MatPanel extends JPanel implements MouseListener, ComponentListener {
     private final MaterialPreviewRenderer renderer;
     private Material mat;
+    private boolean animationEnabled = false;
     /**
      * Creates new form PreviewPanel
      */
@@ -64,6 +65,7 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
     }
     
     public void cleanup() {
+        animationTimer.stop();
         renderer.cleanUp();        
     }
     
@@ -366,6 +368,15 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         }
     });
     
+    private final Timer animationTimer = new Timer(20, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (animationEnabled && mat != null) {
+                renderer.refreshOnly();
+            }
+        }
+    });
+    
     @Override
     public void mouseExited(MouseEvent e) {
         t.restart();
@@ -398,5 +409,25 @@ public class MatPanel extends JPanel implements MouseListener, ComponentListener
         if (mat != null) {
             renderer.showMaterial(mat);
         }
+    }
+    
+    /**
+     * Enable or disable animation rendering
+     * @param enabled true to enable continuous rendering, false to disable
+     */
+    public void setAnimationEnabled(boolean enabled) {
+        this.animationEnabled = enabled;
+        if (enabled) {
+            animationTimer.start();
+        } else {
+            animationTimer.stop();
+        }
+    }
+    
+    /**
+     * @return true if animation rendering is enabled
+     */
+    public boolean isAnimationEnabled() {
+        return animationEnabled;
     }
 }

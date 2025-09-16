@@ -53,6 +53,10 @@ public class Icons {
     public static final String LIGHT_ON = ICONS_PATH + "light-bulb-on.svg";
     public static final String LIGHT_OFF = ICONS_PATH + "light-bulb-off.svg";
     
+    // Using reload icon from core editor icons
+    public static final String ANIMATION_OFF = "com/jme3/gde/core/editor/icons/reload.png";
+    public static final String ANIMATION_ON = "com/jme3/gde/core/editor/icons/reload.png";
+    
     public static final ImageIcon textureRemove =
             ImageUtilities.loadImageIcon(TEXTURE_REMOVE, false);
     public static final ImageIcon cube =
@@ -75,4 +79,8 @@ public class Icons {
             ImageUtilities.loadImageIcon(LIGHT_ON, false);
     public static final ImageIcon lightOff =
             ImageUtilities.loadImageIcon(LIGHT_OFF, false);
+    public static final ImageIcon animationOff =
+            ImageUtilities.loadImageIcon(ANIMATION_OFF, false);
+    public static final ImageIcon animationOn =
+            ImageUtilities.loadImageIcon(ANIMATION_ON, false);
 }
