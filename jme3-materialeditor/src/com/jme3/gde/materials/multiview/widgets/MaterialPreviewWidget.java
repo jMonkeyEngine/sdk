@@ -104,9 +104,6 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
      */
     public void setAnimationEnabled(boolean enabled) {
         this.animationEnabled = enabled;
-        if (animationToggleButton != null) {
-            animationToggleButton.setSelected(enabled);
-        }
         if (enabled) {
             animationTimer.start();
         } else {
@@ -139,8 +136,6 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         teapotButton = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         togglePbrEnvButton = new javax.swing.JToggleButton();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
-        animationToggleButton = new javax.swing.JToggleButton();
 
         setMaximumSize(new java.awt.Dimension(244, 200));
         setMinimumSize(new java.awt.Dimension(244, 200));
@@ -252,23 +247,6 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
             }
         });
         jToolBar1.add(togglePbrEnvButton);
-        jToolBar1.add(jSeparator2);
-
-        animationToggleButton.setIcon(Icons.animationOff);
-        animationToggleButton.setToolTipText("Enable animation rendering");
-        animationToggleButton.setFocusable(false);
-        animationToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        animationToggleButton.setMaximumSize(new java.awt.Dimension(40, 40));
-        animationToggleButton.setMinimumSize(new java.awt.Dimension(40, 40));
-        animationToggleButton.setPreferredSize(new java.awt.Dimension(40, 40));
-        animationToggleButton.setSelectedIcon(Icons.animationOn);
-        animationToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        animationToggleButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                animationToggleButtonActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(animationToggleButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -313,15 +291,9 @@ private void planeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         matRenderer.switchDisplay(MaterialPreviewRenderer.DisplayType.Teapot);
     }//GEN-LAST:event_teapotButtonActionPerformed
 
-    private void animationToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {
-        setAnimationEnabled(animationToggleButton.isSelected());
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton animationToggleButton;
     private javax.swing.JToggleButton cubeButton;
     private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToggleButton planeButton;
     private javax.swing.JLabel previewLabel;
