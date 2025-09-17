@@ -296,7 +296,7 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         });
 
         animationCheckBox.setSelected(false);
-        org.openide.awt.Mnemonics.setLocalizedText(animationCheckBox, "Enable Animation");
+        animationCheckBox.setText("Enable Animation"); // NOI18N
         animationCheckBox.setToolTipText("Enable continuous rendering for animated materials");
         animationCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
