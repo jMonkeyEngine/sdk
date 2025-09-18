@@ -42,7 +42,6 @@ import com.jme3.gde.core.scene.SceneRequest;
 import com.jme3.gde.materials.MaterialPreviewRenderer;
 import com.jme3.gde.materials.multiview.widgets.icons.Icons;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 /**
@@ -60,14 +59,11 @@ public class MaterialPreviewWidget extends javax.swing.JPanel {
         initComponents();        
     }
     
-    private final Timer animationTimer = new Timer(20, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    private final Timer animationTimer = new Timer(20, (ActionEvent e) -> {
             if (animationEnabled && matRenderer != null) {
                 matRenderer.refreshOnly();
             }
-        }
-    });
+        });
 
     private  void initWidget() {
         sphereButton.setSelected(true);

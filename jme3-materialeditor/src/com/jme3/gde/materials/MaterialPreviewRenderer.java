@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2023 jMonkeyEngine
+ *  Copyright (c) 2009-2025 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -235,17 +235,10 @@ public class MaterialPreviewRenderer implements SceneListener {
 
     public void switchDisplay(DisplayType type) {
         switch (type) {
-            case Box:
-                currentGeom = box;
-                break;
-            case Sphere:
-                currentGeom = sphere;
-                break;
-            case Quad:
-                currentGeom = quad;
-                break;
-            case Teapot:
-                currentGeom = teapot;
+            case Box -> currentGeom = box;
+            case Sphere -> currentGeom = sphere;
+            case Quad -> currentGeom = quad;
+            case Teapot -> currentGeom = teapot;
         }
         showMaterial(currentMaterial);
     }
@@ -283,7 +276,9 @@ public class MaterialPreviewRenderer implements SceneListener {
      * material
      */
     public void refreshOnly() {
-        previewRequested = true;
+        if(previewRequested) {
+            return;
+        }
         SceneApplication.getApplication().enqueue((Callable<Object>) () -> {
             if (currentGeom.getMaterial() != null) {
                 PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentGeom, label.getWidth(), label.getHeight());
@@ -293,6 +288,7 @@ public class MaterialPreviewRenderer implements SceneListener {
             }
             return null;
         });
+        previewRequested = true;
     }
 
 }
