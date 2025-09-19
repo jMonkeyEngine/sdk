@@ -52,6 +52,7 @@ public class ColorRGBADialog extends javax.swing.JDialog {
     public ColorRGBADialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        setupHashtagColorCodeSupport();
 //        alphaSlider.setValue(Math.round(((ColorRGBA)editor.getValue()).getAlpha()*100));
     }
 
@@ -140,6 +141,85 @@ public class ColorRGBADialog extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+    
+    /**
+     * Sets up hashtag support for hex color code input in the JColorChooser.
+     * This allows users to paste HTML color codes starting with '#' (e.g., #a6f5fe).
+     */
+    private void setupHashtagColorCodeSupport() {
+        setupHashtagSupportRecursive(jColorChooser1);
+    }
+    
+    /**
+     * Recursively searches for text fields in the color chooser and adds
+     * hashtag handling to any that might contain hex color codes.
+     */
+    private void setupHashtagSupportRecursive(java.awt.Container container) {
+        for (java.awt.Component component : container.getComponents()) {
+            if (component instanceof javax.swing.JTextField) {
+                javax.swing.JTextField textField = (javax.swing.JTextField) component;
+                addHashtagSupport(textField);
+            } else if (component instanceof java.awt.Container) {
+                setupHashtagSupportRecursive((java.awt.Container) component);
+            }
+        }
+    }
+    
+    /**
+     * Adds hashtag support to a text field by filtering out leading '#' characters
+     * when the field loses focus or when Enter is pressed.
+     */
+    private void addHashtagSupport(javax.swing.JTextField textField) {
+        // Add a focus listener to handle hashtag removal when field loses focus
+        textField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                processHashtagInput(textField);
+            }
+        });
+        
+        // Add an action listener to handle hashtag removal when Enter is pressed
+        textField.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                processHashtagInput(textField);
+            }
+        });
+    }
+    
+    /**
+     * Processes text field input to handle hashtag prefixes.
+     * If the text starts with '#' and the rest is a valid hex string,
+     * removes the '#' and updates the field.
+     */
+    private void processHashtagInput(javax.swing.JTextField textField) {
+        String text = textField.getText().trim();
+        if (text.startsWith("#") && text.length() > 1) {
+            String hexPart = text.substring(1);
+            // Check if the part after # is a valid hex string (3 or 6 characters)
+            if (isValidHexString(hexPart)) {
+                textField.setText(hexPart);
+                // Force the color chooser to update by firing an action event
+                textField.postActionEvent();
+            }
+        }
+    }
+    
+    /**
+     * Checks if a string is a valid hex color code (3 or 6 hex digits).
+     */
+    private boolean isValidHexString(String hex) {
+        if (hex == null || (hex.length() != 3 && hex.length() != 6)) {
+            return false;
+        }
+        try {
+            Integer.parseInt(hex, 16);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel alphaLabel;
     private javax.swing.JSlider alphaSlider;
