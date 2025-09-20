@@ -54,7 +54,7 @@ public class CopyTemplateHandler extends CreateFromTemplateHandler {
     @Override
     protected boolean accept(CreateDescriptor cd) {
         String ext = cd.getTemplate().getExt();
-        return ext.startsWith("j3") || ext.equals("blend") || ext.equals("frag") || ext.equals("vert"); /* Add your own binary extensions here !! */
+        return ext.startsWith("j3") || ext.equals("blend"); /* Add your own binary extensions here !! */
     }
 
     @Override

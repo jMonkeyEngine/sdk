@@ -55,10 +55,13 @@ public class GlslIndentTask implements IndentTask {
         context.setCaretOffset(1);
         final Document doc = context.document();
         int indentModifier = 0;
+        
+        int startOffset = context.startOffset();
+        int startOffsetBounded = Math.max(startOffset - 1, 0);
 
         //Check if previous line ends with a {
-        int previousLineLength = context.startOffset() - 1 - context.lineStartOffset(context.startOffset() - 1);
-        String previousLine = doc.getText(context.lineStartOffset(context.startOffset() - 1), previousLineLength);
+        int previousLineLength = Math.max(startOffset - 1 - context.lineStartOffset(startOffsetBounded), 0);
+        String previousLine = doc.getText(context.lineStartOffset(startOffsetBounded), previousLineLength);
 
         //Hook other reasons for changes in indentation into this for loop
         for (int i = previousLineLength - 1; i >= 0; i--) {
@@ -69,8 +72,8 @@ public class GlslIndentTask implements IndentTask {
                 break;
             }
         }
-        int previousLineIndent = context.lineIndent(context.lineStartOffset(context.startOffset() - 1));
-        context.modifyIndent(context.startOffset(), previousLineIndent + indentModifier);
+        int previousLineIndent = context.lineIndent(context.lineStartOffset(startOffsetBounded));
+        context.modifyIndent(startOffset, previousLineIndent + indentModifier);
     }
 
     @Override
