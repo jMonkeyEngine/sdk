@@ -60,7 +60,7 @@ public class GlslIndentTask implements IndentTask {
         int startOffsetBounded = Math.max(startOffset - 1, 0);
 
         //Check if previous line ends with a {
-        int previousLineLength = Math.max(startOffset - 1 - context.lineStartOffset(startOffsetBounded), 0);
+        int previousLineLength = Math.max(startOffsetBounded - context.lineStartOffset(startOffsetBounded), 0);
         String previousLine = doc.getText(context.lineStartOffset(startOffsetBounded), previousLineLength);
 
         //Hook other reasons for changes in indentation into this for loop
