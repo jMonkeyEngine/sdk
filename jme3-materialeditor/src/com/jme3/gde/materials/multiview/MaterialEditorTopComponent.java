@@ -176,6 +176,7 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jCheckBox1 = new javax.swing.JCheckBox();
+        animationCheckBox = new javax.swing.JCheckBox();
         materialPreviewWidget1 = new com.jme3.gde.materials.multiview.widgets.MaterialPreviewWidget();
         additionalRenderStatePane = new javax.swing.JTabbedPane();
         jScrollPane10 = new javax.swing.JScrollPane();
@@ -294,6 +295,15 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
             }
         });
 
+        animationCheckBox.setSelected(false);
+        animationCheckBox.setText("Enable Animation"); // NOI18N
+        animationCheckBox.setToolTipText("Enable continuous rendering for animated materials");
+        animationCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                animationCheckBoxActionPerformed(evt);
+            }
+        });
+
         additionalRenderStatePane.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         additionalRenderStatePane.setMinimumSize(new java.awt.Dimension(100, 100));
         additionalRenderStatePane.setPreferredSize(new java.awt.Dimension(380, 355));
@@ -326,6 +336,8 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
                             .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(animationCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39))))
         );
         editorPanelLayout.setVerticalGroup(
@@ -336,7 +348,8 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
                         .addContainerGap()
                         .addGroup(editorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox1))
+                            .addComponent(jCheckBox1)
+                            .addComponent(animationCheckBox))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(materialPreviewWidget1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -382,8 +395,14 @@ public final class MaterialEditorTopComponent extends CloneableTopComponent impl
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
+    private void animationCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        boolean enabled = animationCheckBox.isSelected();
+        materialPreviewWidget1.setAnimationEnabled(enabled);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane additionalRenderStatePane;
+    private javax.swing.JCheckBox animationCheckBox;
     private javax.swing.JPanel editorPanel;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
