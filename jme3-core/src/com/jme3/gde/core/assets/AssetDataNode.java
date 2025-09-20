@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2010 jMonkeyEngine
+ *  Copyright (c) 2009-2025 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -32,6 +32,7 @@
 package com.jme3.gde.core.assets;
 
 import com.jme3.asset.AssetKey;
+import com.jme3.gde.core.dnd.AssetNameHolder;
 import com.jme3.gde.core.util.PropertyUtils;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -48,7 +49,7 @@ import org.openide.util.Lookup;
  * @author normenhansen
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class AssetDataNode extends DataNode {
+public class AssetDataNode extends DataNode implements AssetNameHolder {
 
     public AssetDataNode(DataObject obj, Children ch) {
         super(obj, ch);
@@ -69,7 +70,7 @@ public class AssetDataNode extends DataNode {
         if (key == null) {
             return sheet;
         }
-        
+
         Sheet.Set set = Sheet.createPropertiesSet();
         set.setName("AssetKey");
         set.setDisplayName("Conversion Settings");
@@ -89,4 +90,14 @@ public class AssetDataNode extends DataNode {
         sheet.put(set);
         return sheet;
     }
+
+    @Override
+    public String getAssetName() {
+        AssetData data = getLookup().lookup(AssetData.class);
+        if (data != null && data.getAssetKey() != null) {
+            return data.getAssetKey().getName();
+        }
+        return null;
+    }
+
 }
