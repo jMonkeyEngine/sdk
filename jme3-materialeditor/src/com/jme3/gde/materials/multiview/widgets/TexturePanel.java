@@ -267,6 +267,8 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
 
     private void texturePreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_texturePreviewMouseClicked
         Component view = editor.getCustomEditor();
+        String originalValue = property.getValue(); // Store original value before clearing
+        String originalTextureName = textureName; // Store original texture name
         property.setValue(EMPTY);
         view.setVisible(true);
         if (editor.getValue() != null) {
@@ -274,11 +276,20 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
             displayPreview();
             updateFlipRepeat();
             fireChanged();
-        } else { // "No Texture" has been clicked
-            textureName = "\"\"";
-            texturePreview.setIcon(null);
-            texturePreview.setToolTipText("");
-            fireChanged();
+        } else { // "No Texture" has been clicked or dialog was cancelled
+            String asText = editor.getAsText();
+            if (asText == null) {
+                // "No Texture" was explicitly selected
+                textureName = "\"\"";
+                texturePreview.setIcon(null);
+                texturePreview.setToolTipText("");
+                fireChanged();
+            } else {
+                // Dialog was cancelled, restore original values
+                property.setValue(originalValue);
+                textureName = originalTextureName;
+                displayPreview(); // Restore the preview
+            }
         }
     }//GEN-LAST:event_texturePreviewMouseClicked
 
