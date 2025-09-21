@@ -288,14 +288,7 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
             displayPreview();
             updateFlipRepeat();
             fireChanged();
-        } else if (newAssetKey == null && originalAssetKey != null) {
-            // "No Texture" was explicitly selected (from having a texture to null)
-            property.setValue(EMPTY);
-            textureName = "\"\"";
-            texturePreview.setIcon(null);
-            texturePreview.setToolTipText("");
-            fireChanged();
-        } else if (newAssetKey == null && originalAssetKey == null) {
+        } else if (newAssetKey == null) {
             // "No Texture" was selected when no texture was already set
             property.setValue(EMPTY);
             textureName = "\"\"";
