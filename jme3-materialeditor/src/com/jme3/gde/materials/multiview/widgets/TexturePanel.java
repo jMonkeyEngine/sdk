@@ -266,30 +266,36 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void texturePreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_texturePreviewMouseClicked
+        // Set the current texture on the editor so the dialog initializes correctly
+        if (textureName != null && !textureName.equals("\"\"")) {
+            String currentTexture = extractTextureName(textureName);
+            editor.setAsText(currentTexture);
+        } else {
+            editor.setAsText(null);
+        }
+        
         Component view = editor.getCustomEditor();
-        String originalValue = property.getValue(); // Store original value before clearing
-        String originalTextureName = textureName; // Store original texture name
-        property.setValue(EMPTY);
         view.setVisible(true);
+        
         if (editor.getValue() != null) {
+            // A texture was selected
+            property.setValue(EMPTY); // Clear before setting new value
             textureName = "\"" + editor.getAsText() + "\"";
             displayPreview();
             updateFlipRepeat();
             fireChanged();
-        } else { // "No Texture" has been clicked or dialog was cancelled
+        } else {
+            // getValue() is null - either "No Texture" was selected or dialog was cancelled
             String asText = editor.getAsText();
             if (asText == null) {
-                // "No Texture" was explicitly selected
+                // "No Texture" was explicitly selected (setAsText(null) was called)
+                property.setValue(EMPTY);
                 textureName = "\"\"";
                 texturePreview.setIcon(null);
                 texturePreview.setToolTipText("");
                 fireChanged();
-            } else {
-                // Dialog was cancelled, restore original values
-                property.setValue(originalValue);
-                textureName = originalTextureName;
-                displayPreview(); // Restore the preview
             }
+            // If asText is not null, it means dialog was cancelled - do nothing to preserve original state
         }
     }//GEN-LAST:event_texturePreviewMouseClicked
 

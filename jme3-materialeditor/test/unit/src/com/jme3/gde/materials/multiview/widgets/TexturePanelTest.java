@@ -187,21 +187,16 @@ public class TexturePanelTest {
         texturePanel.textureName = originalTexture;
         
         // Simulate the user clicking on texture preview and then canceling
-        // This is a simplified version of what happens in texturePreviewMouseClicked
-        String originalValue = texturePanel.property.getValue();
-        String originalTextureName = texturePanel.textureName;
+        // In the fixed implementation, the property is not cleared until we know the user's choice
         
-        // Clear the property (this happens when the dialog opens)
-        texturePanel.property.setValue("");
+        // Simulate cancel: editor.getValue() returns null and editor.getAsText() returns original texture
+        // (the editor was initialized with the current texture, and cancel doesn't change it)
+        String asText = "original_texture.jpg"; // Would be returned by editor.getAsText() on cancel
         
-        // Simulate cancel: editor.getValue() returns null and editor.getAsText() returns original value
-        // (not null, because setAsText was never called)
-        // This is the logic from the fixed texturePreviewMouseClicked method
-        String asText = originalTexture; // Would be returned by editor.getAsText() on cancel
+        // This simulates the logic from the fixed texturePreviewMouseClicked method
         if (asText != null) {
-            // Dialog was cancelled, restore original values
-            texturePanel.property.setValue(originalValue);
-            texturePanel.textureName = originalTextureName;
+            // Dialog was cancelled - do nothing to preserve original state
+            // Property and textureName remain unchanged
         }
         
         // Verify that the original texture is preserved
@@ -222,23 +217,16 @@ public class TexturePanelTest {
         texturePanel.textureName = originalTexture;
         
         // Simulate the user clicking on texture preview and then selecting "No Texture"
-        String originalValue = texturePanel.property.getValue();
-        String originalTextureName = texturePanel.textureName;
-        
-        // Clear the property (this happens when the dialog opens)
-        texturePanel.property.setValue("");
+        // In the fixed implementation, the property is not cleared until we know the user's choice
         
         // Simulate "No Texture" selection: editor.getValue() returns null and editor.getAsText() returns null
-        // This is the logic from the fixed texturePreviewMouseClicked method
         String asText = null; // Would be returned by editor.getAsText() when "No Texture" is selected
+        
+        // This simulates the logic from the fixed texturePreviewMouseClicked method
         if (asText == null) {
             // "No Texture" was explicitly selected
-            texturePanel.textureName = "\"\"";
             texturePanel.property.setValue("");
-        } else {
-            // Dialog was cancelled, restore original values
-            texturePanel.property.setValue(originalValue);
-            texturePanel.textureName = originalTextureName;
+            texturePanel.textureName = "\"\"";
         }
         
         // Verify that the texture is properly cleared
