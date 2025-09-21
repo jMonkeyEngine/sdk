@@ -267,9 +267,10 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
 
     private void texturePreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_texturePreviewMouseClicked
         // Set the current texture on the editor so the dialog initializes correctly
+        String originalAssetKey = null;
         if (textureName != null && !textureName.equals("\"\"")) {
-            String currentTexture = extractTextureName(textureName);
-            editor.setAsText(currentTexture);
+            originalAssetKey = extractTextureName(textureName);
+            editor.setAsText(originalAssetKey);
         } else {
             editor.setAsText(null);
         }
@@ -277,26 +278,32 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
         Component view = editor.getCustomEditor();
         view.setVisible(true);
         
-        if (editor.getValue() != null) {
-            // A texture was selected
+        // Check what the user selected by examining the editor state after the dialog
+        String newAssetKey = editor.getAsText();
+        
+        if (newAssetKey != null && !newAssetKey.equals(originalAssetKey)) {
+            // A different texture was selected
             property.setValue(EMPTY); // Clear before setting new value
-            textureName = "\"" + editor.getAsText() + "\"";
+            textureName = "\"" + newAssetKey + "\"";
             displayPreview();
             updateFlipRepeat();
             fireChanged();
-        } else {
-            // getValue() is null - either "No Texture" was selected or dialog was cancelled
-            String asText = editor.getAsText();
-            if (asText == null) {
-                // "No Texture" was explicitly selected (setAsText(null) was called)
-                property.setValue(EMPTY);
-                textureName = "\"\"";
-                texturePreview.setIcon(null);
-                texturePreview.setToolTipText("");
-                fireChanged();
-            }
-            // If asText is not null, it means dialog was cancelled - do nothing to preserve original state
+        } else if (newAssetKey == null && originalAssetKey != null) {
+            // "No Texture" was explicitly selected (from having a texture to null)
+            property.setValue(EMPTY);
+            textureName = "\"\"";
+            texturePreview.setIcon(null);
+            texturePreview.setToolTipText("");
+            fireChanged();
+        } else if (newAssetKey == null && originalAssetKey == null) {
+            // "No Texture" was selected when no texture was already set
+            property.setValue(EMPTY);
+            textureName = "\"\"";
+            texturePreview.setIcon(null);
+            texturePreview.setToolTipText("");
+            fireChanged();
         }
+        // If newAssetKey equals originalAssetKey, then dialog was cancelled - do nothing
     }//GEN-LAST:event_texturePreviewMouseClicked
 
     @Override
