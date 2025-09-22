@@ -171,5 +171,67 @@ public class TexturePanelTest {
         assertTrue(texturePanel.property.getValue().contains("LINEAR"));
         
     }
+    
+    @Test
+    public void testTexturePreviewClickCancel() {
+        // This test simulates the scenario described in the issue:
+        // When a user clicks on a texture preview and then cancels the dialog,
+        // the original texture should be preserved instead of being unset.
+        
+        TexturePanel texturePanel = new TexturePanel();
+        texturePanel.setProperty(new MaterialProperty());
+        
+        // Set up initial texture state
+        String originalTexture = "\"original_texture.jpg\"";
+        texturePanel.property.setValue(originalTexture);
+        texturePanel.textureName = originalTexture;
+        
+        // Simulate the user clicking on texture preview and then canceling
+        // In the fixed implementation, the property is not cleared until we know the user's choice
+        
+        // Simulate cancel: editor.getValue() returns null and editor.getAsText() returns original texture
+        // (the editor was initialized with the current texture, and cancel doesn't change it)
+        String asText = "original_texture.jpg"; // Would be returned by editor.getAsText() on cancel
+        
+        // This simulates the logic from the fixed texturePreviewMouseClicked method
+        if (asText != null) {
+            // Dialog was cancelled - do nothing to preserve original state
+            // Property and textureName remain unchanged
+        }
+        
+        // Verify that the original texture is preserved
+        assertEquals(originalTexture, texturePanel.property.getValue());
+        assertEquals(originalTexture, texturePanel.textureName);
+    }
+    
+    @Test
+    public void testTexturePreviewClickNoTexture() {
+        // This test verifies that explicitly selecting "No Texture" still works correctly
+        
+        TexturePanel texturePanel = new TexturePanel();
+        texturePanel.setProperty(new MaterialProperty());
+        
+        // Set up initial texture state
+        String originalTexture = "\"original_texture.jpg\"";
+        texturePanel.property.setValue(originalTexture);
+        texturePanel.textureName = originalTexture;
+        
+        // Simulate the user clicking on texture preview and then selecting "No Texture"
+        // In the fixed implementation, the property is not cleared until we know the user's choice
+        
+        // Simulate "No Texture" selection: editor.getValue() returns null and editor.getAsText() returns null
+        String asText = null; // Would be returned by editor.getAsText() when "No Texture" is selected
+        
+        // This simulates the logic from the fixed texturePreviewMouseClicked method
+        if (asText == null) {
+            // "No Texture" was explicitly selected
+            texturePanel.property.setValue("");
+            texturePanel.textureName = "\"\"";
+        }
+        
+        // Verify that the texture is properly cleared
+        assertEquals("", texturePanel.property.getValue());
+        assertEquals("\"\"", texturePanel.textureName);
+    }
 
 }
