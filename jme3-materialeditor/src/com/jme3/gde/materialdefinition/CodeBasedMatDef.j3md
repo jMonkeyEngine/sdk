@@ -1,7 +1,6 @@
 MaterialDef ${name} {
 
     MaterialParameters {
-        Vector4 Color
     }
 
     Technique {
