@@ -530,7 +530,7 @@ public class VehicleEditorController implements LookupListener, ActionListener {
      * @param kie the key input event
      */
     public void onKeyEvent(KeyInputEvent kie) {
-        String binding = null;
+        String binding;
         switch (kie.getKeyCode()) {
             case KeyInput.KEY_A:
                 binding = "VehicleEditor_Left";
@@ -553,9 +553,7 @@ public class VehicleEditorController implements LookupListener, ActionListener {
             default:
                 return;
         }
-        if (binding != null) {
-            onAction(binding, kie.isPressed(), 0);
-        }
+        onAction(binding, kie.isPressed(), 0);
     }
 
     /**
