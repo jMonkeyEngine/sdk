@@ -22,6 +22,7 @@ import com.jme3.gde.core.undoredo.SceneUndoRedoManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
+import com.jme3.input.event.KeyInputEvent;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
@@ -519,6 +520,41 @@ public class VehicleEditorController implements LookupListener, ActionListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Handles key input events forwarded from the camera controller.
+     * Converts key codes to action bindings and calls onAction.
+     * 
+     * @param kie the key input event
+     */
+    public void onKeyEvent(KeyInputEvent kie) {
+        String binding = null;
+        switch (kie.getKeyCode()) {
+            case KeyInput.KEY_A:
+                binding = "VehicleEditor_Left";
+                break;
+            case KeyInput.KEY_D:
+                binding = "VehicleEditor_Right";
+                break;
+            case KeyInput.KEY_W:
+                binding = "VehicleEditor_Up";
+                break;
+            case KeyInput.KEY_S:
+                binding = "VehicleEditor_Down";
+                break;
+            case KeyInput.KEY_SPACE:
+                binding = "VehicleEditor_Space";
+                break;
+            case KeyInput.KEY_RETURN:
+                binding = "VehicleEditor_Reset";
+                break;
+            default:
+                return;
+        }
+        if (binding != null) {
+            onAction(binding, kie.isPressed(), 0);
         }
     }
 

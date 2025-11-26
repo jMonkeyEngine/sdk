@@ -33,6 +33,7 @@ package com.jme3.gde.vehiclecreator;
 
 import com.jme3.gde.core.scene.controller.AbstractCameraController;
 import com.jme3.input.InputManager;
+import com.jme3.input.event.KeyInputEvent;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
 
@@ -43,6 +44,7 @@ import com.jme3.scene.Spatial;
 public class VehicleCreatorCameraController extends AbstractCameraController {
 
     private Spatial vehicle;
+    private VehicleEditorController editorController;
 
     public VehicleCreatorCameraController(Camera cam, InputManager inputManager) {
         super(cam, inputManager);
@@ -65,6 +67,21 @@ public class VehicleCreatorCameraController extends AbstractCameraController {
      */
     public void setVehicle(Spatial vehicle) {
         this.vehicle = vehicle;
+    }
+
+    /**
+     * @param editorController the VehicleEditorController to forward key events to
+     */
+    public void setEditorController(VehicleEditorController editorController) {
+        this.editorController = editorController;
+    }
+
+    @Override
+    public void onKeyEvent(KeyInputEvent kie) {
+        super.onKeyEvent(kie);
+        if (editorController != null) {
+            editorController.onKeyEvent(kie);
+        }
     }
 
     @Override
