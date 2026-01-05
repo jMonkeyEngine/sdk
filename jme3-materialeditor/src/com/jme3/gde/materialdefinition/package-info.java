@@ -29,7 +29,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-@TemplateRegistration(folder = "Material", content = "MatDef.j3md", displayName="Material Definition Template")
+@TemplateRegistrations({
+    @TemplateRegistration(folder = "Material", content = "MatDef.j3md", displayName="Material Definition Template (Shader Nodes)"),
+    @TemplateRegistration(folder = "Material", content = "CodeBasedMatDef.j3md", displayName="Material Definition Template (Code Based)", 
+                         position = 100, scriptEngine = "freemarker"),
+})
 package com.jme3.gde.materialdefinition;
 
 import org.netbeans.api.templates.TemplateRegistration;
+import org.netbeans.api.templates.TemplateRegistrations;

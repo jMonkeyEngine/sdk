@@ -1,9 +1,37 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ *  Copyright (c) 2009-2025 jMonkeyEngine
+ *  All rights reserved.
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ * 
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ *  * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ * 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ *  TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ *  PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ *  CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ *  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ *  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ *  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ *  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.core.dnd;
 
+import com.jme3.gde.core.assets.AssetDataNode;
 import com.jme3.gde.core.sceneviewer.SceneViewerTopComponent;
 import com.jme3.math.Vector2f;
 import java.awt.Cursor;
@@ -19,8 +47,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles dropping Materials or Spatial from the AssetBrowser to the
- * SceneViewer
+ * Handles dropping Materials or Spatial from the AssetBrowser and Projects tab
+ * to the SceneViewer
+ *
  * @author rickard
  */
 public class SceneViewerDropTargetListener implements DropTargetListener {
@@ -57,8 +86,7 @@ public class SceneViewerDropTargetListener implements DropTargetListener {
     @Override
     public void drop(final DropTargetDropEvent dtde) {
         this.rootPanel.setCursor(Cursor.getDefaultCursor());
-
-        AssetNameHolder transferableObj = null;
+        String assetKey = null;
         Transferable transferable = null;
         DataFlavor flavor = null;
 
@@ -69,26 +97,51 @@ public class SceneViewerDropTargetListener implements DropTargetListener {
             flavor = flavors[0];
             // What does the Transferable support
             if (transferable.isDataFlavorSupported(flavor)) {
-                transferableObj = (AssetNameHolder) dtde.getTransferable().getTransferData(flavor);
+                Object o = dtde.getTransferable().getTransferData(flavor);
+                if (o instanceof AssetNameHolder assetNameHolder) {
+                    assetKey = assetNameHolder.getAssetName();
+                } else if (o instanceof AssetDataNode assetDataNode) {
+                    assetKey = assetDataNode.getAssetName();
+                }
             }
 
         } catch (UnsupportedFlavorException | IOException ex) {
             Logger.getLogger(SceneViewerDropTargetListener.class.getName()).log(Level.WARNING, "Non-supported flavor {0}", transferable);
         }
 
-        if (transferable == null || transferableObj == null) {
+        if (transferable == null || assetKey == null) {
             return;
         }
 
         final int dropYLoc = dtde.getLocation().y;
         final int dropXLoc = dtde.getLocation().x;
 
-        if (flavor instanceof SpatialDataFlavor) {
-            rootPanel.addModel(transferableObj.getAssetName(), new Vector2f(dropXLoc, dropYLoc));
-        } else if (flavor instanceof MaterialDataFlavor) {
-            rootPanel.applyMaterial(transferableObj.getAssetName(), new Vector2f(dropXLoc, dropYLoc));
+        if (flavor instanceof SpatialDataFlavor || isModelExtension(assetKey)) {
+            rootPanel.addModel(assetKey, new Vector2f(dropXLoc, dropYLoc));
+        } else if (flavor instanceof MaterialDataFlavor || isMaterialExtension(assetKey)) {
+            rootPanel.applyMaterial(assetKey, new Vector2f(dropXLoc, dropYLoc));
         }
 
+    }
+
+    /**
+     * Determines if the asset key represents a model/spatial asset by checking its file extension.
+     *
+     * @param assetKey The asset key (typically a filename or path); this method checks if it ends with the model file extension.
+     * @return true if the asset key is for model files
+     */
+    private boolean isModelExtension(String assetKey) {
+        return assetKey.endsWith("j3o");
+    }
+
+    /**
+     * Determines if the asset key represents a material asset by checking its file extension.
+     *
+     * @param assetKey The asset key (typically a filename or path); this method checks if it ends with the material file extension.
+     * @return true if the asset key is for material files
+     */
+    private boolean isMaterialExtension(String assetKey) {
+        return assetKey.endsWith("j3m");
     }
 
 }

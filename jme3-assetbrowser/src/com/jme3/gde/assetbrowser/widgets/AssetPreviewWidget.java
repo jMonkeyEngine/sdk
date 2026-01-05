@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2023 jMonkeyEngine
+ *  Copyright (c) 2009-2025 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -152,11 +152,6 @@ public class AssetPreviewWidget extends javax.swing.JPanel implements SceneListe
     @Override
     public String getAssetName() {
         return assetNameLabel.getText();
-    }
-
-    @Override
-    public void setAssetName(String name) {
-        assetNameLabel.setText(name);
     }
 
     public void setEditable(boolean editable) {

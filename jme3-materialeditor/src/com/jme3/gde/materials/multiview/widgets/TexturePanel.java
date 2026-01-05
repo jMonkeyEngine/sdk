@@ -266,20 +266,37 @@ public class TexturePanel extends MaterialPropertyWidget implements TextureDropT
     }//GEN-LAST:event_jCheckBox2ActionPerformed
 
     private void texturePreviewMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_texturePreviewMouseClicked
+        // Set the current texture on the editor so the dialog initializes correctly
+        String originalAssetKey = null;
+        if (textureName != null && !textureName.equals("\"\"")) {
+            originalAssetKey = extractTextureName(textureName);
+            editor.setAsText(originalAssetKey);
+        } else {
+            editor.setAsText(null);
+        }
+        
         Component view = editor.getCustomEditor();
-        property.setValue(EMPTY);
         view.setVisible(true);
-        if (editor.getValue() != null) {
-            textureName = "\"" + editor.getAsText() + "\"";
+        
+        // Check what the user selected by examining the editor state after the dialog
+        String newAssetKey = editor.getAsText();
+        
+        if (newAssetKey != null && !newAssetKey.equals(originalAssetKey)) {
+            // A different texture was selected
+            property.setValue(EMPTY); // Clear before setting new value
+            textureName = "\"" + newAssetKey + "\"";
             displayPreview();
             updateFlipRepeat();
             fireChanged();
-        } else { // "No Texture" has been clicked
+        } else if (newAssetKey == null) {
+            // "No Texture" was selected, regardless of whether a texture was previously set
+            property.setValue(EMPTY);
             textureName = "\"\"";
             texturePreview.setIcon(null);
             texturePreview.setToolTipText("");
             fireChanged();
         }
+        // If newAssetKey equals originalAssetKey, then dialog was cancelled - do nothing
     }//GEN-LAST:event_texturePreviewMouseClicked
 
     @Override
