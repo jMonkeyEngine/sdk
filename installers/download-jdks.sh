@@ -11,11 +11,11 @@ jdk_vendor="eclipse"
 function download_jdk {
     echo ">>> Downloading the JDK for $1_$2$3"
 
-    if [ -f $2-$1/jdk-$1_$2$3 ];
+    if [ -f "$2-$1/jdk-$1_$2$3" ];
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -# -o $2-$1/jdk-$1_$2$3 -L https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$2/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk
+        curl -# -o "$2-$1/jdk-$1_$2$3" -L "https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$2/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk"
         echo "<<< OK!"
     fi
 }
@@ -55,12 +55,12 @@ function get_jdk {
     fi
 
     # Depends on UNPACK and thus DOWNLOAD
-    if [ $1 == "windows" ]; then
-        get_jdk_windows $2
-    elif [ $1 == "linux" ]; then
-        get_jdk_linux $2
-    elif [ $1 == "macos" ]; then
-        get_jdk_macos $2
+    if [ "$1" == "windows" ]; then
+        get_jdk_windows "$2"
+    elif [ "$1" == "linux" ]; then
+        get_jdk_linux "$2"
+    elif [ "$1" == "macos" ]; then
+        get_jdk_macos "$2"
     fi
 
     echo "< OK!"

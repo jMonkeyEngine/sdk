@@ -46,7 +46,7 @@ function prepare_nbpackage {
 function build_nbpackage {
     echo ">> Building the nbpackage installer for $1-$2"
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config $1-$2/$3 --output ../dist/ -v -Ppackage.version=$4
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/ -v -Ppackage.version="$4"
 
     echo "<< OK!"
 }
@@ -55,8 +55,8 @@ function build_nbpackage {
 function build_linux_deb {
     echo "> Building the Linux DEB"
 
-    build_nbpackage linux x64 jmonkeyengine-x64-deb.properties $1
-    build_nbpackage linux aarch64 jmonkeyengine-aarch64-deb.properties $1
+    build_nbpackage linux x64 jmonkeyengine-x64-deb.properties "$1"
+    build_nbpackage linux aarch64 jmonkeyengine-aarch64-deb.properties "$1"
 
     echo "< OK!"
 }
@@ -66,7 +66,7 @@ function build_windows_installer {
     
     setup_inno_setup $2
     
-    build_nbpackage windows x64 jmonkeyengine-windows-x64.properties $1
+    build_nbpackage windows x64 jmonkeyengine-windows-x64.properties "$1"
 
     echo "< OK!"
 }
@@ -106,8 +106,8 @@ function download_inno_setup {
 function build_macos_pgk {
     echo "> Building the MacOS pgk"
     
-    build_nbpackage macos x64 jmonkeyengine-macos-x64.properties $1
-    build_nbpackage macos aarch64 jmonkeyengine-macos-aarch64.properties $1
+    build_nbpackage macos x64 jmonkeyengine-macos-x64.properties "$1"
+    build_nbpackage macos aarch64 jmonkeyengine-macos-aarch64.properties "$1"
 
     echo "< OK!"
 }
@@ -123,7 +123,7 @@ fi
 
 download_nbpackage
 prepare_nbpackage
-build_linux_deb $versionString
-build_windows_installer $versionString $2
+build_linux_deb "$versionString"
+build_windows_installer "$versionString" "$2"
 # MACOS needs signed packages etc. So disabled
-#build_macos_pgk $versionString
+#build_macos_pgk "$versionString"
