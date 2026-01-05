@@ -43,10 +43,20 @@ function prepare_nbpackage {
     fi
 }
 
+function build_nbpackage {
+    echo ">> Building the nbpackage installer for $1-$2"
+
+    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config $1-$2/$3 --output ../dist/ -v -Ppackage.version=$4
+
+    echo "<< OK!"
+}
+
+
 function build_linux_deb {
     echo "> Building the Linux DEB"
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config linux-x64/jmonkeyengine-x64-deb.properties --output ../dist/ -v -Ppackage.version=$1
+    build_nbpackage linux x64 jmonkeyengine-x64-deb.properties $1
+    build_nbpackage linux aarch64 jmonkeyengine-aarch64-deb.properties $1
 
     echo "< OK!"
 }
@@ -55,8 +65,8 @@ function build_windows_installer {
     echo "> Building the Windows installer"
     
     setup_inno_setup $2
-
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config windows-x64/jmonkeyengine-windows-x64.properties --output ../dist/ -v -Ppackage.version=$1
+    
+    build_nbpackage windows x64 jmonkeyengine-windows-x64.properties $1
 
     echo "< OK!"
 }
@@ -96,26 +106,10 @@ function download_inno_setup {
 function build_macos_pgk {
     echo "> Building the MacOS pgk"
     
-    build_macos_x64_pgk $1
-    build_macos_aarch64_pgk $1
+    build_nbpackage macos x64 jmonkeyengine-macos-x64.properties $1
+    build_nbpackage macos aarch64 jmonkeyengine-macos-aarch64.properties $1
 
     echo "< OK!"
-}
-
-function build_macos_x64_pgk {
-    echo ">> Building the MacOS x64 pgk"
-
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-x64/jmonkeyengine-macos-x64.properties --output ../dist/ -v -Ppackage.version=$1
-
-    echo "<< OK!"
-}
-
-function build_macos_aarch64_pgk {
-    echo ">> Building the MacOS aarch64 pgk"
-
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config macos-aarch64/jmonkeyengine-macos-aarch64.properties --output ../dist/ -v -Ppackage.version=$1
-
-    echo "<< OK!"
 }
 
 echo "Building installers with version tag $1"
@@ -131,4 +125,5 @@ download_nbpackage
 prepare_nbpackage
 build_linux_deb $versionString
 build_windows_installer $versionString $2
-build_macos_pgk $versionString
+# MACOS needs signed packages etc. So disabled
+#build_macos_pgk $versionString
