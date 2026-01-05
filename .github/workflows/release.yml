@@ -36,9 +36,10 @@ jobs:
       uses: softprops/action-gh-release@v1
 
       with:
-        files: dist/jmonkeyplatform*.*
-               dist/jmonkeyengine-sdk*.*
-               dist/jMonkeyEngine-SDK*.*
+        files: |
+          dist/jmonkeyplatform*.*
+          dist/jmonkeyengine-sdk*.*
+          dist/jMonkeyEngine-SDK*.*
         tag_name:  ${{ github.ref }}
         name: Release ${{ github.ref }}
       env:
