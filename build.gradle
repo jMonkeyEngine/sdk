@@ -602,7 +602,7 @@ tasks.register('updateNetbeans', Exec) {
 }
 
 tasks.register('buildSdk') {
-    dependsOn copyBaseLibs, copyProjectLibs, createProjectXml, createBaseXml, copyTestSources
+    dependsOn copyBaseLibs, copyProjectLibs, createProjectXml, createBaseXml, copyTestSources, checkPlatformConfig
     doLast {
         ant.propertyfile(file: "nbproject/project.properties") {
             entry(key: "plugins.version", value: "${jmeVersion}")
