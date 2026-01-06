@@ -64,7 +64,7 @@ function build_linux_deb {
 function build_windows_installer {
     echo "> Building the Windows installer"
     
-    setup_inno_setup $2
+    setup_inno_setup "$2"
     
     build_nbpackage windows x64 jmonkeyengine-windows-x64.properties "$1"
 
