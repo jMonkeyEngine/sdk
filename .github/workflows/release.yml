@@ -14,28 +14,32 @@ jobs:
       with:
         distribution: temurin
         java-version: 21
+    - name: Install wine
+      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt install -y xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic wine32:i386 wine makepkg
     - name: Grant execute permission for gradle
       run: chmod +x gradlew
     - name: Build the SDK
       run: ./gradlew buildSdk -Ptag_name=${{ github.ref_name }}
-    - name: Build the JDKs
-      run: bash download-jdks.sh
-      working-directory: jdks
     - name: Override Harness (custom icon)
       run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
     - name: Build Installers
-      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-installers unset-spec-version
-      env:
-        BUILD_X86: false
-        BUILD_X64: true
-        BUILD_OTHER: true
+      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
     - name: Fix Platform Independent Build
       run: ./gradlew fixPlatformIndependent -Ptag_name=${{ github.ref_name }}
+    - name: Download JDKs for the installers
+      run: bash download-jdks.sh
+      working-directory: installers
+    - name: Build the installers
+      run: bash build-installers.sh ${{ github.ref_name }} headless
+      working-directory: installers
     - name: Create Release
       uses: softprops/action-gh-release@v1
 
       with:
-        files: dist/jmonkeyplatform*.*
+        files: |
+          dist/jmonkeyplatform*.*
+          dist/jmonkeyengine-sdk*.*
+          dist/jMonkeyEngine-SDK*.*
         tag_name:  ${{ github.ref }}
         name: Release ${{ github.ref }}
       env:

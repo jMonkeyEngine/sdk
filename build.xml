@@ -112,24 +112,6 @@
                        byline="true"/>
     </target>
 
-    <!--
-     ****************************************************************
-     Only Relevant for building nightly on Hudson server from here on
-     ****************************************************************
-    -->
-
-    <!--creates update center version via hudson build server (update-help-sets, )-->
-    <target name="hudson-nightly" depends="suite.clean, set-impl-version, suite.nbms, unset-impl-version">
-    </target>
-
-    <!--to be used after release, sets version number sans svn revision-->
-    <target name="hudson-stable" depends="suite.clean, set-spec-version, suite.nbms, unset-spec-version">
-    </target>
-
-    <!--builds release installers-->
-    <target name="hudson-release" depends="suite.clean, set-spec-version, build-installers, unset-spec-version">
-    </target>
-
     <target name="set-spec-version">
         <property file="nbproject/project.properties"/>
         <foreach target="-do-spec-version" list="${modules}" delimiter=":" param="module_dir" inheritall="true">
@@ -200,130 +182,10 @@
         </if>
     </target>
 
-    <target name="build-installers">
-        <property environment="env" />
-        <property file="nbproject/project.properties"/>
-        
-        
-        <!-- handle different environment variables to split the long build-installers process -->
-        <if>
-            <and>
-                <not>
-                    <isset property="env.BUILD_X64"/>
-                </not>
-                <not>
-                    <isset property="env.BUILD_X86"/>
-                </not>
-                <not>
-                    <isset property="env.BUILD_OTHER"/>
-                </not>
-            </and>
-            <then>
-                <echo message="No platform specified, building all platforms"/>
-                <property name="generate.installer.for.platforms" value="windows-x64 linux-x64 macosx"/>
-            </then>
-            <else>
-                <if>
-                    <equals arg1="${env.BUILD_X64}" arg2="true"/>
-                    <then>
-                        <property name="temp.platform1" value="windows-x64 linux-x64 "/>
-                        <echo message="Building for the X64 architecture"/>
-                    </then>
-                    <else>
-                        <property name="temp.platform1" value="" /> <!-- So it isn't undefined -->
-                    </else>
-                </if>
-                <if>
-                    <equals arg1="${env.BUILD_X86}" arg2="true"/>
-                    <then>
-                        <property name="temp.platform2" value="windows-x86 " />
-                        <echo message="Building for the X86 architecture "/>
-                    </then>
-                    <else>
-                        <property name="temp.platform2" value="" /> <!-- So it isn't undefined -->
-                    </else>
-                </if>
-                <if>
-                    <equals arg1="${env.BUILD_OTHER}" arg2="true"/>
-                    <then>
-                        <property name="temp.platform3" value="macosx"/>
-                        <echo message="Building for Mac OS X"/>
-                    </then>
-                    <else>
-                        <property name="temp.platform3" value="" /> <!-- So it isn't undefined -->
-                    </else>
-                </if>
-                <!-- Since properties are immutable we needed temporary values -->
-                <property name="generate.installer.for.platforms" value="${temp.platform1}${temp.platform2}${temp.platform3}"/>
-            </else>
-        </if>
-        
-        <ant antfile="template.xml" dir="nbi/stub">
-            <property name="suite.location" value="${basedir}"/>
-            <property name="suite.nbi.product.uid" value="${app.name}"/>
-            <!--TODO: this is .0.2 because of the pre-release static 3.0.0, else the RCs could not be installed next to a beta-->
-            <property name="suite.nbi.product.version" value="${plugins.version}.0.${nbm.revision}"/>
-            <property name="nbi.stub.location" value="${basedir}/nbi/stub"/>
-            <property name="nbi.stub.common.location" value="${basedir}/nbi/.common"/>
-            <property name="nbi.ant.tasks.jar" value="${basedir}/nbi/antlib/nbi-ant-tasks.jar"/>
-            <property name="nbi.registries.management.jar" value="${basedir}/nbi/antlib/nbi-registries-management.jar"/>
-            <property name="nbi.engine.jar" value="${basedir}/nbi/antlib/nbi-engine.jar"/>
-            <property name="nbi.license.file" value="${basedir}/licenses-sdk.txt"/>
-            <!-- <property name="generate.installer.for.platforms" value="windows-x86 windows-x64 linux-x86 linux-x64 macosx"/> -->
-            <property name="generator-jdk-location-forward-slashes" value="${java.home}"/>
-            <property name="generated-installers-location-forward-slashes" value="${basedir}/build/installer"/>
-            <property name="pack200.enabled" value="false"/>
-            <property name="nbi.icon.file" value="${basedir}/jmonkeyplatform.png"/>
-            <property name="nbi.dock.icon.file" value="${basedir}/jmonkeyplatform.icns"/>
-            <property name="product.description" value="${app.description}"/>
-            <property name="product.categories" value="${app.categories}"/>
-        </ant>
-    </target>
-
     <target name="build-zip-for-installer" depends="-set-bundled-jdkhome, suite.build-zip"/>
 
     <target name="-set-bundled-jdkhome">
         <property name="jdkhome.string" value='jdkhome="jdk"'/>
-    </target>
-
-    <!--creates a debian package from the installer-->
-    <target name="create-deb-package" depends="suite.build-zip">
-        <unzip src="${dist.dir}/${app.name}.zip" dest="${dist.dir}/${app.name}">
-            <globmapper from="${app.name}/*" to="*"/>
-        </unzip>
-        <desktopentry
-            toFile="build/${app.name}.desktop"
-            name="${app.title}"
-            comment="${app.title}"
-            exec="/opt/${app.name}/bin/${app.name}"
-            icon="/opt/${app.name}/${app.name}.png"
-            categories="Development;Java"
-        />
-        <deb toDir="dist"
-             package="jme3-sdk"
-             version="${app.version}"
-             section="devel"
-             depends="sun-java6-jdk"
-             maintainer="jMonkeyEngine"
-             homepage="http://www.jmonkeyengine.org"
-             postrm="debscripts/postrm"
-        >
-            <tarfileset dir="dist/${app.name}/" prefix="opt/${app.name}">
-                <exclude name="bin/**"/>
-            </tarfileset>
-            <tarfileset dir="dist/${app.name}/bin" prefix="opt/${app.name}/bin" filemode="755">
-                <exclude name="*.exe"/>
-            </tarfileset>
-            <tarfileset file="build/${app.name}.desktop" prefix="usr/share/applications"/>
-            <tarfileset file="${app.name}.png" prefix="opt/${app.name}"/>
-            <description synopsis="jMonkeyEngine3 SDK is a complete solution for Java OpenGL game development.">
-                jMonkeyEngine 3 was rebuilt from the ground up to be a modern 3D game engine,
-                compatible with OpenGL 2.0 and above.
-                Its architecture is shader-based, making it fully capable of current and
-                next generation graphics standards. The jMonkeyEngine SDK gives you a complete IDE
-                for coding and for managing and creating game assets.
-            </description>
-        </deb>
     </target>
 
 </project>
