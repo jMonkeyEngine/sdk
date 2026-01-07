@@ -4,8 +4,8 @@ plugins {
     id 'application'
 }
 
-group 'com.mygame'
-version '1.0'
+group = 'com.mygame'
+version = '1.0'
 
 application {
     applicationName = '${name}'
@@ -18,7 +18,7 @@ application {
 
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
+    maven { url = 'https://jitpack.io' }
 }
 
 project.ext {
@@ -119,5 +119,5 @@ java {
 }
 
 wrapper {
-    gradleVersion = '8.6'
+    gradleVersion = '9.2.1'
 }
