@@ -39,7 +39,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.2.0'
+        classpath 'org.ajoberstar:gradle-git:1.6.0'
     }
 }
 
@@ -140,7 +140,7 @@ task configureVersionInfo {
         if (project.hasProperty("tag_name")) {
             jmeGitTag = project.getProperty("tag_name")
         } else {
-            jmeGitTag = grgit.tag.list().find { it.commit == head }
+            jmeGitTag = grgit.tag.list().find { it.commit == head }?.name
         }
 
         def releaseInfo = getReleaseInfo(jmeGitTag)
