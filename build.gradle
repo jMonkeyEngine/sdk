@@ -643,42 +643,6 @@ tasks.register('cleanSdk') {
     }
 }
 
-tasks.register('extractPlatformIndependent', Copy) {
-    from zipTree('dist/jmonkeyplatform.zip')
-    into "dist/temp/"
-
-    exclude("jmonkeyplatform/etc/jmonkeyplatform.conf")
-}
-
-tasks.register('patchPlatformIndependent', Copy) {
-    dependsOn extractPlatformIndependent
-    from zipTree('dist/jmonkeyplatform.zip')
-    into "dist/temp/"
-
-    include("jmonkeyplatform/etc/jmonkeyplatform.conf")
-
-    filter { String line ->
-        line.startsWith('jdkhome=') ? '#jdkhome="/path/to/jdk"' : line
-    }
-
-    doLast {
-        delete(file('dist/jmonkeyplatform.zip'))
-    }
-}
-
-tasks.register('fixPlatformIndependent', Zip) {
-    dependsOn patchPlatformIndependent
-    description = "We compile our installers with the bundled jdk, but the platform independent zip doesn't have the jdk. For this we need to change the jmonkeyplatform.zip after building the installers to not have a jdk bundled"
-
-    from 'dist/temp'
-    archiveFileName = 'jmonkeyplatform.zip'
-    destinationDirectory = file('dist')
-
-    doLast {
-        delete("dist/temp")
-    }
-}
-
 wrapper {
     gradleVersion = '9.2.1'
 }
