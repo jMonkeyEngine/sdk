@@ -909,6 +909,7 @@ public final class VehicleCreatorTopComponent extends TopComponent implements Sc
             editorController = newEditorController;
             cameraController = new VehicleCreatorCameraController(SceneApplication.getApplication().getCamera(), SceneApplication.getApplication().getInputManager());
             cameraController.setMaster(this);
+            cameraController.setEditorController(editorController);
             cameraController.enable();
             cameraController.setVehicle(request.getRootNode());
             setLoadedScene(currentRequest.getDataObject().getNodeDelegate(), true);
