@@ -28,21 +28,21 @@ runs:
       shell: bash
 
     - name: Build the SDK (with tag)
-      if: ${{ inputs.tag }} != ''
+      if: inputs.tag != ''
       run: ./gradlew buildSdk -Ptag_name=${{ inputs.tag }}
       shell: bash
 
     - name: Build the SDK
-      if: ${{ inputs.tag }} == ''
+      if: inputs.tag == ''
       run: ./gradlew buildSdk
       shell: bash
 
     - name: Override Harness (custom icon)
-      if: ${{ inputs.createBundle == 'true' }}
+      if: inputs.createBundle == 'true'
       run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
       shell: bash
 
     - name: Build distributable ZIP
-      if: ${{ inputs.createBundle == 'true' }}
+      if: inputs.createBundle == 'true'
       run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
       shell: bash
