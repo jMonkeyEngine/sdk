@@ -7,9 +7,9 @@ inputs:
     description: "Tag should be used for releases"
   createBundle:
     required: false
-    default: false
+    default: 'false'
     type: boolean
-    description: "Tag should be used for releases"
+    description: "If specified, creates a ZIP distributable bundle"
 
 runs:
   using: "composite"
@@ -28,21 +28,21 @@ runs:
       shell: bash
 
     - name: Build the SDK (with tag)
-      if: ${{ inputs.tag }} != null
+      if: ${{ inputs.tag }} != ''
       run: ./gradlew buildSdk -Ptag_name=${{ inputs.tag }}
       shell: bash
 
     - name: Build the SDK
-      if: ${{ inputs.tag }} == null
+      if: ${{ inputs.tag }} == ''
       run: ./gradlew buildSdk
       shell: bash
 
     - name: Override Harness (custom icon)
-      if: ${{ inputs.createBundle }}
+      if: ${{ inputs.createBundle == 'true' }}
       run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
       shell: bash
 
     - name: Build distributable ZIP
-      if: ${{ inputs.createBundle }}
+      if: ${{ inputs.createBundle == 'true' }}
       run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
       shell: bash

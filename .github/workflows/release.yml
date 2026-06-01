@@ -18,7 +18,7 @@ jobs:
       uses: ./.github/actions/build-sdk
       with:
         tag: ${{ github.ref_name }}
-        createBundle: true
+        createBundle: 'true'
 
     - name: Prepare installers
       uses: ./.github/actions/prepare-installers

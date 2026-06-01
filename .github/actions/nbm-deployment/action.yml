@@ -1,5 +1,5 @@
-name: "Build SDK"
-description: "Setups and builds the SDK (Linux)"
+name: "NBM deployment"
+description: "Deploys NBM packages"
 
 inputs:
   token:
