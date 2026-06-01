@@ -11,11 +11,18 @@ jdk_vendor="eclipse"
 function download_jdk {
     echo ">>> Downloading the JDK for $1_$2$3"
 
+    # Translate our OS names to Adoptium API OS names
+    jdkOsString=$2
+    case "$jdkOsString" in
+      macos)   jdkOsString="mac" ;;
+      *)
+    esac
+
     if [ -f "$2-$1/jdk-$1_$2$3" ];
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -f -# -o "$2-$1/jdk-$1_$2$3" -L "https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$2/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk"
+        curl -f -# -o "$2-$1/jdk-$1_$2$3" -L "https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$jdkOsString/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk"
         echo "<<< OK!"
     fi
 }
@@ -23,7 +30,7 @@ function download_jdk {
 function get_jdk_macos {
     echo "> Getting the JDK for MacOS-$1"
 
-    download_jdk "$1" mac .tar.gz
+    download_jdk "$1" macos .tar.gz
 
     echo "< OK!"
 }
