@@ -23,7 +23,7 @@ function download_jdk {
 function get_jdk_macos {
     echo "> Getting the JDK for MacOS-$1"
 
-    download_jdk "$1" macos .tar.gz
+    download_jdk "$1" mac .tar.gz
 
     echo "< OK!"
 }
