@@ -2,46 +2,14 @@
 #(c) jmonkeyengine.org
 
 # Uses NBPackage to create installers for different platforms.
-# Prequisites for running this script:
+# Prerequisites for running this script:
 # - The SDK ZIP build must already exist
 # - JDKs must already been downloaded
-# Some quirks exist with the different platform installers:
-# - Linux DEPs are only created with current architecture
-# - Windows installer requires Inno Setup, this seems like an easy thing to break in this chain
+# - NBPackage must exist
 
 set -e # Quit on Error
 
-nbpackage_version="1.0-beta6"
-nbpackage_url="https://archive.apache.org/dist/netbeans/netbeans-nbpackage/$nbpackage_version/nbpackage-$nbpackage_version-bin.zip"
 inno_setup_url="https://files.jrsoftware.org/is/6/innosetup-6.5.1.exe"
-
-function download_nbpackage {
-    echo "> Downloading the nbpackage"
-
-
-    if [ -f "downloads/nbpackage.zip" ];
-    then
-        echo "< Already existing, SKIPPING."
-    else
-        mkdir -p downloads
-        
-        curl -# -o downloads/nbpackage.zip -L $nbpackage_url
-        echo "< OK!"
-    fi
-}
-
-function prepare_nbpackage {
-    echo "> Extracting the nbpackage"
-
-
-    if [ -d "nbpackage" ];
-    then
-        echo "< Already existing, SKIPPING."
-    else
-        unzip -qq downloads/nbpackage.zip -d nbpackage
-        echo "< OK!"
-    fi
-}
 
 function build_nbpackage {
     echo ">> Building the nbpackage installer for $1-$2"
@@ -112,7 +80,7 @@ function build_macos_pgk {
     echo "< OK!"
 }
 
-echo "Building installers with version tag $1"
+echo "Building installers with version tag $1 on $2 arch $3"
 
 versionString=$1
 if [[ $versionString != [[:digit:]]* ]];
@@ -121,9 +89,5 @@ then
     echo "Stripped version tag to $versionString"
 fi
 
-download_nbpackage
-prepare_nbpackage
-build_linux_deb "$versionString"
-build_windows_installer "$versionString" "$2"
-# MACOS needs signed packages etc. So disabled
-#build_macos_pgk "$versionString"
+#build_linux_deb "$versionString"
+#build_windows_installer "$versionString" "$2"

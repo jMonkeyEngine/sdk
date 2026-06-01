@@ -66,8 +66,5 @@ function get_jdk {
     echo "< OK!"
 }
 
-get_jdk linux x64
-get_jdk linux aarch64
-get_jdk windows x64
-#get_jdk macos x64
-#get_jdk macos aarch64
+echo "Building JDK with on $1 arch $2"
+get_jdk $1 $2

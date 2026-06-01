@@ -1,0 +1,24 @@
+name: "Build installers"
+description: "Builds installers for the given target environment"
+
+inputs:
+  tag:
+    required: true
+    description: "Tag should be used for releases"
+  os:
+    required: true
+    description: "Operating system string"
+  arch:
+    required: true
+    description: "System architecture string"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download JDKs
+      run: bash download-jdks.sh ${{ inputs.os }} ${{ inputs.arch }}
+      shell: bash
+
+    - name: Build installers
+      run: bash build-installers.sh ${{ inputs.tag }} ${{ inputs.os }} ${{ inputs.arch }}
+      shell: bash

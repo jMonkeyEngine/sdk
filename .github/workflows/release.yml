@@ -1,44 +1,99 @@
-# This Action will build the SDK and if this succeeds, create a github release
+# This Action will build the SDK and if this succeeds, create a GitHub release
 name: Release Builds
 on:
   push:
     tags:
       - "*"
 jobs:
+
+  # -------------------------------
+  # 1. Build + bundle (Linux only)
+  # -------------------------------
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        distribution: temurin
-        java-version: 21
-    - name: Install wine
-      run: sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt install -y xorg xvfb xfonts-100dpi xfonts-75dpi xfonts-scalable xfonts-cyrillic wine32:i386 wine makepkg
-    - name: Grant execute permission for gradle
-      run: chmod +x gradlew
     - name: Build the SDK
-      run: ./gradlew buildSdk -Ptag_name=${{ github.ref_name }}
-    - name: Override Harness (custom icon)
-      run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
-    - name: Build Installers
-      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
-    - name: Download JDKs for the installers
-      run: bash download-jdks.sh
-      working-directory: installers
-    - name: Build the installers
-      run: bash build-installers.sh ${{ github.ref_name }} headless
-      working-directory: installers
-    - name: Create Release
-      uses: softprops/action-gh-release@v1
-
+      uses: ./.github/actions/build-sdk
       with:
-        files: |
-          dist/jmonkeyplatform*.*
-          dist/jmonkeyengine-sdk*.*
-          dist/jMonkeyEngine-SDK*.*
-        tag_name:  ${{ github.ref }}
-        name: Release ${{ github.ref }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ github.ref_name }}
+        createBundle: true
+
+    - name: Prepare installers
+      uses: ./.github/actions/prepare-installers
+
+    - name: Upload bundle
+      uses: actions/upload-artifact@v7
+      with:
+        name: bundle
+        path: dist/jmonkeyplatform.zip
+        compression-level: 0
+        if-no-files-found: error
+
+    - name: Upload installers
+      uses: actions/upload-artifact@v7
+      with:
+        name: installer-input
+        path: |
+          installers/
+          nbpackage/
+        compression-level: 9
+
+  # -------------------------------
+  # 2. Native installer packaging (matrix)
+  # -------------------------------
+  package:
+    needs: build
+
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest, macos-26-intel ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Download bundle
+        uses: actions/download-artifact@v8
+
+      - name: Build installers
+        uses: ./.github/actions/build-installers
+        with:
+          tag: ${{ github.ref_name }}
+          os: ${{ runner.os }}
+          arch: ${{ runner.arch }}
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v7
+        with:
+          name: installers-${{ matrix.os }}
+          path: dist/installers/**
+
+  # -------------------------------
+  # 3. Release
+  # -------------------------------
+  release:
+    needs: package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Publish release
+        uses: ./.github/actions/publish-release
+        with:
+          tag: ${{ github.ref }}
+#    - name: Download JDKs for the installers
+#      run: bash download-jdks.sh
+#      working-directory: installers
+#    - name: Build the installers
+#      run: bash build-installers.sh ${{ github.ref_name }} headless
+#      working-directory: installers
+#    - name: Create Release
+#      uses: softprops/action-gh-release@v1
+#
+#      with:
+#        files: |
+#          dist/jmonkeyplatform*.*
+#          dist/jmonkeyengine-sdk*.*
+#          dist/jMonkeyEngine-SDK*.*
+#        tag_name:  ${{ github.ref }}
+#        name: Release ${{ github.ref }}
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,29 @@
+name: "Build SDK"
+description: "Setups and builds the SDK (Linux)"
+
+inputs:
+  token:
+    required: true
+    description: "SDK Update Center token"
+
+runs:
+  using: "composite"
+  steps:
+  - name: Checkout the nightly-trigger repository
+    uses: actions/checkout@v6
+    with:
+      repository: 'jMonkeyEngine/sdk-update-center'
+      ref: nightly
+      path: nightly
+      token: ${{ inputs.token }}
+
+  - name: Setup Git for the commit
+    run: git config user.email MeFisto94@users.noreply.github.com && git config user.name MeFisto94
+    working-directory: nightly
+
+  - name: Overwrite the target file
+    run: rm -rf nightly/target && echo 'echo "sdk_sha=${{ github.sha }}" >> $GITHUB_ENV' > nightly/target
+
+  - name: Trigger nightly builds
+    working-directory: nightly
+    run: git add target && git commit -m "Trigger a fresh nightly build for https://github.com/jMonkeyEngine/sdk/commit/${{ github.sha }}" && git push

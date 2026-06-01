@@ -1,0 +1,49 @@
+name: "Build SDK"
+description: "Setups and builds the SDK (Linux)"
+
+inputs:
+  tag:
+    required: false
+    description: "Tag should be used for releases"
+  createBundle:
+    required: false
+    default: false
+    type: boolean
+    description: "Tag should be used for releases"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v6
+    - name: Set up JDK 21
+      uses: actions/setup-java@v5
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Validate the Gradle wrapper
+      uses: gradle/actions/wrapper-validation@v3
+
+    - name: Grant execute permission for gradle
+      run: chmod +x gradlew
+      shell: bash
+
+    - name: Build the SDK (with tag)
+      if: ${{ inputs.tag }} != null
+      run: ./gradlew buildSdk -Ptag_name=${{ inputs.tag }}
+      shell: bash
+
+    - name: Build the SDK
+      if: ${{ inputs.tag }} == null
+      run: ./gradlew buildSdk
+      shell: bash
+
+    - name: Override Harness (custom icon)
+      if: ${{ inputs.createBundle }}
+      run: ./gradlew overrideHarness -Ptag_name=${{ github.ref_name }}
+      shell: bash
+
+    - name: Build distributable ZIP
+      if: ${{ inputs.createBundle }}
+      run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
+      shell: bash

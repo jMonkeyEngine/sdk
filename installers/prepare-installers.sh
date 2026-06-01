@@ -1,0 +1,41 @@
+#!/bin/bash
+#(c) jmonkeyengine.org
+
+# This script simply
+
+set -e # Quit on Error
+
+nbpackage_version="1.0"
+nbpackage_url="https://archive.apache.org/dist/netbeans/netbeans-nbpackage/$nbpackage_version/nbpackage-$nbpackage_version-bin.zip"
+
+function download_nbpackage {
+    echo "> Downloading the nbpackage"
+
+
+    if [ -f "downloads/nbpackage.zip" ];
+    then
+        echo "< Already existing, SKIPPING."
+    else
+        mkdir -p downloads
+        
+        curl -# -o downloads/nbpackage.zip -L $nbpackage_url
+        echo "< OK!"
+    fi
+}
+
+function prepare_nbpackage {
+    echo "> Extracting the nbpackage"
+
+
+    if [ -d "nbpackage" ];
+    then
+        echo "< Already existing, SKIPPING."
+    else
+        unzip -qq downloads/nbpackage.zip -d nbpackage
+        echo "< OK!"
+    fi
+}
+
+
+download_nbpackage
+prepare_nbpackage

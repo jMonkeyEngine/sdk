@@ -1,5 +1,5 @@
 # This Action will build the SDK and if this succeeds, trigger a build on the
-# jMonkeyEngine/sdk-update-center repository, so that nbms get built and
+# jMonkeyEngine/sdk-update-center repository, so that NBMs get built and
 # deployed
 name: Nightly NBM Deployment
 
@@ -7,49 +7,22 @@ on:
   push:
     branches: [ master ]
   pull_request:
-  
+
 jobs:
   BuildSDK:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: 21
-        distribution: 'temurin'
-
-    - name: Validate the Gradle wrapper
-      uses: gradle/wrapper-validation-action@v2
-
-    - name: Grant execute permission for gradle
-      run: chmod +x gradlew
-      
     - name: Build the SDK
-      run: ./gradlew buildSdk
+      uses: ./.github/actions/build-sdk
 
   NBMDeployment:
     needs: [BuildSDK]
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    
+
     steps:
-    - name: Checkout the nightly-trigger repository
-      uses: actions/checkout@v3
+    - name: Deploy NBMs
+      uses: ./.github/actions/nbm-deployment
       with:
-        repository: 'jMonkeyEngine/sdk-update-center'
-        ref: nightly
-        path: nightly
         token: ${{ secrets. UPDATE_CENTER_PAT }}
-      
-    - name: Setup Git for the commit
-      run: git config user.email MeFisto94@users.noreply.github.com && git config user.name MeFisto94
-      working-directory: nightly
-      
-    - name: Overwrite the target file
-      run: rm -rf nightly/target && echo 'echo "sdk_sha=${{ github.sha }}" >> $GITHUB_ENV' > nightly/target
-      
-    - name: Trigger nightly builds
-      working-directory: nightly
-      run: git add target && git commit -m "Trigger a fresh nightly build for https://github.com/jMonkeyEngine/sdk/commit/${{ github.sha }}" && git push

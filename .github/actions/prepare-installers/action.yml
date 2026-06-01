@@ -1,0 +1,10 @@
+name: "Prepare installers"
+description: "Setups the NBPackage needed to build the installers"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare NBPackage
+      run: bash prepare-installers.sh
+      working-directory: installers
+      shell: bash
