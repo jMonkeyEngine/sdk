@@ -12,6 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v6
+
     - name: Build the SDK
       uses: ./.github/actions/build-sdk
       with:
