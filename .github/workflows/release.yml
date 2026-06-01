@@ -18,12 +18,12 @@ jobs:
       uses: ./.github/actions/build-sdk
       with:
         tag: ${{ github.ref_name }}
-        createBundle: 'true'
+        createBundle: true
 
     - name: Prepare installers
       uses: ./.github/actions/prepare-installers
 
-    - name: Upload bundle
+    - name: Upload distributable ZIP bundle
       uses: actions/upload-artifact@v7
       with:
         name: bundle
@@ -31,7 +31,7 @@ jobs:
         compression-level: 0
         if-no-files-found: error
 
-    - name: Upload installers
+    - name: Upload installer templates
       uses: actions/upload-artifact@v7
       with:
         name: installer-input
