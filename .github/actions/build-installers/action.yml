@@ -17,8 +17,10 @@ runs:
   steps:
     - name: Download JDKs
       run: bash download-jdks.sh ${{ inputs.os }} ${{ inputs.arch }}
+      working-directory: installers
       shell: bash
 
     - name: Build installers
       run: bash build-installers.sh ${{ inputs.tag }} ${{ inputs.os }} ${{ inputs.arch }}
+      working-directory: installers
       shell: bash

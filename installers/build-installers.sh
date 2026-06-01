@@ -9,12 +9,12 @@
 
 set -e # Quit on Error
 
-inno_setup_url="https://files.jrsoftware.org/is/6/innosetup-6.5.1.exe"
+inno_setup_url="https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/innosetup-6.7.3.exe"
 
 function build_nbpackage {
-    echo ">> Building the nbpackage installer for $1-$2"
+    echo ">> Building the NBPackage installer for $1-$2"
 
-    ./nbpackage/nbpackage-$nbpackage_version/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/ -v -Ppackage.version="$4"
+    ./nbpackage/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/ -v -Ppackage.version="$4"
 
     echo "<< OK!"
 }
@@ -23,8 +23,7 @@ function build_nbpackage {
 function build_linux_deb {
     echo "> Building the Linux DEB"
 
-    build_nbpackage linux x64 jmonkeyengine-x64-deb.properties "$1"
-    build_nbpackage linux aarch64 jmonkeyengine-aarch64-deb.properties "$1"
+    build_nbpackage linux "$2" jmonkeyengine-"$2"-deb.properties "$1"
 
     echo "< OK!"
 }
@@ -32,9 +31,9 @@ function build_linux_deb {
 function build_windows_installer {
     echo "> Building the Windows installer"
     
-    setup_inno_setup "$2"
+    setup_inno_setup
     
-    build_nbpackage windows x64 jmonkeyengine-windows-x64.properties "$1"
+    build_nbpackage windows "$2" jmonkeyengine-windows-"$2".properties "$1"
 
     echo "< OK!"
 }
@@ -43,15 +42,7 @@ function setup_inno_setup {
     echo ">> Setting up Inno Setup"
     
     download_inno_setup
-    
-    # Needs Wine!!!
-    if [ -z "$1" ];
-    then
-        wine downloads/innosetup.exe /VERYSILENT
-    else
-        echo "<< Trying headless mode"
-        xvfb-run wine downloads/innosetup.exe /VERYSILENT
-    fi
+    downloads/innosetup.exe /VERYSILENT
 
     echo "<< OK!"
 }
@@ -74,13 +65,12 @@ function download_inno_setup {
 function build_macos_pgk {
     echo "> Building the MacOS pgk"
     
-    build_nbpackage macos x64 jmonkeyengine-macos-x64.properties "$1"
-    build_nbpackage macos aarch64 jmonkeyengine-macos-aarch64.properties "$1"
+    build_nbpackage macos "$2" jmonkeyengine-macos-"$2".properties "$1"
 
     echo "< OK!"
 }
 
-echo "Building installers with version tag $1 on $2 arch $3"
+echo "Building installers with version tag $1 on $2 architecture $3"
 
 versionString=$1
 if [[ $versionString != [[:digit:]]* ]];
@@ -89,5 +79,23 @@ then
     echo "Stripped version tag to $versionString"
 fi
 
-#build_linux_deb "$versionString"
-#build_windows_installer "$versionString" "$2"
+arch_raw="${3:-}"
+
+case "$arch_raw" in
+  X86)   arch="x86" ;;
+  X64)   arch="x64" ;;
+  ARM)   arch="arm" ;;
+  ARM64) arch="aarch64" ;;
+  *)
+    echo "Unknown Architecture $arch_raw. ERROR!!!"
+    exit 1
+esac
+
+case "$2" in
+  Windows)   build_windows_installer "$versionString" "$3" ;;
+  Linux)     build_linux_deb "$versionString" "$3" ;;
+  macOS)     build_macos_pgk "$versionString" "$3" ;;
+  *)
+    echo "Unknown Platform $2. ERROR!!!"
+    exit 1
+esac
