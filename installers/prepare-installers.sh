@@ -1,7 +1,7 @@
 #!/bin/bash
 #(c) jmonkeyengine.org
 
-# This script simply
+# This script simply downloads NBPackage for creating the SDK installers
 
 set -e # Quit on Error
 
@@ -31,11 +31,11 @@ function prepare_nbpackage {
     then
         echo "< Already existing, SKIPPING."
     else
-        unzip -qq downloads/nbpackage.zip -d nbpackage
+        unzip -qq downloads/nbpackage.zip -d downloads/nbpackage
+        mv downloads/nbpackage/nbpackage-$nbpackage_version/. nbpackage/
         echo "< OK!"
     fi
 }
-
 
 download_nbpackage
 prepare_nbpackage

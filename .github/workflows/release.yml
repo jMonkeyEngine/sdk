@@ -31,13 +31,11 @@ jobs:
         compression-level: 0
         if-no-files-found: error
 
-    - name: Upload installer templates
+    - name: Upload NBPackage
       uses: actions/upload-artifact@v7
       with:
-        name: installer-input
-        path: |
-          installers/
-          nbpackage/
+        name: nbpackage
+        path: installers/nbpackage/
         compression-level: 9
 
   # -------------------------------
@@ -53,6 +51,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - uses: actions/checkout@v6
+
       - name: Download bundle
         uses: actions/download-artifact@v8
 
@@ -77,6 +77,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v6
+
       - name: Publish release
         uses: ./.github/actions/publish-release
         with:
