@@ -15,6 +15,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up JDK 21 # NBPackage requires JDK
+      uses: actions/setup-java@v5
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
     - name: Download JDKs
       run: bash download-jdks.sh ${{ inputs.os }} ${{ inputs.arch }}
       working-directory: installers
