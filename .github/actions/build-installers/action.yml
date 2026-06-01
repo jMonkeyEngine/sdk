@@ -20,6 +20,11 @@ runs:
       working-directory: installers
       shell: bash
 
+    - name: Grant execute permission for NBPackage
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      run: chmod +x installers/nbpackage/bin/nbpackage
+      shell: bash
+
     - name: Build installers
       run: bash build-installers.sh ${{ inputs.tag }} ${{ inputs.os }} ${{ inputs.arch }}
       working-directory: installers

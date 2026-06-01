@@ -14,7 +14,7 @@ inno_setup_url="https://github.com/jrsoftware/issrc/releases/download/is-6_7_3/i
 function build_nbpackage {
     echo ">> Building the NBPackage installer for $1-$2"
 
-    ./nbpackage/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/ -v -Ppackage.version="$4"
+    ./nbpackage/bin/nbpackage --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
 
     echo "<< OK!"
 }

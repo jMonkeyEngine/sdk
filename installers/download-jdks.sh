@@ -78,5 +78,4 @@ function get_jdk {
     echo "< OK!"
 }
 
-echo "Building JDK with on $1 architecture $2"
 get_jdk "$1" "$2"
