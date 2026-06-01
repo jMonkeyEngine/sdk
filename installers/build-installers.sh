@@ -58,7 +58,7 @@ function download_inno_setup {
     else
         mkdir -p downloads
         
-        curl -# -o downloads/innosetup.exe -L $inno_setup_url
+        curl -f -# -o downloads/innosetup.exe -L $inno_setup_url
         echo "<<< OK!"
     fi
 }

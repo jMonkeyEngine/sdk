@@ -15,7 +15,7 @@ function download_jdk {
     then
         echo "<<< Already existing, SKIPPING."
     else
-        curl -# -o "$2-$1/jdk-$1_$2$3" -L "https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$2/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk"
+        curl -f -# -o "$2-$1/jdk-$1_$2$3" -L "https://api.adoptium.net/v3/binary/latest/$jdk_major_version/ga/$2/$1/jdk/$jvm_impl/normal/$jdk_vendor?project=jdk"
         echo "<<< OK!"
     fi
 }

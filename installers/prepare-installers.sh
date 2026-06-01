@@ -18,7 +18,7 @@ function download_nbpackage {
     else
         mkdir -p downloads
         
-        curl -# -o downloads/nbpackage.zip -L $nbpackage_url
+        curl -f -# -o downloads/nbpackage.zip -L $nbpackage_url
         echo "< OK!"
     fi
 }
