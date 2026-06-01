@@ -32,6 +32,7 @@ function prepare_nbpackage {
         echo "< Already existing, SKIPPING."
     else
         unzip -qq downloads/nbpackage.zip -d downloads/nbpackage
+        mkdir -p nbpackage
         mv downloads/nbpackage/nbpackage-$nbpackage_version/* nbpackage/
         echo "< OK!"
     fi
