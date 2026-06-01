@@ -92,9 +92,9 @@ case "$arch_raw" in
 esac
 
 case "$2" in
-  Windows)   build_windows_installer "$versionString" "$3" ;;
-  Linux)     build_linux_deb "$versionString" "$3" ;;
-  macOS)     build_macos_pgk "$versionString" "$3" ;;
+  Windows)   build_windows_installer "$versionString" "$arch" ;;
+  Linux)     build_linux_deb "$versionString" "$arch" ;;
+  macOS)     build_macos_pgk "$versionString" "$arch" ;;
   *)
     echo "Unknown Platform $2. ERROR!!!"
     exit 1
