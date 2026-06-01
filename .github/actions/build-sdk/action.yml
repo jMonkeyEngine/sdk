@@ -21,7 +21,7 @@ runs:
         distribution: 'temurin'
 
     - name: Validate the Gradle wrapper
-      uses: gradle/actions/wrapper-validation@v3
+      uses: gradle/actions/wrapper-validation@v6
 
     - name: Grant execute permission for gradle
       run: chmod +x gradlew
