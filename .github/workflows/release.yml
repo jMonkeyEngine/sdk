@@ -55,6 +55,15 @@ jobs:
 
       - name: Download bundle
         uses: actions/download-artifact@v8
+        with:
+          name: bundle
+          path: dist
+
+      - name: Download NBPackage
+        uses: actions/download-artifact@v8
+        with:
+          name: nbpackage
+          path: installers/nbpackage
 
       - name: Build installers
         uses: ./.github/actions/build-installers
