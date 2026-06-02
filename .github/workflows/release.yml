@@ -23,21 +23,6 @@ jobs:
     - name: Prepare installers
       uses: ./.github/actions/prepare-installers
 
-    - name: Upload distributable ZIP bundle
-      uses: actions/upload-artifact@v7
-      with:
-        name: bundle
-        path: dist/jmonkeyplatform.zip
-        compression-level: 0
-        if-no-files-found: error
-
-    - name: Upload NBPackage
-      uses: actions/upload-artifact@v7
-      with:
-        name: nbpackage
-        path: installers/nbpackage/
-        compression-level: 9
-
   # -------------------------------
   # 2. Native installer packaging (matrix)
   # -------------------------------
@@ -53,30 +38,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Download bundle
-        uses: actions/download-artifact@v8
-        with:
-          name: bundle
-          path: dist
-
-      - name: Download NBPackage
-        uses: actions/download-artifact@v8
-        with:
-          name: nbpackage
-          path: installers/nbpackage
-
       - name: Build installers
         uses: ./.github/actions/build-installers
         with:
           tag: ${{ github.ref_name }}
           os: ${{ runner.os }}
           arch: ${{ runner.arch }}
-
-      - name: Upload installers
-        uses: actions/upload-artifact@v7
-        with:
-          name: installers-${{ matrix.os }}
-          path: dist/installers/**
 
   # -------------------------------
   # 3. Release
@@ -92,21 +59,3 @@ jobs:
         uses: ./.github/actions/publish-release
         with:
           tag: ${{ github.ref }}
-#    - name: Download JDKs for the installers
-#      run: bash download-jdks.sh
-#      working-directory: installers
-#    - name: Build the installers
-#      run: bash build-installers.sh ${{ github.ref_name }} headless
-#      working-directory: installers
-#    - name: Create Release
-#      uses: softprops/action-gh-release@v1
-#
-#      with:
-#        files: |
-#          dist/jmonkeyplatform*.*
-#          dist/jmonkeyengine-sdk*.*
-#          dist/jMonkeyEngine-SDK*.*
-#        tag_name:  ${{ github.ref }}
-#        name: Release ${{ github.ref }}
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -46,3 +46,12 @@ runs:
       if: inputs.createBundle == 'true'
       run: ant -Dstorepass="$NBM_SIGN_PASS" -Dpack200.enabled=false set-spec-version build-zip unset-spec-version
       shell: bash
+
+    - name: Upload distributable ZIP bundle
+      if: inputs.createBundle == 'true'
+      uses: actions/upload-artifact@v7
+      with:
+        name: bundle
+        path: dist/jmonkeyplatform.zip
+        compression-level: 0
+        if-no-files-found: error

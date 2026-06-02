@@ -8,3 +8,10 @@ runs:
       run: bash prepare-installers.sh
       working-directory: installers
       shell: bash
+
+    - name: Upload NBPackage
+      uses: actions/upload-artifact@v7
+      with:
+       name: nbpackage
+       path: installers/nbpackage/
+       compression-level: 9

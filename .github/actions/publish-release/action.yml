@@ -1,0 +1,32 @@
+name: "Publish Release"
+description: "Create GitHub release from artifacts"
+
+inputs:
+  tag:
+    required: true
+    description: "Tag should be used for releases"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download installers
+      uses: actions/download-artifact@v8
+      with:
+        pattern: installers-*
+        path: release-assets
+        merge-multiple: true
+
+    - name: Download ZIP bundle
+      uses: actions/download-artifact@v8
+      with:
+        name: bundle
+        path: release-assets
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v3
+      with:
+        files: release-assets/*
+        tag_name:  ${{ github.ref }}
+        name: Release ${{ github.ref }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

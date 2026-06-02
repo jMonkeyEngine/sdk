@@ -31,8 +31,12 @@ function build_linux_deb {
 
 function build_windows_installer {
     echo "> Building the Windows installer"
-    
-    setup_inno_setup
+
+    # Innosetup comes readily installed on GitHub, and either way maybe better to use its package manager to get it
+    if [ -n "$3" ];
+    then
+      setup_inno_setup
+    fi
     
     build_nbpackage windows "$2" jmonkeyengine-windows-"$2".properties "$1"
 
@@ -43,7 +47,7 @@ function setup_inno_setup {
     echo ">> Setting up Inno Setup"
     
     download_inno_setup
-    downloads/innosetup.exe /VERYSILENT
+    ./downloads/innosetup.exe /VERYSILENT
 
     echo "<< OK!"
 }
@@ -93,7 +97,7 @@ case "$arch_raw" in
 esac
 
 case "$2" in
-  Windows)   build_windows_installer "$versionString" "$arch" ;;
+  Windows)   build_windows_installer "$versionString" "$arch" "$4" ;;
   Linux)     build_linux_deb "$versionString" "$arch" ;;
   macOS)     build_macos_pgk "$versionString" "$arch" ;;
   *)

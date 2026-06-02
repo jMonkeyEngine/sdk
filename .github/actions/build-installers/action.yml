@@ -21,6 +21,18 @@ runs:
         java-version: '21'
         distribution: 'temurin'
 
+    - name: Download bundle
+      uses: actions/download-artifact@v8
+      with:
+        name: bundle
+        path: dist
+
+    - name: Download NBPackage
+      uses: actions/download-artifact@v8
+      with:
+        name: nbpackage
+        path: installers/nbpackage
+
     - name: Download JDKs
       run: bash download-jdks.sh ${{ inputs.os }} ${{ inputs.arch }}
       working-directory: installers
@@ -35,3 +47,10 @@ runs:
       run: bash build-installers.sh ${{ inputs.tag }} ${{ inputs.os }} ${{ inputs.arch }}
       working-directory: installers
       shell: bash
+
+    - name: Upload installers
+      uses: actions/upload-artifact@v7
+      with:
+        name: installers-${{ matrix.os }}
+        path: dist/installers/*
+        compression-level: 0
