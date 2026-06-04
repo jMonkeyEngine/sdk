@@ -20,6 +20,14 @@ function build_nbpackage {
     echo "<< OK!"
 }
 
+function build_nbpackage_on_cmd {
+    echo ">> Building the NBPackage installer in CMD for $1-$2"
+
+    mkdir -p ../dist/installers
+    cmd.exe /c .\\nbpackage\\bin\\nbpackage.cmd --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
+
+    echo "<< OK!"
+}
 
 function build_linux_deb {
     echo "> Building the Linux DEB"
@@ -36,9 +44,10 @@ function build_windows_installer {
     if [ -n "$3" ];
     then
       setup_inno_setup
+      build_nbpackage windows "$2" jmonkeyengine-windows-"$2".properties "$1"
+    else
+      build_nbpackage_on_cmd windows "$2" jmonkeyengine-windows-"$2".properties "$1"
     fi
-    
-    build_nbpackage windows "$2" jmonkeyengine-windows-"$2".properties "$1"
 
     echo "< OK!"
 }
