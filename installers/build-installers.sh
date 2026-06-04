@@ -25,6 +25,7 @@ function build_nbpackage_on_cmd {
 
     isccPath=$(cygpath -w "$(command -v ISCC.exe)")
     echo ">> ISCC found at $isccPath"
+    sed -i "s|^package\.innosetup\.tool=.*|package.innosetup.tool=${isccPath}|" "$1-$2/$3"
 
     mkdir -p ../dist/installers
     cmd.exe //c call .\\nbpackage\\bin\\nbpackage.cmd --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
