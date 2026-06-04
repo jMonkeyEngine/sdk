@@ -24,7 +24,7 @@ function build_nbpackage_on_cmd {
     echo ">> Building the NBPackage installer in CMD for $1-$2"
 
     mkdir -p ../dist/installers
-    cmd.exe /c .\\nbpackage\\bin\\nbpackage.cmd --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
+    cmd.exe //c call .\\nbpackage\\bin\\nbpackage.cmd --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
 
     echo "<< OK!"
 }
