@@ -23,9 +23,11 @@ function build_nbpackage {
 function build_nbpackage_on_cmd {
     echo ">> Building the NBPackage installer in CMD for $1-$2"
 
+    # Github runners have InnoSetup in PATH etc. we need to get it and write to the configuration
     isccPath=$(cygpath -w "$(command -v ISCC.exe)")
     echo ">> ISCC found at $isccPath"
-    sed -i "s|^package\.innosetup\.tool=.*|package.innosetup.tool=${isccPath}|" "$1-$2/$3"
+    isccPathEscaped="${isccPath//\\/\\\\}"
+    sed -i "s|^package\.innosetup\.tool=.*|package.innosetup.tool=${isccPathEscaped}|" "$1-$2/$3"
 
     mkdir -p ../dist/installers
     cmd.exe //c call .\\nbpackage\\bin\\nbpackage.cmd --input ../dist/jmonkeyplatform.zip --config "$1-$2/$3" --output ../dist/installers/ -v -Ppackage.version="$4"
