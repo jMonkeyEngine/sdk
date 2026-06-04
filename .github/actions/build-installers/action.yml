@@ -51,6 +51,10 @@ runs:
     - name: Upload installers
       uses: actions/upload-artifact@v7
       with:
-        name: installers-${{ matrix.os }}
-        path: dist/installers/*
+        name: installers-${{ inputs.os }}-${{ inputs.arch }}
+        path: |
+          dist/installers/*.deb
+          dist/installers/*.exe
+          dist/installers/*.pkg
         compression-level: 0
+        if-no-files-found: error
