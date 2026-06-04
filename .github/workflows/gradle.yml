@@ -23,6 +23,8 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
+    - uses: actions/checkout@v6
+
     - name: Deploy NBMs
       uses: ./.github/actions/nbm-deployment
       with:
