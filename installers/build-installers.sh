@@ -26,7 +26,7 @@ function build_nbpackage_on_cmd {
     # Github runners have InnoSetup in PATH etc. we need to get it and write to the configuration
     isccPath=$(cygpath -w "$(command -v ISCC.exe)")
     echo ">> ISCC found at $isccPath"
-    isccPathEscaped="${isccPath//\\/\\\\}"
+    isccPathEscaped="${isccPath//\\/\\\\\\\\}"
     sed -i "s|^package\.innosetup\.tool=.*|package.innosetup.tool=${isccPathEscaped}|" "$1-$2/$3"
 
     mkdir -p ../dist/installers
