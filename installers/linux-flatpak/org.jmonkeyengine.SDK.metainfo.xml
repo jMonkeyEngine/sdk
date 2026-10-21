@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="desktop-application">
+  <id>org.jmonkeyengine.SDK</id>
+  <name>jMonkeyEngine SDK</name>
+  <summary>A complete 3D game development suite written purely in Java</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>BSD-3-Clause</project_license>
+  <developer id="org.jmonkeyengine">
+    <name>jMonkeyEngine</name>
+  </developer>
+  <description>
+    <p>
+      The jMonkeyEngine SDK is an IDE based on Apache NetBeans for developing
+      3D applications and games with jMonkeyEngine.
+    </p>
+    <ul>
+      <li>Scene Editor: preview scenes, edit transforms, add Controls and AppStates</li>
+      <li>Material Editor and Filter Editor</li>
+      <li>Terrain editor, texture editor and model importers</li>
+      <li>Project templates, including Gradle-based games and the jME3 test suite</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">org.jmonkeyengine.SDK.desktop</launchable>
+  <url type="homepage">https://jmonkeyengine.org</url>
+  <url type="bugtracker">https://github.com/jMonkeyEngine/sdk/issues</url>
+  <url type="vcs-browser">https://github.com/jMonkeyEngine/sdk</url>
+  <url type="help">https://wiki.jmonkeyengine.org</url>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/jMonkeyEngine/sdk/master/installers/linux-flatpak/screenshots/scene-composer.png</image>
+      <caption>Editing a scene in the Scene Composer</caption>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <releases>
+   <!-- <release version="3.9.0" date="2026-01-01"/> -->
+  </releases>
+</component>
