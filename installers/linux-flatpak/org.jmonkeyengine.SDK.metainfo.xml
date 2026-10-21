@@ -27,13 +27,12 @@
   <url type="help">https://wiki.jmonkeyengine.org</url>
   <screenshots>
     <screenshot type="default">
-      <!-- TODO: a real, stable screenshot URL (for example committed to the repo) -->
       <image>https://raw.githubusercontent.com/jMonkeyEngine/sdk/master/installers/linux-flatpak/screenshots/scene-composer.png</image>
       <caption>Editing a scene in the Scene Composer</caption>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
-    <release version="3.9.0" date="2026-01-01"/>
+   <!-- <release version="3.9.0" date="2026-01-01"/> -->
   </releases>
 </component>
