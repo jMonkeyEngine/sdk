@@ -24,6 +24,13 @@ There are multiple files from which you can choose:
 You can take the platform agnostic `jmonkeyplatform.zip` which contains the full SDK able to be run on "any" (64-bit) platform (Windows, Mac OS, Linux) however it lacks the JDK.  
 Thus the prefered download is `jmonkeyplatform-windows-x64.exe` which essentially __is__ `jmonkeyplatform.zip` and the correct version of the JDK.
 
+On Debian/Ubuntu Linux you can also install the SDK directly via APT from our signed repository (amd64 and arm64):
+```sh
+curl -fsSL https://jmonkeyengine.github.io/sdk/jmonkeyengine-repo.asc | sudo gpg --dearmor -o /usr/share/keyrings/jmonkeyengine.gpg
+echo "deb [signed-by=/usr/share/keyrings/jmonkeyengine.gpg] https://jmonkeyengine.github.io/sdk stable main" | sudo tee /etc/apt/sources.list.d/jmonkeyengine.list
+sudo apt update && sudo apt install jmonkeyengine-sdk
+```
+
 After the SDK is up and running. A good starting point is to look at the jME examples. Under *File | New project | JME3 Tests* you can create a new project, populated with the jME build in examples. You can freely mess around with these and try out stuff. Your changes can always be reverted by simply creating a new *JME3 Tests* project. Once you are all comfortable and ready to embark on your own exciting journey, *File | New project | Basic game (with Gradle)* is the recommended starting point.
 
 ## Building the SDK

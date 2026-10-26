@@ -1,0 +1,60 @@
+name: "Publish APT repository"
+description: "Builds a signed APT repository from the .deb installers and deploys it to GitHub Pages"
+
+inputs:
+  tag:
+    required: true
+    description: "Tag should be used for releases"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dpkg tooling
+      run: sudo apt-get update && sudo apt-get install -y dpkg-dev apt-utils
+      shell: bash
+
+    - name: Download installers
+      uses: actions/download-artifact@v8
+      with:
+        pattern: installers-Linux-*
+        path: release-assets
+        merge-multiple: true
+
+    - name: Collect .deb files
+      run: |
+        mkdir -p dist/installers
+        find release-assets -name '*.deb' -exec cp {} dist/installers/ \;
+        ls -la dist/installers
+      shell: bash
+
+    - name: Build and sign APT repository
+      run: bash installers/publish-apt-repo.sh
+      env:
+        APT_REPO_GPG_PRIVATE_KEY: ${{ secrets.APT_REPO_GPG_PRIVATE_KEY }}
+        APT_REPO_GPG_PASSPHRASE: ${{ secrets.APT_REPO_GPG_PASSPHRASE }}
+      shell: bash
+
+    - name: Upload APT repository
+      uses: actions/upload-artifact@v7
+      with:
+        name: apt-repo
+        path: dist/apt-repo/
+        compression-level: 9
+
+    - name: Export public key
+      uses: actions/upload-artifact@v7
+      with:
+        name: apt-repo-key
+        path: dist/apt-repo/jmonkeyengine-repo.asc
+
+    - name: Setup Pages
+      uses: actions/configure-pages@v5
+
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: dist/pages
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
