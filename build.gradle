@@ -550,30 +550,6 @@ tasks.register('createProjectXml') {
     }
 }
 
-tasks.register('copyTestSources') {
-    doLast {
-        project.configurations.examplelibs.files.each { dep ->
-            if (isSource(dep.name)) {
-                copy {
-                    from {
-                        zipTree(dep)
-                    }
-                    into "JME3TestsTemplate/src/"
-                }
-                copy {
-                    from {
-                        zipTree(dep)
-                    }
-                    into "JME3TestsTemplateAndroid/src/"
-                }
-            }
-        }
-    }
-}
-copyTestSources.inputs.files project.configurations.examplelibs
-copyTestSources.outputs.dir "JME3TestsTemplate/src/"
-copyTestSources.outputs.dir "JME3TestsTemplateAndroid/src/"
-
 ant.properties['plugins.version'] = jmeVersion
 ant.properties['app.version']= jmePomVersion
 ant.properties['nbm.revision']= jmeNbmRevision
@@ -635,7 +611,7 @@ tasks.register('updateNetbeans', Exec) {
 }
 
 tasks.register('buildSdk') {
-    dependsOn copyBaseLibs, copyProjectLibs, createProjectXml, createBaseXml, copyTestSources, checkPlatformConfig
+    dependsOn copyBaseLibs, copyProjectLibs, createProjectXml, createBaseXml, checkPlatformConfig
     doLast {
         ant.propertyfile(file: "nbproject/project.properties") {
             entry(key: "plugins.version", value: "${jmeVersion}")
@@ -671,8 +647,6 @@ tasks.register('cleanSdk') {
         file("jme3-project-baselibs/release/").deleteDir()
         file("jme3-project-libraries/release/").deleteDir()
         file("jme3-project-testdata/release/").deleteDir()
-        file("JME3TestsTemplate/src/jme3test/").deleteDir()
-        file("JME3TestsTemplateAndroid/src/jme3test/").deleteDir()
     }
 }
 

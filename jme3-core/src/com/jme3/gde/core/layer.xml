@@ -80,27 +80,6 @@
 -->
     <!-- Register our custom project handling -->
     <folder name="Projects">
-        <folder name="org-netbeans-modules-ant-freeform">
-            <folder name="Lookup">
-                <file name="com.jme3.gde.core.assets.AssetsLookupProvider.instance"/>
-            </folder>
-            <folder name="Nodes">
-                <file name="com.jme3.gde.core.assets.ProjectAssetsNodeFactory.instance"/>
-            </folder>
-        </folder>
-        <folder name="org-netbeans-modules-java-j2seproject">
-            <folder name="Lookup">
-                <file name="com.jme3.gde.core.assets.AssetsLookupProvider.instance"/>
-            </folder>
-            <folder name="Nodes">
-                <file name="com.jme3.gde.core.assets.ProjectAssetsNodeFactory.instance">
-                    <attr name="position" intvalue="10"/>
-                </file>
-                <file name="com.jme3.gde.core.importantfiles.ImportantFilesNode$ImportantFilesNodeFactoryImpl.instance">
-                    <attr name="position" intvalue="10000"/>
-                </file>
-            </folder>
-        </folder>
         <folder name="org-netbeans-modules-gradle">
             <folder name="Lookup">
                 <file name="com.jme3.gde.core.assets.AssetsLookupProvider.instance" />
