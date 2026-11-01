@@ -46,7 +46,7 @@ public class LightModeBlock extends LeafStatement {
     }
 
     private void parse(Statement sta) {
-        String[] split = sta.getLine().split("\\s");
+        String[] split = sta.getLine().trim().split("\\s+");
         if (split.length < 2) {
             throw new MatDefParseException("LightMode statement is missing its value, expected \"LightMode <Mode>\"", sta.getLineNumber(), sta.getLine());
         }
@@ -54,7 +54,7 @@ public class LightModeBlock extends LeafStatement {
         try {
             TechniqueDef.LightMode.valueOf(lightMode);
         } catch (IllegalArgumentException ex) {
-            throw new MatDefParseException("Invalid light mode \" + lightMode + \", expected one of " + java.util.Arrays.toString(TechniqueDef.LightMode.values()), sta.getLineNumber(), sta.getLine(), ex);
+            throw new MatDefParseException("Invalid light mode \"" + lightMode + "\", expected one of " + java.util.Arrays.toString(TechniqueDef.LightMode.values()), sta.getLineNumber(), sta.getLine(), ex);
         }
     }
 }
