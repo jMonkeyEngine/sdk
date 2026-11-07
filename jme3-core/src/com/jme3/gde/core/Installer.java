@@ -70,14 +70,16 @@ public class Installer extends ModuleInstall {
     }
 
     /**
-     * GLFW (used by the jME lwjgl3 backend) dlopen()s libEGL.so.1 while probing
-     * for GL context creation and dlclose()s it again when the context is
-     * destroyed at SDK shutdown. glvnd registers a pthread_key destructor that
-     * points into libEGL and never removes it. After the dlclose that destructor
-     * is dangling, and when the thread that touched EGL exits, glibc's
-     * __nptl_deallocate_tsd calls it and the JVM dies with SIGSEGV.
-     * Holding our own reference on the library keeps it mapped until the JVM
-     * itself terminates, so the destructor stays valid. No-op away from Linux.
+     * The jME lwjgl3 backend (jME 3.10, LWJGL 3.4) is SDL3-based. SDL probes the
+     * X11 and Wayland/EGL video backends when the GL context is created, which
+     * loads libEGL.so.1, and unloads that library again at SDK shutdown
+     * (SDL_EGL_UnloadLibrary). glvnd registers a pthread_key destructor that
+     * points into libEGL when the library is first used and never removes it.
+     * After the dlclose that destructor is dangling, and when the thread that
+     * touched EGL exits, glibc's __nptl_deallocate_tsd calls it and the JVM
+     * dies with SIGSEGV. Holding our own reference on the library keeps it
+     * mapped until the JVM itself terminates, so the destructor stays valid.
+     * No-op away from Linux.
      */
     private static void holdEglLibraryReference() {
         if (!System.getProperty("os.name", "").toLowerCase(Locale.ROOT).contains("linux")) {
@@ -94,7 +96,7 @@ public class Installer extends ModuleInstall {
                 try {
                     System.load(lib);
                     Logger.getLogger(Installer.class.getName())
-                          .log(Level.INFO, "Holding {0} to prevent GLFW/glvnd unloading it at exit", lib);
+                          .log(Level.INFO, "Holding {0} to prevent SDL/glvnd unloading it at exit", lib);
                     return;
                 } catch (UnsatisfiedLinkError | RuntimeException ex) {
                     Logger.getLogger(Installer.class.getName())
