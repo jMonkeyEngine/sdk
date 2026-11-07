@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2009-2025 jMonkeyEngine
+ *  Copyright (c) 2009-2026 jMonkeyEngine
  *  All rights reserved.
  * 
  *  Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,8 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RendererException;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Quad;
 import com.jme3.scene.shape.Sphere;
@@ -68,8 +70,8 @@ public class MaterialPreviewRenderer implements SceneListener {
     private Geometry sphere;
     private Geometry box;
     private Geometry quad;
-    private Geometry teapot;
-    private Geometry currentGeom;
+    private Node teapot;
+    private Spatial currentSpatial;
     private Material currentMaterial;
     private boolean init = false;
     private final JLabel label;
@@ -108,19 +110,18 @@ public class MaterialPreviewRenderer implements SceneListener {
         quad = new Geometry("previewQuad", quadMesh);
         quad.setLocalTranslation(new Vector3f(-2.25f, -2.25f, 0));
         MikktspaceTangentGenerator.generate(quad);
-
-        teapot = (Geometry) SceneApplication.getApplication().getAssetManager()
-                .loadModel("Models/Teapot/Teapot.obj");
-        teapot.scale(3.5f);
-        teapot.rotate(FastMath.PI, -FastMath.QUARTER_PI * 0.5f, -0.0f);
+        
+        teapot = ((Node)SceneApplication.getApplication().getAssetManager()
+                .loadModel("Models/Teapot/teapot.j3o"));
+        teapot.scale(0.75f);
+        teapot.rotate(FastMath.PI, FastMath.QUARTER_PI * 1.5f, 0);
         teapot.setLocalTranslation(new Vector3f(-0.5f, 1.75f, 0));
         MikktspaceTangentGenerator.generate(teapot);
 
-        currentGeom = sphere;
+        currentSpatial = sphere;
         init = true;
     }
 
-    @SuppressWarnings("unchecked")
     public void showMaterial(final ProjectAssetManager assetManager, final String materialFileName) {
         if (!init) {
             init();
@@ -156,10 +157,10 @@ public class MaterialPreviewRenderer implements SceneListener {
             if (mat != null) {
                 java.awt.EventQueue.invokeLater(() -> {
                     currentMaterial = mat;
-                    currentGeom.setMaterial(mat);
+                    currentSpatial.setMaterial(mat);
                     try {
-                        if (currentGeom.getMaterial() != null) {
-                            PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentGeom, label.getWidth(), label.getHeight());
+                        if (currentMaterial != null) {
+                            PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentSpatial, label.getWidth(), label.getHeight());
                             request.getCameraRequest().setLocation(new Vector3f(0, 0, 7));
                             request.getCameraRequest().setLookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
                             SceneApplication.getApplication().createPreview(request);
@@ -227,18 +228,15 @@ public class MaterialPreviewRenderer implements SceneListener {
             smartLog("Could not fully load Shader: Missing File: {0}", a.getMessage());
             return null;
         }
-
-        //Logger.getLogger(MaterialDebugAppState.class.getName()).log(Level.INFO, "Material succesfully reloaded");
-        //System.out.println("Material succesfully reloaded");
         return dummy;
     }
 
     public void switchDisplay(DisplayType type) {
         switch (type) {
-            case Box -> currentGeom = box;
-            case Sphere -> currentGeom = sphere;
-            case Quad -> currentGeom = quad;
-            case Teapot -> currentGeom = teapot;
+            case Box -> currentSpatial = box;
+            case Sphere -> currentSpatial = sphere;
+            case Quad -> currentSpatial = quad;
+            case Teapot -> currentSpatial = teapot;
         }
         showMaterial(currentMaterial);
     }
@@ -280,8 +278,8 @@ public class MaterialPreviewRenderer implements SceneListener {
             return;
         }
         SceneApplication.getApplication().enqueue((Callable<Object>) () -> {
-            if (currentGeom.getMaterial() != null) {
-                PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentGeom, label.getWidth(), label.getHeight());
+            if (currentMaterial != null) {
+                PreviewRequest request = new PreviewRequest(MaterialPreviewRenderer.this, currentSpatial, label.getWidth(), label.getHeight());
                 request.getCameraRequest().setLocation(new Vector3f(0, 0, 7));
                 request.getCameraRequest().setLookAt(new Vector3f(0, 0, 0), Vector3f.UNIT_Y);
                 SceneApplication.getApplication().createPreview(request);

@@ -1,6 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2009-2026 jMonkeyEngine
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ *
+ * * Redistributions of source code must retain the above copyright
+ *   notice, this list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright
+ *   notice, this list of conditions and the following disclaimer in the
+ *   documentation and/or other materials provided with the distribution.
+ *
+ * * Neither the name of 'jMonkeyEngine' nor the names of its contributors
+ *   may be used to endorse or promote products derived from this software
+ *   without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package com.jme3.gde.textureeditor;
 
@@ -16,22 +43,28 @@ import org.openide.windows.WindowManager;
 import org.openide.util.ImageUtilities;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.filesystems.FileObject;
+import org.openide.util.Exceptions;
 import org.openide.util.lookup.AbstractLookup;
+import org.openide.windows.CloneableTopComponent;
 
 /**
- * Top component which displays something.
+ * Top component which displays a Texture.
  */
 @ConvertAsProperties(dtd = "-//com.jme3.gde.textureeditor//ImageEditor//EN",
 autostore = false)
-public final class ImageEditorTopComponent extends TopComponent {
+public final class ImageEditorTopComponent  extends CloneableTopComponent {
 
     private static ImageEditorTopComponent instance;
     /** path to the icon used by the component and its open action */
     static final String ICON_PATH = Icons.TEXTURE_GREEN;
     private static final String PREFERRED_ID = "ImageEditorTopComponent";
     private final ImageEditorComponent EDITOR = ImageEditorComponent.create();
-
+    
     public ImageEditorTopComponent() {
+        
+    }
+    
+    public ImageEditorTopComponent(FileObject currentFile) {
         initComponents();
         setName(NbBundle.getMessage(ImageEditorTopComponent.class, "CTL_ImageEditorTopComponent"));
         setToolTipText(NbBundle.getMessage(ImageEditorTopComponent.class, "HINT_ImageEditorTopComponent"));
@@ -40,6 +73,11 @@ public final class ImageEditorTopComponent extends TopComponent {
 
         //Add the dynamic object to the TopComponent Lookup:
         associateLookup(new AbstractLookup(EDITOR.getContent()));
+        try {
+            setEditedImage(currentFile);
+        } catch (IOException | URISyntaxException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -59,6 +97,7 @@ public final class ImageEditorTopComponent extends TopComponent {
      * Gets default instance. Do not use directly: reserved for *.settings files only,
      * i.e. deserialization routines; otherwise you could get a non-deserialized instance.
      * To obtain the singleton instance, use {@link #findInstance}.
+     * @return 
      */
     public static synchronized ImageEditorTopComponent getDefault() {
         if (instance == null) {
@@ -69,6 +108,7 @@ public final class ImageEditorTopComponent extends TopComponent {
 
     /**
      * Obtain the ImageEditorTopComponent instance. Never call {@link #getDefault} directly!
+     * @return 
      */
     public static synchronized ImageEditorTopComponent findInstance() {
         TopComponent win = WindowManager.getDefault().findTopComponent(PREFERRED_ID);
@@ -77,8 +117,8 @@ public final class ImageEditorTopComponent extends TopComponent {
                     "Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
             return getDefault();
         }
-        if (win instanceof ImageEditorTopComponent) {
-            return (ImageEditorTopComponent) win;
+        if (win instanceof ImageEditorTopComponent imageEditorTopComponent) {
+            return imageEditorTopComponent;
         }
         Logger.getLogger(ImageEditorTopComponent.class.getName()).warning(
                 "There seem to be multiple components with the '" + PREFERRED_ID
@@ -93,22 +133,20 @@ public final class ImageEditorTopComponent extends TopComponent {
 
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
     }
 
     @Override
     public void componentClosed() {
-        // TODO add custom code on component closing
     }
 
-    void writeProperties(java.util.Properties p) {
+    public void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
         p.setProperty("version", "1.0");
         // TODO store your settings
     }
 
-    Object readProperties(java.util.Properties p) {
+    public Object readProperties(java.util.Properties p) {
         if (instance == null) {
             instance = this;
         }

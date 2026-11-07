@@ -45,6 +45,7 @@ import com.jme3.gde.core.util.ProjectSelection;
 import com.jme3.gde.materials.JMEMaterialDataObject;
 import com.jme3.gde.materials.multiview.MaterialOpenSupport;
 import com.jme3.gde.scenecomposer.SceneComposerTopComponent;
+import com.jme3.gde.textureeditor.ImageEditorTopComponent;
 import com.jme3.gde.textureeditor.JmeTextureDataObject;
 import com.jme3.gde.textureeditor.OpenTexture;
 import com.jme3.scene.Spatial;
@@ -70,6 +71,8 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileRenameEvent;
 import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectNotFoundException;
+import org.openide.nodes.CookieSet;
+import org.openide.nodes.Node;
 import org.openide.util.Exceptions;
 
 /**
@@ -487,8 +490,9 @@ public class AssetBrowser extends javax.swing.JPanel implements PreviewInteracti
         } else if (widget instanceof TexturePreview) {
             try {
                 JmeTextureDataObject textureObject = (JmeTextureDataObject) DataObject.find(pf);
-                OpenTexture openTexture = new OpenTexture(textureObject);
-                openTexture.actionPerformed(null);
+                DataObject dobj = textureObject.getPrimaryEntry().getDataObject();
+                FileObject file = dobj.getPrimaryFile();
+                ImageEditorTopComponent display = new ImageEditorTopComponent(file);
             } catch (DataObjectNotFoundException ex) {
                 Exceptions.printStackTrace(ex);
             }
