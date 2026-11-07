@@ -35,6 +35,7 @@ import com.jme3.gde.core.scene.SceneApplication;
 import java.awt.Component;
 import java.awt.Frame;
 import java.io.File;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -68,10 +69,47 @@ public class Installer extends ModuleInstall {
         Logger.getLogger("org.openide.loaders").setLevel(Level.SEVERE);
     }
 
+    /**
+     * GLFW (used by the jME lwjgl3 backend) dlopen()s libEGL.so.1 while probing
+     * for GL context creation and dlclose()s it again when the context is
+     * destroyed at SDK shutdown. glvnd registers a pthread_key destructor that
+     * points into libEGL and never removes it. After the dlclose that destructor
+     * is dangling, and when the thread that touched EGL exits, glibc's
+     * __nptl_deallocate_tsd calls it and the JVM dies with SIGSEGV.
+     * Holding our own reference on the library keeps it mapped until the JVM
+     * itself terminates, so the destructor stays valid. No-op away from Linux.
+     */
+    private static void holdEglLibraryReference() {
+        if (!System.getProperty("os.name", "").toLowerCase(Locale.ROOT).contains("linux")) {
+            return;
+        }
+        String[] candidates = {
+            "/usr/lib/x86_64-linux-gnu/libEGL.so.1",
+            "/usr/lib64/libEGL.so.1",
+            "/usr/lib/aarch64-linux-gnu/libEGL.so.1",
+            "/usr/lib/libEGL.so.1",
+        };
+        for (String lib : candidates) {
+            if (new File(lib).canRead()) {
+                try {
+                    System.load(lib);
+                    Logger.getLogger(Installer.class.getName())
+                          .log(Level.INFO, "Holding {0} to prevent GLFW/glvnd unloading it at exit", lib);
+                    return;
+                } catch (UnsatisfiedLinkError | RuntimeException ex) {
+                    Logger.getLogger(Installer.class.getName())
+                          .log(Level.INFO, "Could not hold a reference on " + lib, ex);
+                }
+            }
+        }
+    }
+
     static {
         //set exception report levels
         System.setProperty("netbeans.exception.report.min.level", "99999");
-        System.setProperty("netbeans.exception.alert.min.level", "99999"); 
+        System.setProperty("netbeans.exception.alert.min.level", "99999");
+        //keep glvnd's EGL library mapped for the lifetime of the JVM (see holdEglLibraryReference)
+        holdEglLibraryReference(); 
         //set http agent
         System.setProperty("http.agent", NbBundle.getBundle("org.netbeans.core.windows.view.ui.Bundle").getString("CTL_MainWindow_Title")
                 + " (" + System.getProperty("os.name") + "/" + System.getProperty("os.version") + ")");
