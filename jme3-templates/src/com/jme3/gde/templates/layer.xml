@@ -15,7 +15,7 @@
                     <attr name="template" boolvalue="true"/>
                 </file>
 
-                <file name="Basic Gradle Game" url="GradleDesktopGameProject.zip">
+                <file name="GradleDesktopGameProject.zip" url="GradleDesktopGameProject.zip">
                     <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jme-logo.png"/>
                     <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/GradleDesktopGameProject.zip"/>
                     <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.gradledesktop.GradleDesktopGameWizardIterator.createIterator"/>
@@ -23,39 +23,34 @@
                     <attr name="template" boolvalue="true"/>
                 </file>
 
-            </folder>
-        </folder>
-        
-        <folder name="Project">
-            <folder name="JME3 - Sample projects">
-                <attr name="position" intvalue="20"/>
-                
-                <file name="Monkey Zone" url="RollingTheMonkeyProject.zip">
-                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jme-logo.png"/>
-                    <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Examples/MonkeyZone"/>
-                    <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.monkeyzone.MonkeyZoneWizardIterator.createIterator"/>
-                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/monkeyzone/MonkeyZoneDescription.html"/>
-                    <attr name="template" boolvalue="true"/>
-                </file>
-                
-                <file name="Jaimes Ascent" url="JaimesAscent.zip">
-                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jme-logo.png"/>
-                    <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Examples/JaimesAscent"/>
-                    <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.jaimesascent.JaimesAscentWizardIterator.createIterator"/>
-                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/jaimesascent/JaimesAscentDescription.html"/>
-                    <attr name="template" boolvalue="true"/>
-                </file>
+                <folder name="Sample projects">
+                    <attr name="position" intvalue="20"/>
 
-                <file name="Rolling the Monkey" url="RollingTheMonkeyProject.zip">
-                    <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jme-logo.png"/>
-                    <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Examples/RollingTheMonkeyProject.zip"/>
-                    <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.rollingthemonkey.RollingTheMonkeyWizardIterator.createIterator"/>
-                    <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/rollingthemonkey/RollingTheMonkeyDescription.html"/>
-                    <attr name="template" boolvalue="true"/>
-                </file>
-                
-                
+                    <file name="MonkeyZone" url="RollingTheMonkeyProject.zip">
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/monkeyzone/monkeyzone.png"/>
+                        <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Samples/MonkeyZone"/>
+                        <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.monkeyzone.MonkeyZoneWizardIterator.createIterator"/>
+                        <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/monkeyzone/MonkeyZoneDescription.html"/>
+                        <attr name="template" boolvalue="true"/>
+                    </file>
 
+                    <file name="JaimesAscent" url="RollingTheMonkeyProject.zip">
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jaimesascent/jaimesascent.png"/>
+                        <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Samples/JaimesAscent"/>
+                        <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.jaimesascent.JaimesAscentWizardIterator.createIterator"/>
+                        <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/jaimesascent/JaimesAscentDescription.html"/>
+                        <attr name="template" boolvalue="true"/>
+                    </file>
+
+                    <file name="RollingTheMonkeyProject.zip" url="RollingTheMonkeyProject.zip">
+                        <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/com/jme3/gde/templates/jme-logo.png"/>
+                        <attr name="displayName" bundlevalue="com.jme3.gde.templates.Bundle#Templates/Project/JME3/Samples/RollingTheMonkeyProject.zip"/>
+                        <attr name="instantiatingIterator" methodvalue="com.jme3.gde.templates.rollingthemonkey.RollingTheMonkeyWizardIterator.createIterator"/>
+                        <attr name="instantiatingWizardURL" urlvalue="nbresloc:/com/jme3/gde/templates/rollingthemonkey/RollingTheMonkeyDescription.html"/>
+                        <attr name="template" boolvalue="true"/>
+                    </file>
+
+                </folder>
             </folder>
         </folder>
 
@@ -83,7 +78,7 @@
                 <!--attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.java.project.Bundle"/-->
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/java/resources/class.gif"/>
             </file>
-            <file name="BaseAppState.java" url="files/BaseAppState.template">                
+            <file name="BaseAppState.java" url="files/BaseAppState.template">
                 <attr name="displayName" stringvalue="New BaseAppState"/>
                 <attr name="instantiatingIterator" methodvalue="org.netbeans.spi.java.project.support.ui.templates.JavaTemplates.createJavaTemplateIterator"/>
                 <attr name="position" intvalue="300"/>

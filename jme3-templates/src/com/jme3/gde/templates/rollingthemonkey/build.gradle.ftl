@@ -1,3 +1,4 @@
+<#-- FreeMarker template (see http://freemarker.org/) -->
 plugins {
     id 'java'
     id 'application'
@@ -13,10 +14,11 @@ application {
 
 repositories {
     mavenCentral()
+    maven { url = 'https://jitpack.io' }
 }
 
 project.ext {
-  jmeVer = '3.9.0-stable'
+  jmeVer = '${jmeVersion}'
 }
 
 project(":assets") {
@@ -34,14 +36,14 @@ project(":assets") {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
+            languageVersion = JavaLanguageVersion.of(${javaVersion})
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(${javaVersion})
     }
 }
 
@@ -50,9 +52,8 @@ dependencies {
     implementation "org.jmonkeyengine:jme3-core:$jmeVer"
     implementation "org.jmonkeyengine:jme3-desktop:$jmeVer"
     implementation "org.jmonkeyengine:jme3-lwjgl:$jmeVer"
-    implementation "org.jmonkeyengine:jme3-lwjgl:$jmeVer"
-    implementation "com.github.stephengold:Heart:9.3.0"
-    implementation "com.github.stephengold:Minie:9.0.3"
+    implementation "com.github.stephengold:Heart:${heartVersion}"
+    implementation "com.github.stephengold:Minie:${minieVersion}"
     implementation project("assets")
 
 }
@@ -64,5 +65,5 @@ jar {
 }
 
 wrapper {
-    gradleVersion = '9.2.1'
+    gradleVersion = '${gradleVersion}'
 }

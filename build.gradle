@@ -677,7 +677,7 @@ tasks.register('cleanSdk') {
 }
 
 wrapper {
-    gradleVersion = '9.2.1'
+    gradleVersion = project.property('gradleVersion')
 }
 
 //jar.dependsOn(buildSdk)

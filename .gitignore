@@ -9,7 +9,10 @@ jme3-ios/downloads
 JME3TestsTemplate/src/jme3test
 JME3TestsTemplateAndroid/src/jme3test
 platform-private.properties
-BasicGameProject.zip
+jme3-templates/src/com/jme3/gde/templates/BasicGameProject.zip
+jme3-templates/src/com/jme3/gde/templates/GradleDesktopGameProject.zip
+jme3-templates/src/com/jme3/gde/templates/RollingTheMonkeyProject.zip
+jme3-templates/src/com/jme3/gde/templates/version.filtered.properties
 JME3TestsTemplate/src/META-INF
 JME3TestsTemplateAndroid/src/META-INF
 *.iml

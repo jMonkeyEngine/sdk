@@ -40,7 +40,7 @@ project(":assets") {
 
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(25)
+            languageVersion = JavaLanguageVersion.of(${javaVersion})
         }
     }
 }
@@ -114,10 +114,10 @@ jar {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(${javaVersion})
     }
 }
 
 wrapper {
-    gradleVersion = '9.2.1'
+    gradleVersion = '${gradleVersion}'
 }

@@ -41,12 +41,64 @@
         </copy>
     </target>
 
+    <!--filters the template version.properties from gradle.properties, so generated projects use the same versions as the SDK-->
+    <target name="-filter-template-versions" description="Filters version.properties for the project templates">
+        <loadproperties srcFile="gradle.properties">
+            <filterchain>
+                <tokenfilter>
+                    <containsstring contains="jmeVersion"/>
+                </tokenfilter>
+            </filterchain>
+        </loadproperties>
+        <loadproperties srcFile="gradle.properties">
+            <filterchain>
+                <tokenfilter>
+                    <containsstring contains="jmeVersionTag"/>
+                </tokenfilter>
+            </filterchain>
+        </loadproperties>
+        <loadproperties srcFile="gradle.properties">
+            <filterchain>
+                <tokenfilter>
+                    <containsstring contains="gradleVersion"/>
+                </tokenfilter>
+            </filterchain>
+        </loadproperties>
+        <loadproperties srcFile="build.gradle">
+            <filterchain>
+                <tokenfilter>
+                    <containsstring contains="gradleVersion"/>
+                </tokenfilter>
+            </filterchain>
+        </loadproperties>
+        <property name="javaVersion" value="25"/>
+        <copy file="jme3-templates/src/com/jme3/gde/templates/version.properties" tofile="jme3-templates/src/com/jme3/gde/templates/version.filtered.properties" overwrite="true">
+            <filterchain>
+                <replacestring from="@javaVersion@" to="${javaVersion}"/>
+                <replacestring from="@gradleVersion@" to="${gradleVersion}"/>
+                <replacestring from="@jmeVersion@" to="${jmeVersion}"/>
+                <replacestring from="@jmeVersionTag@" to="${jmeVersionTag}"/>
+            </filterchain>
+        </copy>
+        <move file="jme3-templates/src/com/jme3/gde/templates/version.filtered.properties" tofile="jme3-templates/src/com/jme3/gde/templates/version.properties"/>
+    </target>
+
     <!--zips up the templates and adds them to the template project-->
-    <target name="-zip-templates" description="Updates the template zip files">
+    <target name="-zip-templates" depends="-filter-template-versions" description="Updates the template zip files">
         <zip basedir="BasicGameTemplate/" destfile="jme3-templates/src/com/jme3/gde/templates/BasicGameProject.zip">
             <exclude name="**/build/"/>
             <exclude name="**/dist/"/>
             <exclude name="**/nbproject/private/"/>
+            <exclude name="**/*.keep"/>
+        </zip>
+        <zip basedir="GradleDesktopGameTemplate/" destfile="jme3-templates/src/com/jme3/gde/templates/GradleDesktopGameProject.zip">
+            <exclude name="**/build/"/>
+            <exclude name="**/dist/"/>
+            <exclude name="**/*.keep"/>
+        </zip>
+        <zip basedir="RollingTheMonkeyTemplate/" destfile="jme3-templates/src/com/jme3/gde/templates/RollingTheMonkeyProject.zip">
+            <exclude name="**/build/"/>
+            <exclude name="**/dist/"/>
             <exclude name="**/*.keep"/>
         </zip>
         <zip basedir="JME3TestsTemplate/" destfile="jme3-tests-template/src/com/jme3/gde/templates/tests/JmeTestsProject.zip">
