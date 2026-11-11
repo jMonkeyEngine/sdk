@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 jMonkeyEngine All rights reserved. <p/>
+ * Copyright (c) 2009-2026 jMonkeyEngine All rights reserved. <p/>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  * 
@@ -60,7 +60,7 @@ import org.openide.windows.TopComponent;
 import org.openide.windows.WindowManager;
 
 /**
- * This is the component containing the whole scene/model<br />
+ * This is the component containing the whole scene/model
  * It also contains the top bar.
  */
 @ConvertAsProperties(dtd = "-//com.jme3.gde.core.sceneviewer//SceneViewer//EN",
@@ -90,42 +90,28 @@ public final class SceneViewerTopComponent extends TopComponent {
             oglCanvas.setFocusable(false);
             oGLPanel.add(oglCanvas);
 
-        } catch (Exception e) {
+        } catch (Exception | Error e) {
             SceneApplication.showStartupErrorMessage(e);
-        } catch (Error err) {
-            SceneApplication.showStartupErrorMessage(err);
         }
-        //TODO: camera tools (see SwitchFrontViewAction)
-//        Collection<? extends Action> result = Lookups.forPath("CameraTools").lookupAll(Action.class);
-//        for (Iterator<? extends Action> it = result.iterator(); it.hasNext();) {
-//            Action object = it.next();
-//            //System.out.println("lookup object! / " + object);
-//        }
 
-        //We add a mouse wheel listener to the top conmponent in order to correctly dispatch the event ot the cam controller
-        //the oGLPanel may naver have the focus.
-        //  if ("true".equals(NbPreferences.forModule(Installer.class).get("use_lwjgl_canvas", "false"))) {
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(final MouseWheelEvent e) {
-                SceneApplication.getApplication().enqueue(new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        String action;
-                        if (e.getWheelRotation() < 0) {
-                            action = "MouseWheel";
-                        } else if (e.getWheelRotation() > 0) {
-                            action = "MouseWheel-";
-                        } else {
-                            return null;
-                        }
-                        if (app.getActiveCameraController() != null) {
-                            app.getActiveCameraController().onAnalog(action, e.getWheelRotation(), 0);
-                        }
+        addMouseWheelListener((final MouseWheelEvent e) -> {
+            SceneApplication.getApplication().enqueue(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    String action;
+                    if (e.getWheelRotation() < 0) {
+                        action = "MouseWheel";
+                    } else if (e.getWheelRotation() > 0) {
+                        action = "MouseWheel-";
+                    } else {
                         return null;
                     }
-                });
-            }
+                    if (app.getActiveCameraController() != null) {
+                        app.getActiveCameraController().onAnalog(action, e.getWheelRotation(), 0);
+                    }
+                    return null;
+                }
+            });
         });
         addKeyListener(new KeyListener() {
             @Override
@@ -134,37 +120,30 @@ public final class SceneViewerTopComponent extends TopComponent {
 
             @Override
             public void keyPressed(final KeyEvent evt) {
-                SceneApplication.getApplication().enqueue(new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        int code = AwtKeyInput.convertAwtKey(evt.getKeyCode());
-                        KeyInputEvent keyEvent = new KeyInputEvent(code, evt.getKeyChar(), true, false);
-                        keyEvent.setTime(evt.getWhen());
-                        if (app.getActiveCameraController() != null) {
-                            app.getActiveCameraController().onKeyEvent(keyEvent);
-                        }
-                        return null;
+                SceneApplication.getApplication().enqueue(() -> {
+                    int code = AwtKeyInput.convertAwtKey(evt.getKeyCode());
+                    KeyInputEvent keyEvent = new KeyInputEvent(code, evt.getKeyChar(), true, false);
+                    keyEvent.setTime(evt.getWhen());
+                    if (app.getActiveCameraController() != null) {
+                        app.getActiveCameraController().onKeyEvent(keyEvent);
                     }
+                    return null;
                 });
             }
 
             @Override
             public void keyReleased(final KeyEvent evt) {
-                SceneApplication.getApplication().enqueue(new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        int code = AwtKeyInput.convertAwtKey(evt.getKeyCode());
-                        KeyInputEvent keyEvent = new KeyInputEvent(code, evt.getKeyChar(), false, false);
-                        keyEvent.setTime(evt.getWhen());
-                        if (app.getActiveCameraController() != null) {
-                            app.getActiveCameraController().onKeyEvent(keyEvent);
-                        }
-                        return null;
+                SceneApplication.getApplication().enqueue(() -> {
+                    int code = AwtKeyInput.convertAwtKey(evt.getKeyCode());
+                    KeyInputEvent keyEvent = new KeyInputEvent(code, evt.getKeyChar(), false, false);
+                    keyEvent.setTime(evt.getWhen());
+                    if (app.getActiveCameraController() != null) {
+                        app.getActiveCameraController().onKeyEvent(keyEvent);
                     }
+                    return null;
                 });
             }
         });
-        //}
 
         oGLPanel.setDropTarget(new DropTarget(this, new SceneViewerDropTargetListener(this)));
     }
@@ -182,7 +161,6 @@ public final class SceneViewerTopComponent extends TopComponent {
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         enableWireframe = new javax.swing.JToggleButton();
-        enablePBREnv = new javax.swing.JToggleButton();
         enablePBRSky = new javax.swing.JToggleButton();
         enableNormalView = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
@@ -248,23 +226,6 @@ public final class SceneViewerTopComponent extends TopComponent {
             }
         });
         jToolBar1.add(enableWireframe);
-
-        enablePBREnv.setIcon(IconList.enablePbrEnvironment);
-        org.openide.awt.Mnemonics.setLocalizedText(enablePBREnv, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBREnv.text")); // NOI18N
-        enablePBREnv.setToolTipText(org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBREnv.toolTipText")); // NOI18N
-        enablePBREnv.setFocusable(false);
-        enablePBREnv.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        enablePBREnv.setMaximumSize(new java.awt.Dimension(32, 32));
-        enablePBREnv.setMinimumSize(new java.awt.Dimension(32, 32));
-        enablePBREnv.setPreferredSize(new java.awt.Dimension(32, 32));
-        enablePBREnv.setSelectedIcon(IconList.enablePbrEnvironment);
-        enablePBREnv.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        enablePBREnv.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enablePBREnvActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(enablePBREnv);
 
         enablePBRSky.setIcon(IconList.enablePbrSky);
         org.openide.awt.Mnemonics.setLocalizedText(enablePBRSky, org.openide.util.NbBundle.getMessage(SceneViewerTopComponent.class, "SceneViewerTopComponent.enablePBRSky.text")); // NOI18N
@@ -334,10 +295,6 @@ public final class SceneViewerTopComponent extends TopComponent {
         FilterExplorerTopComponent.findInstance().setFilterEnabled(jToggleButton1.isSelected());
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void enablePBREnvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enablePBREnvActionPerformed
-        app.enablePBRProbe(enablePBREnv.isSelected());
-    }//GEN-LAST:event_enablePBREnvActionPerformed
-
     private void enablePBRSkyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enablePBRSkyActionPerformed
         app.enablePBRSkybox(enablePBRSky.isSelected());
     }//GEN-LAST:event_enablePBRSkyActionPerformed
@@ -349,7 +306,6 @@ public final class SceneViewerTopComponent extends TopComponent {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton enableCamLight;
     private javax.swing.JToggleButton enableNormalView;
-    private javax.swing.JToggleButton enablePBREnv;
     private javax.swing.JToggleButton enablePBRSky;
     private javax.swing.JToggleButton enableStats;
     private javax.swing.JToggleButton enableWireframe;
@@ -388,8 +344,8 @@ public final class SceneViewerTopComponent extends TopComponent {
                     "Cannot find " + PREFERRED_ID + " component. It will not be located properly in the window system.");
             return getDefault();
         }
-        if (win instanceof SceneViewerTopComponent) {
-            return (SceneViewerTopComponent) win;
+        if (win instanceof SceneViewerTopComponent sceneViewerTopComponent) {
+            return sceneViewerTopComponent;
         }
         Logger.getLogger(SceneViewerTopComponent.class.getName()).warning(
                 "There seem to be multiple components with the '" + PREFERRED_ID

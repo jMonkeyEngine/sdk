@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009-2010 jMonkeyEngine All rights reserved. <p/>
+ * Copyright (c) 2009-2026 jMonkeyEngine All rights reserved. <p/>
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
@@ -196,7 +196,7 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
     private void loadFPSText() {
         BitmapFont font = assetManager.loadFont("Interface/Fonts/Default.fnt");
 
-        fpsText = new BitmapText(font, false);
+        fpsText = new BitmapText(font);
         fpsText.setSize(font.getCharSet().getRenderedSize());
         fpsText.setLocalTranslation(0, fpsText.getLineHeight(), 0);
         fpsText.setText("Frames per second");
@@ -234,7 +234,6 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
 
                 camLight = new PointLight();
                 camLight.setColor(ColorRGBA.White);
-
                 guiNode.setQueueBucket(Bucket.Gui);
                 guiNode.setCullHint(CullHint.Never);
                 loadFPSText();
@@ -535,9 +534,11 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
             if (enabled) {
                 rootNode.removeLight(camLight);
                 rootNode.addLight(camLight);
+                
             } else {
                 rootNode.removeLight(camLight);
             }
+            enablePBRProbe(enabled);
             return null;
         });
     }
@@ -581,12 +582,12 @@ public class SceneApplication extends LegacyApplication implements LookupProvide
         }.start();
     }
     
-    private void togglePbrProbe(final boolean selected, final Node activeNode) {
+    private void togglePbrProbe(final boolean enabled, final Node activeNode) {
         if (pbrLightProbe == null) {
             createPbrLightProbe(activeNode);
         } else {
             enqueue(() -> {
-                if (selected) {
+                if (enabled) {
                     activeNode.addLight(pbrLightProbe);
                 } else {
                     activeNode.removeLight(pbrLightProbe);

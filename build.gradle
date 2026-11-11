@@ -43,7 +43,7 @@ dependencies {
     corelibs dep("org.jmonkeyengine:jme3-awt-dialogs:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-plugins-json:$jmeVersion-$jmeVersionTag", true, true)
 	corelibs dep("org.jmonkeyengine:jme3-plugins-json-gson:$jmeVersion-$jmeVersionTag", true, true)
-    corelibs dep("org.jmonkeyengine:jme3-lwjgl:$jmeVersion-$jmeVersionTag", true, true)
+    corelibs dep("org.jmonkeyengine:jme3-lwjgl3:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("org.jmonkeyengine:jme3-effects:$jmeVersion-$jmeVersionTag", true, true)
     corelibs dep("com.github.stephengold:Minie:9.0.3", true, true) // replacement for bullet-native
     corelibs dep("com.github.stephengold:Heart:9.3.0", true, true) // requirement for Minie
