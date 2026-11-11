@@ -35,6 +35,7 @@ import com.jme3.gde.core.assets.ProjectAssetManager;
 import com.jme3.gde.core.errorreport.ExceptionUtils;
 import com.jme3.gde.core.scene.SceneApplication;
 import com.jme3.gde.materialdefinition.fileStructure.MatDefBlock;
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.gde.materialdefinition.fileStructure.TechniqueBlock;
 import com.jme3.gde.materialdefinition.fileStructure.UberStatement;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.LeafStatement;
@@ -60,6 +61,8 @@ import java.util.logging.Logger;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
+import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.cookies.EditorCookie;
 import org.openide.explorer.ExplorerManager;
 import org.openide.filesystems.FileLock;
@@ -91,6 +94,7 @@ public class EditableMatDefFile {
     private Lookup lookup;
     private boolean loaded = false;
     private boolean dirty = false;
+    private MatDefParseException parseError = null;
     private final MatStructChangeListener changeListener = new MatStructChangeListener(this);
 
     public EditableMatDefFile(Lookup lookup) {
@@ -101,6 +105,7 @@ public class EditableMatDefFile {
 
     public final void load(Lookup lookup) {
         loaded = false;
+        parseError = null;
         this.matDefFile = obj.getPrimaryFile();
         this.assetManager = lookup.lookup(ProjectAssetManager.class);
         this.glsl100 = new Glsl100ShaderGenerator(assetManager);
@@ -133,6 +138,13 @@ public class EditableMatDefFile {
                 assetManager.deleteFromCache(matDefKey);
                 materialDef = (MaterialDef) assetManager.loadAsset(assetManager.getRelativeAssetPath(matDefFile.getPath()));
             }
+        } catch (MatDefParseException ex) {
+            // The SDK's own parser hit a statement it cannot make sense of.
+            // Keep whatever was parsed so far and notify the user with a
+            // specific message instead of showing the exception report.
+            parseError = ex;
+            Logger.getLogger(EditableMatDefFile.class.getName()).log(Level.WARNING, ex.getMessage());
+            notifyParseError(ex);
         } catch (Exception ex) {
             Throwable t = ex.getCause();
 
@@ -167,16 +179,38 @@ public class EditableMatDefFile {
                 }
             }
         }
-        if (materialDef != null && !matParseError) {
-            if(currentTechnique == null){
-                currentTechnique = matDefStructure.getTechniques().get(0);
-            }
-            registerListener(matDefStructure);
+        if ((materialDef != null || parseError != null) && !matParseError) {
+            if (matDefStructure != null && !matDefStructure.getTechniques().isEmpty()) {
+                if (currentTechnique == null) {
+                    currentTechnique = matDefStructure.getTechniques().get(0);
+                }
+                registerListener(matDefStructure);
 
-            obj.getLookupContents().add(matDefStructure);
-            updateLookupWithMaterialData(obj);
+                obj.getLookupContents().add(matDefStructure);
+            }
+            if (materialDef != null) {
+                updateLookupWithMaterialData(obj);
+            }
             loaded = true;
         }
+    }
+
+    /**
+     * @return the parse error encountered while loading the j3md, or null if
+     * the file parsed cleanly (or was not loaded yet).
+     */
+    public MatDefParseException getParseError() {
+        return parseError;
+    }
+
+    private void notifyParseError(MatDefParseException ex) {
+        String fileName = matDefFile != null ? matDefFile.getNameExt() : "material definition";
+        StringBuilder msg = new StringBuilder();
+        msg.append("Could not fully parse ").append(fileName).append(": ").append(ex.getMessage());
+        msg.append("\n\nThe visual editor may be incomplete or broken. ");
+        msg.append("Please fix the file in the text editor.");
+        DialogDisplayer.getDefault().notifyLater(
+                new NotifyDescriptor.Message(msg.toString(), NotifyDescriptor.WARNING_MESSAGE));
     }
 
     void registerListener(Statement sta) {

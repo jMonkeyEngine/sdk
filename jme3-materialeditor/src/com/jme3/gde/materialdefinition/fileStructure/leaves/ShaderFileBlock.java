@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -34,20 +33,28 @@ public class ShaderFileBlock extends LeafStatement {
         updateLine();
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
     protected void updateLine() {
         this.line = "Shader " + language + ": " + path;
     }
 
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split("\\s");
-            language = split[1].trim();
-            path = split[2].trim();
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Logger.getLogger(ShaderFileBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(ShaderFileBlock.class.getName()).log(Level.WARNING, "Invalid light mode : {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+        String[] split = sta.getLine().trim().split("\\s+");
+        if (split.length < 3) {
+            throw new MatDefParseException("Shader statement is missing its language or path, expected \"Shader GLSL100: path/to/shader.vert\"", sta.getLineNumber(), sta.getLine());
         }
+        String lastLanguage = split[split.length - 2];
+        if (lastLanguage.endsWith(":")) {
+            lastLanguage = lastLanguage.substring(0, lastLanguage.length() - 1);
+        }
+        language = lastLanguage;
+        path = split[split.length - 1];
     }
 }

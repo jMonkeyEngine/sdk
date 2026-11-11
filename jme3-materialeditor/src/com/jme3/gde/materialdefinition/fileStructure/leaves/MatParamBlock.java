@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -98,35 +97,30 @@ public class MatParamBlock extends LeafStatement {
     }
     
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split(":");
-            String statement = split[0].trim();
+        String[] split = sta.getLine().split(":");
+        String statement = split[0].trim();
 
-            // Parse default val
-            if (split.length > 1) {
-                
-                defaultValue = split[1].trim();
-            }
+        // Parse default val
+        if (split.length > 1) {
 
-            // Parse ffbinding
-            int startParen = statement.indexOf("(");
-            if (startParen != -1) {
-                // get content inside parentheses
-                int endParen = statement.indexOf(")", startParen);
-                fixedFuncBinding = statement.substring(startParen + 1, endParen).trim();
-                statement = statement.substring(0, startParen);
-            }
-
-            // Parse type + name
-            split = statement.split("\\p{javaWhitespace}+");
-
-            type = split[0];
-            name = split[1];
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Logger.getLogger(MatParamBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+            defaultValue = split[1].trim();
         }
+
+        // Parse ffbinding
+        int startParen = statement.indexOf("(");
+        if (startParen != -1) {
+            // get content inside parentheses
+            int endParen = statement.indexOf(")", startParen);
+            fixedFuncBinding = statement.substring(startParen + 1, endParen).trim();
+            statement = statement.substring(0, startParen);
+        }
+
+        // Parse type + name
+        split = statement.split("\\p{javaWhitespace}+");
+        if (split.length < 2) {
+            throw new MatDefParseException("Material parameter is missing a type or a name, expected \"Type Name\"", sta.getLineNumber(), sta.getLine());
+        }
+        type = split[0];
+        name = split[1];
     }
 }

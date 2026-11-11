@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -43,27 +42,28 @@ public class InputMappingBlock extends MappingBlock {
     }
 
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split(":");
-            if (split.length > 1) {
-                condition = split[1].trim();
-            }
-            String mapping = split[0].trim();
-            String[] s = mapping.split("=");
-            String[] left = s[0].split("\\.");
-            leftVar = left[0].trim();
-            if (left.length > 1) {
-                leftVarSwizzle = left[1].trim();
-            }
-            String[] right = s[1].split("\\.");
-            rightNameSpace = right[0].trim();
-            rightVar = right[1].trim();
-            if (right.length > 2) {
-                rightVarSwizzle = right[2].trim();
-            }
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Logger.getLogger(InputMappingBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+        String[] split = sta.getLine().split(":");
+        if (split.length > 1) {
+            condition = split[1].trim();
+        }
+        String mapping = split[0].trim();
+        String[] s = mapping.split("=");
+        if (s.length < 2) {
+            throw new MatDefParseException("Input mapping is missing \"=\", expected \"inputVar = NameSpace.var\"", sta.getLineNumber(), sta.getLine());
+        }
+        String[] left = s[0].split("\\.");
+        leftVar = left[0].trim();
+        if (left.length > 1) {
+            leftVarSwizzle = left[1].trim();
+        }
+        String[] right = s[1].split("\\.");
+        if (right.length < 2) {
+            throw new MatDefParseException("Input mapping is missing a variable name, expected \"inputVar = NameSpace.var\"", sta.getLineNumber(), sta.getLine());
+        }
+        rightNameSpace = right[0].trim();
+        rightVar = right[1].trim();
+        if (right.length > 2) {
+            rightVarSwizzle = right[2].trim();
         }
     }
 }

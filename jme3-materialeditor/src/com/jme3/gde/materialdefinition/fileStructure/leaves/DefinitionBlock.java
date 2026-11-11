@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -57,16 +56,13 @@ public class DefinitionBlock extends LeafStatement {
     }
 
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split(":");
-            if (split.length > 2) {
-                path = split[2].trim();
-            }
-            name = split[1].trim();
-
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Logger.getLogger(DefinitionBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+        String[] split = sta.getLine().split(":");
+        if (split.length > 2) {
+            path = split[2].trim();
         }
+        if (split.length < 2 || split[1].trim().isEmpty()) {
+            throw new MatDefParseException("Shader node definition is missing a name, expected \"Definition : Name : path/to/definition.j3sn\"", sta.getLineNumber(), sta.getLine());
+        }
+        name = split[1].trim();
     }
 }

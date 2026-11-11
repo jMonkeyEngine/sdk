@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -46,12 +45,10 @@ public class ConditionBlock extends LeafStatement {
     }
 
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split(":");       
-            condition = split[1].trim();
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Logger.getLogger(ConditionBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+        String[] split = sta.getLine().split(":");
+        if (split.length < 2 || split[1].trim().isEmpty()) {
+            throw new MatDefParseException("Condition statement is missing its condition, expected \"Condition : SomeParam > 0.5\"", sta.getLineNumber(), sta.getLine());
         }
+        condition = split[1].trim();
     }
 }

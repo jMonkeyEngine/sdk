@@ -45,6 +45,7 @@ import com.jme3.gde.materialdefinition.MatDefMetaData;
 import com.jme3.gde.materialdefinition.editor.ShaderNodePanel.NodeType;
 import com.jme3.gde.materialdefinition.editor.util.MatDefEditorUtil;
 import com.jme3.gde.materialdefinition.fileStructure.MatDefBlock;
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.gde.materialdefinition.fileStructure.ShaderNodeBlock;
 import com.jme3.gde.materialdefinition.fileStructure.TechniqueBlock;
 import com.jme3.gde.materialdefinition.fileStructure.leaves.InputMappingBlock;
@@ -80,6 +81,7 @@ import org.netbeans.core.spi.multiview.MultiViewElementCallback;
 import org.netbeans.core.spi.multiview.text.MultiViewEditorElement;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.awt.UndoRedo;
 import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
@@ -138,6 +140,17 @@ public final class MatDefEditorlElement extends JPanel implements
     }
 
     private void initDiagram(Lookup lkp) throws NumberFormatException {
+        MatDefParseException parseError = obj.getEditableFile().getParseError();
+        if (parseError != null) {
+            String msg = "The material definition could not be fully parsed: " + parseError.getMessage()
+                    + "\n\nThe diagram below may be incomplete. Please fix the file in the text editor.";
+            DialogDisplayer.getDefault().notifyLater(
+                    new NotifyDescriptor.Message(msg, NotifyDescriptor.WARNING_MESSAGE));
+        }
+        initDiagramInternal(lkp);
+    }
+
+    private void initDiagramInternal(Lookup lkp) throws NumberFormatException {
         /* Note: I don't know if the following could also be done by calling
          * {@link ShaderNodeDiagram#addNodesFromDefs()} etc
          */
@@ -150,6 +163,10 @@ public final class MatDefEditorlElement extends JPanel implements
         ProjectAssetManager manager = obj.getLookup().lookup(ProjectAssetManager.class);
         final MatDefBlock matDef = obj.getLookup().lookup(MatDefBlock.class);
         TechniqueBlock technique = getTechnique();
+        if (technique == null) {
+            // Partial parse: no technique could be built, nothing to draw.
+            return;
+        }
 
         diagram1.setCurrentTechniqueName(technique.getName());
 

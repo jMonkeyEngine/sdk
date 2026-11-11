@@ -62,7 +62,10 @@ public class MatDefBlock extends UberStatement {
                 addStatement(new UnsupportedStatement(statement));
             }
         }
-        String[] s = line.split("\\s");
+        String[] s = line.trim().split("\\s+");
+        if (s.length < 2) {
+            throw new MatDefParseException("MaterialDef statement is missing a name, expected \"MaterialDef MyMaterial\"", getLineNumber(), getLine());
+        }
         name = s[1];
     }
 

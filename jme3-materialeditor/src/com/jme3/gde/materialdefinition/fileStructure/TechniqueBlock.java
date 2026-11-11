@@ -58,7 +58,7 @@ public class TechniqueBlock extends UberStatement {
                 addStatement(new UnsupportedStatement(statement));
             }
         }
-        String[] s = line.split("\\s");
+        String[] s = line.trim().split("\\s+");
         if (s.length == 1) {
             name = "Default";
         } else {
@@ -105,6 +105,10 @@ public class TechniqueBlock extends UberStatement {
 
     protected WorldParametersBlock getWorldParameters() {
         return getBlock(WorldParametersBlock.class);
+    }
+
+    public DefinesBlock getDefines() {
+        return getBlock(DefinesBlock.class);
     }
 
     public List<WorldParamBlock> getWorldParams() {

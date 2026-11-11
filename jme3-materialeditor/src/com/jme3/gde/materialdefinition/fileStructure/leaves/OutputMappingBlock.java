@@ -4,9 +4,8 @@
  */
 package com.jme3.gde.materialdefinition.fileStructure.leaves;
 
+import com.jme3.gde.materialdefinition.fileStructure.MatDefParseException;
 import com.jme3.util.blockparser.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -43,31 +42,28 @@ public class OutputMappingBlock extends MappingBlock {
     }
 
     private void parse(Statement sta) {
-        try {
-            String[] split = sta.getLine().split(":");
-            if (split.length > 1) {
-                condition = split[1].trim();
-            }
-            String mapping = split[0].trim();
-            String[] s = mapping.split("=");
-
-            String[] left = s[0].split("\\.");
-            leftNameSpace = left[0].trim();
-            leftVar = left[1].trim();
-            if (left.length > 2) {
-                leftVarSwizzle = left[2].trim();
-            }
-
-            String[] right = s[1].split("\\.");
-
-            rightVar = right[0].trim();
-            if (right.length > 1) {
-                rightVarSwizzle = right[1].trim();
-            }
-
-
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Logger.getLogger(OutputMappingBlock.class.getName()).log(Level.WARNING, "Parsing error line {0} : {1}", new Object[]{sta.getLineNumber(), sta.getLine()});
+        String[] split = sta.getLine().split(":");
+        if (split.length > 1) {
+            condition = split[1].trim();
+        }
+        String mapping = split[0].trim();
+        String[] s = mapping.split("=");
+        if (s.length < 2) {
+            throw new MatDefParseException("Output mapping is missing \"=\", expected \"NameSpace.var = outputVar\"", sta.getLineNumber(), sta.getLine());
+        }
+        String[] left = s[0].split("\\.");
+        if (left.length < 2) {
+            throw new MatDefParseException("Output mapping is missing a variable name, expected \"NameSpace.var = outputVar\"", sta.getLineNumber(), sta.getLine());
+        }
+        leftNameSpace = left[0].trim();
+        leftVar = left[1].trim();
+        if (left.length > 2) {
+            leftVarSwizzle = left[2].trim();
+        }
+        String[] right = s[1].split("\\.");
+        rightVar = right[0].trim();
+        if (right.length > 1) {
+            rightVarSwizzle = right[1].trim();
         }
     }
 }
