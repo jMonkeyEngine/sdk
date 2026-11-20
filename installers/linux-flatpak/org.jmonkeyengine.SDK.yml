@@ -1,0 +1,50 @@
+id: org.jmonkeyengine.SDK
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk25
+command: jmonkeyengine-sdk
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --share=network
+  # this to block jmonkey engine to create stuff in the user home folder
+  - --filesystem=xdg-documents
+  - --filesystem=xdg-pictures:ro
+  - --filesystem=xdg-download:ro
+  - --env=JAVA_HOME=/app/jdk
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/openjdk25/installjdk.sh
+
+  - name: jmonkeyengine-sdk
+    buildsystem: simple
+    sources:
+      - type: file
+        path: jmonkeyplatform.zip
+      - type: file
+        path: jmonkeyengine-sdk.sh
+      - type: file
+        path: org.jmonkeyengine.SDK.desktop
+      - type: file
+        path: org.jmonkeyengine.SDK.metainfo.xml
+      - type: file
+        path: icon-48.png
+      - type: file
+        path: icon-256.png
+    build-commands:
+      - unzip -q jmonkeyplatform.zip -d /app
+      # Windows launchers are useless here
+      - rm -f /app/jmonkeyplatform/bin/*.exe
+      - install -Dm755 jmonkeyengine-sdk.sh /app/bin/jmonkeyengine-sdk
+      - install -Dm644 org.jmonkeyengine.SDK.desktop -t /app/share/applications
+      - install -Dm644 org.jmonkeyengine.SDK.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 icon-48.png  /app/share/icons/hicolor/48x48/apps/org.jmonkeyengine.SDK.png
+      - install -Dm644 icon-256.png /app/share/icons/hicolor/256x256/apps/org.jmonkeyengine.SDK.png

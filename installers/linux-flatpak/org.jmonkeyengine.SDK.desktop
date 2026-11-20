@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=jMonkeyEngine SDK
+GenericName=3D Game Development IDE
+Comment=A complete 3D game development suite written purely in Java
+Exec=jmonkeyengine-sdk %F
+Icon=org.jmonkeyengine.SDK
+Terminal=false
+Categories=Development;IDE;Graphics;3DGraphics;Java;
+Keywords=jme;jme3;game;3d;engine;java;
+StartupWMClass=Apache NetBeans Platform
