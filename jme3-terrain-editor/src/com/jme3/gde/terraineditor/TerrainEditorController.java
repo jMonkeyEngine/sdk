@@ -109,10 +109,9 @@ public class TerrainEditorController implements NodeListener {
                     doSaveAlphaImages();
                 }
                 currentFileObject.saveAsset();
+                alphaLayersChanged = false;
                 return null;
             });
-            alphaLayersChanged = false;
-
         }
     }
     private final TerrainSaveCookie terrainSaveCookie = new TerrainSaveCookie();
