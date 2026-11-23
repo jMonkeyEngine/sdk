@@ -46,7 +46,30 @@ jobs:
           arch: ${{ runner.arch }}
 
   # -------------------------------
-  # 3. Release
+  # 3. APT repository (GitHub Pages)
+  # -------------------------------
+  apt-repo:
+    needs: package
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Publish APT repository
+        uses: ./.github/actions/publish-apt-repo
+        with:
+          tag: ${{ github.ref }}
+
+  # -------------------------------
+  # 4. Release
   # -------------------------------
   release:
     needs: package
